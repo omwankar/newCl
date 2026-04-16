@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ const navigation = [
       { name: 'Sea Freight', href: '/services#sea-freight' },
       { name: 'Land Transport', href: '/services#land-transport' },
       { name: 'Warehousing & Distribution', href: '/services#warehousing' },
-      { name: 'Supply Chain Management', href: '/services#supply-chain' },
+      { name: 'Supply Chain Management', href: '/supply-chain-management' },
       { name: 'Customs Clearance', href: '/services#customs-clearance' },
     ],
   },
@@ -35,10 +36,14 @@ export function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center">
-              <span className="text-sm font-bold text-[#0F1923]">C</span>
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white hidden sm:inline">Clarusto</span>
+            <Image
+              src="/clarusto-logo-light.png"
+              alt="Clarusto Logistics"
+              width={164}
+              height={45}
+              className="h-9 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

@@ -5,6 +5,7 @@ import { ServicesGrid } from '@/components/services-grid';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SERVICES, INDUSTRIES } from '@/lib/constants';
 import * as Icons from 'lucide-react';
+import Link from 'next/link';
 
 export default function ServicesPage() {
   const getIcon = (iconName: string) => {
@@ -41,6 +42,15 @@ export default function ServicesPage() {
           </div>
 
           <ServicesGrid services={SERVICES} variant="list" />
+          <div className="mt-10 rounded-xl border border-border bg-card p-6 text-center">
+            <h3 className="text-2xl font-bold text-foreground">Need dedicated supply chain support?</h3>
+            <p className="mt-2 text-muted-foreground">
+              Explore our specialized service page for planning, inventory flow, and multimodal coordination.
+            </p>
+            <Link href="/supply-chain-management" className="mt-4 inline-block font-semibold text-amber-500 hover:text-amber-600">
+              View Supply Chain Management
+            </Link>
+          </div>
         </div>
       </section>
 

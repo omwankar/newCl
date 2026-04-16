@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { MapPin, ArrowDown } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function EnhancedHero() {
   return (
@@ -46,11 +47,11 @@ export function EnhancedHero() {
             Seamless Global Deliveries, Trusted Every Mile. Connecting Continents, Delivering Excellence.
           </p>
           <div className="flex flex-wrap gap-4 animate-slide-up delay-300">
-            <Button size="lg" className="bg-amber-400 hover:bg-amber-500 text-[#0F1923] text-base px-8 shadow-lg">
-              Get a Quote
+            <Button asChild size="lg" className="bg-amber-400 hover:bg-amber-500 text-[#0F1923] text-base px-8 shadow-lg">
+              <Link href="/contact">Get a Quote</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 text-base px-8 backdrop-blur-sm">
-              Our Services
+            <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 text-base px-8 backdrop-blur-sm">
+              <Link href="/services">Our Services</Link>
             </Button>
           </div>
 

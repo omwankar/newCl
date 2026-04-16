@@ -5,6 +5,7 @@ import { ContactForm } from '@/components/contact-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function ContactPage() {
   const offices = [
@@ -216,6 +217,17 @@ export default function ContactPage() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Visit our projects and services pages to review capability scope, sectors served, and operational strengths.
             </p>
+            <div className="flex flex-wrap items-center justify-center gap-5 text-sm font-medium">
+              <Link href="/services" className="text-amber-500 hover:text-amber-600">
+                Explore Services
+              </Link>
+              <Link href="/supply-chain-management" className="text-amber-500 hover:text-amber-600">
+                Supply Chain Management
+              </Link>
+              <Link href="/about" className="text-amber-500 hover:text-amber-600">
+                Learn About Clarusto
+              </Link>
+            </div>
           </div>
         </div>
       </section>

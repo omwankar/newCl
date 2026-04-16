@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, Mail, MapPin, Linkedin, Facebook, Twitter } from 'lucide-react';
 import { OFFICES } from '@/lib/constants';
 
@@ -10,22 +11,25 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <div className="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center">
-                <span className="text-sm font-bold text-[#0F1923]">C</span>
-              </div>
-              Clarusto
+              <Image
+                src="/clarusto-logo-light.png"
+                alt="Clarusto Logistics"
+                width={164}
+                height={45}
+                className="h-10 w-auto"
+              />
             </h3>
             <p className="text-sm opacity-90 mb-4">
               Your trusted global logistics partner for seamless deliveries and comprehensive shipping solutions.
             </p>
             <div className="flex gap-4">
-              <Link href="#" className="hover:text-amber-500 transition-colors">
+              <Link href="https://www.linkedin.com/company/clarusto-logistics" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="w-5 h-5" />
               </Link>
-              <Link href="#" className="hover:text-amber-500 transition-colors">
+              <Link href="https://www.facebook.com/clarustologistics" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer">
                 <Facebook className="w-5 h-5" />
               </Link>
-              <Link href="#" className="hover:text-amber-500 transition-colors">
+              <Link href="https://x.com/clarustologistic" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer">
                 <Twitter className="w-5 h-5" />
               </Link>
             </div>
@@ -88,7 +92,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services#supply-chain" className="hover:text-amber-500 transition-colors">
+                <Link href="/supply-chain-management" className="hover:text-amber-500 transition-colors">
                   Supply Chain
                 </Link>
               </li>
