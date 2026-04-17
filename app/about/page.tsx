@@ -12,20 +12,18 @@ import { ReactNode } from 'react';
 
 function Reveal({
   children,
-  animation = 'animate-fadeInUp',
   className = '',
 }: {
   children: ReactNode;
-  animation?: string;
   className?: string;
 }) {
-  const { ref, isVisible } = useScrollAnimation(0.12);
+  const { ref, isVisible } = useScrollAnimation(0.08);
 
   return (
     <div
       ref={ref}
-      className={`${className} transition-all duration-700 ${
-        isVisible ? animation : 'opacity-0 translate-y-6'
+      className={`${className} will-change-transform transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transform-none motion-reduce:transition-none ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
       {children}
@@ -53,7 +51,7 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-[#F8F6F1]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <Reveal animation="animate-slideInLeft" className="bg-white rounded-2xl p-8 border-t-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow">
+            <Reveal className="bg-white rounded-2xl p-8 border-t-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-lg bg-amber-400 flex items-center justify-center text-[#0F1923] font-bold text-lg">M</div>
                 <h3 className="text-2xl font-bold text-[#0F1923]">Our Mission</h3>
@@ -63,7 +61,7 @@ export default function AboutPage() {
               </p>
             </Reveal>
 
-            <Reveal animation="animate-slideInRight" className="bg-[#0F1923] rounded-2xl p-8 border-t-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow">
+            <Reveal className="bg-[#0F1923] rounded-2xl p-8 border-t-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-lg bg-amber-400 flex items-center justify-center text-[#0F1923] font-bold text-lg">V</div>
                 <h3 className="text-2xl font-bold text-white">Our Vision</h3>
@@ -91,7 +89,6 @@ export default function AboutPage() {
                 <Reveal
                   key={item.label}
                   className="text-center p-6 rounded-xl border border-white/10 hover:border-amber-400/50 transition-colors"
-                  animation="animate-fadeInUp"
                 >
                   <div className="w-12 h-12 bg-amber-400 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <Icon className="w-6 h-6 text-[#0F1923]" />

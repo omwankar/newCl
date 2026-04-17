@@ -93,5 +93,6 @@ export const seoRoutes = [
   '/services',
   '/contact',
   '/projects',
+  '/blog',
   '/supply-chain-management',
 ];

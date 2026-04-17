@@ -10,26 +10,25 @@ import { PromiseSection } from '@/components/promise-section';
 import { StatsSection } from '@/components/stats-section';
 import { ServicePartners } from '@/components/service-partners';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
+import { BLOG_POSTS } from '@/lib/blogs';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 
 function Reveal({
   children,
-  animation = 'animate-fadeInUp',
   className = '',
 }: {
   children: ReactNode;
-  animation?: string;
   className?: string;
 }) {
-  const { ref, isVisible } = useScrollAnimation(0.12);
+  const { ref, isVisible } = useScrollAnimation(0.08);
 
   return (
     <div
       ref={ref}
-      className={`${className} transition-all duration-700 ${
-        isVisible ? animation : 'opacity-0 translate-y-6'
+      className={`${className} will-change-transform transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transform-none motion-reduce:transition-none ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
       {children}
@@ -38,6 +37,8 @@ function Reveal({
 }
 
 export default function Home() {
+  const { ref: trustSectionRef, isVisible: isTrustSectionVisible } = useScrollAnimation(0.1);
+
   const partners = [
     { name: 'Saudi Aramco', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Saudi_Aramco_logo.svg/500px-Saudi_Aramco_logo.svg.png' },
     { name: 'Samsung', logo: 'https://www.dafont.com/forum/attach/orig/2/1/218859.jpg' },
@@ -57,11 +58,7 @@ export default function Home() {
     { name: "Ma'aden (Saudi Arabian Mining Company)", logo: 'https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/072024/maaden.jpg?EbMm2gvNQB6Ub6S7INhZ1TTNWR5WFAPH&itok=yZWsuAyF' },
   ];
 
-  const articles = [
-    { date: 'Sep. 02/2025', title: 'Transforming Warehouse Management with Paperless Systems', description: "In today's fast-paced logistics environment, efficiency and accuracy ...", image: '/blog-warehouse.jpg' },
-    { date: 'Sep. 02/2025', title: 'Agility in Modern Supply Chains: The Key to Competitive Advantage', description: "In today's fast-paced business environment, supply chains are more co...", image: '/blog-supply-chain.jpg' },
-    { date: 'Sep. 02/2025', title: 'Tailoring E-commerce Logistics for Small Businesses', description: "In today's competitive marketplace, small businesses must adopt effective...", image: '/blog-ecommerce.jpg' },
-  ];
+  const featuredArticles = BLOG_POSTS.slice(0, 3);
 
   const expertise = [
     { number: '2,000+', label: 'Integrated Supply Chain Expertise', features: ['Customized supply chain management', 'Freight forwarding solutions', 'Warehousing & distribution'] },
@@ -78,12 +75,12 @@ export default function Home() {
       <section className="relative py-12 md:py-16 bg-[#0F1923] text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
-            <Reveal animation="animate-slideInLeft">
+            <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
                 THE MOST IMPORTANT THINGS WHICH WE CAN SHOW YOU
               </h2>
             </Reveal>
-            <Reveal animation="animate-slideInRight">
+            <Reveal>
               <p className="text-lg text-white/85 leading-loose">
                 We move logistics forward with speed, safety, and complete visibility. From pickup to delivery,
                 we create dependable transportation workflows that help your business grow.
@@ -96,7 +93,7 @@ export default function Home() {
               'https://images.pexels.com/photos/4481327/pexels-photo-4481327.jpeg',
               'https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg',
             ].map((img, idx) => (
-              <Reveal key={img} className="relative aspect-[4/3] overflow-hidden rounded-sm group" animation="animate-fadeInUp">
+              <Reveal key={img} className="relative aspect-[4/3] overflow-hidden rounded-sm group">
                 <Image
                   src={img}
                   alt="Logistics showcase"
@@ -175,9 +172,9 @@ export default function Home() {
             <div className="h-1 w-20 bg-amber-400 mb-12"></div>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {articles.map((article, idx) => (
+            {featuredArticles.map((article, idx) => (
               <Reveal
-                key={article.title}
+                key={article.id}
                 className="bg-white ring-1 ring-border rounded-lg overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 hover:ring-accent/40 transition-all duration-300 group"
               >
                 <div className="relative h-48 bg-muted overflow-hidden">
@@ -191,16 +188,27 @@ export default function Home() {
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-500" />
                 </div>
                 <div className="p-6">
-                  <p className="text-sm text-amber-500 font-semibold mb-3 border-b border-amber-400 pb-3">{article.date}</p>
+                  <p className="text-sm text-amber-500 font-semibold mb-3 border-b border-amber-400 pb-3">
+                    {article.date} . {article.readTime}
+                  </p>
                   <h3 className="text-lg font-bold tracking-tight text-foreground mb-3">{article.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{article.description}</p>
-                  <Link href="#" className="text-amber-500 hover:text-amber-600 font-semibold text-sm inline-flex items-center gap-1 group/link">
+                  <p className="text-sm text-muted-foreground mb-4">{article.excerpt}</p>
+                  <Link
+                    href={`/blog/${article.slug}`}
+                    className="text-amber-500 hover:text-amber-600 font-semibold text-sm inline-flex items-center gap-1 group/link"
+                  >
                     <span>Read More</span>
                     <span className="transition-transform duration-300 group-hover/link:translate-x-1">→</span>
                   </Link>
                 </div>
               </Reveal>
             ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link href="/blog" className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-600 font-semibold">
+              View All Blogs
+              <span>→</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -217,10 +225,17 @@ export default function Home() {
         </Reveal>
       </section>
 
-      <section className="py-12 md:py-16 bg-gradient-to-b from-background to-muted/40">
+      <section
+        ref={trustSectionRef}
+        className="py-12 md:py-16 bg-gradient-to-b from-background to-muted/40 overflow-hidden"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-10 xl:gap-14 items-center">
-            <Reveal animation="animate-slideInLeft">
+            <div
+              className={`will-change-transform transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isTrustSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6 text-foreground leading-tight">
                 Every Shipment Carries More Than Cargo
               </h2>
@@ -234,9 +249,13 @@ export default function Home() {
               <h3 className="text-2xl font-bold tracking-tight text-foreground">
                 Your Trusted Logistics Partner - Delivering Reliability Every Mile
               </h3>
-            </Reveal>
+            </div>
 
-            <Reveal animation="animate-slideInRight" className="grid grid-cols-2 gap-4">
+            <div
+              className={`grid grid-cols-2 gap-4 will-change-transform transition-[opacity,transform] duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isTrustSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
               <div className="relative col-span-2 h-56 sm:h-64 rounded-2xl overflow-hidden shadow-lg group">
                 <Image
                   src="https://images.pexels.com/photos/6169056/pexels-photo-6169056.jpeg"
@@ -261,21 +280,33 @@ export default function Home() {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
-            </Reveal>
+            </div>
           </div>
 
           <div className="grid gap-6 md:grid-cols-3 mt-12">
-            <div className="rounded-2xl border border-border border-t-2 border-amber-400 bg-card p-6 animate-fadeInUp transition-all duration-300 hover:-translate-y-1 hover:border-amber-400 hover:shadow-md">
+            <div
+              className={`rounded-2xl border border-border border-t-2 border-amber-400 bg-card p-6 transition-[opacity,transform,box-shadow,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-amber-400 hover:shadow-md ${
+                isTrustSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
               <span style={{ fontSize: '24px' }} className="mb-3 inline-block">🚚</span>
               <h3 className="text-lg font-semibold text-foreground">Flexible Fleet</h3>
               <p className="mt-2 text-muted-foreground">From small parcels to bulk cargo, we adapt with the right transport mode.</p>
             </div>
-            <div className="rounded-2xl border border-border border-t-2 border-amber-400 bg-card p-6 animate-fadeInUp delay-100 transition-all duration-300 hover:-translate-y-1 hover:border-amber-400 hover:shadow-md">
+            <div
+              className={`rounded-2xl border border-border border-t-2 border-amber-400 bg-card p-6 transition-[opacity,transform,box-shadow,border-color] duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-amber-400 hover:shadow-md ${
+                isTrustSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
               <span style={{ fontSize: '24px' }} className="mb-3 inline-block">🌍</span>
               <h3 className="text-lg font-semibold text-foreground">Wider Coverage</h3>
               <p className="mt-2 text-muted-foreground">Reach more destinations with dependable regional and cross-border operations.</p>
             </div>
-            <div className="rounded-2xl border border-border border-t-2 border-amber-400 bg-card p-6 animate-fadeInUp delay-200 transition-all duration-300 hover:-translate-y-1 hover:border-amber-400 hover:shadow-md">
+            <div
+              className={`rounded-2xl border border-border border-t-2 border-amber-400 bg-card p-6 transition-[opacity,transform,box-shadow,border-color] duration-700 delay-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-amber-400 hover:shadow-md ${
+                isTrustSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
               <span style={{ fontSize: '24px' }} className="mb-3 inline-block">🔒</span>
               <h3 className="text-lg font-semibold text-foreground">Trusted Delivery</h3>
               <p className="mt-2 text-muted-foreground">Operational standards and secure handling keep your business reputation strong.</p>

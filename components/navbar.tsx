@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { ChevronDown, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const navigation = [
@@ -22,7 +22,7 @@ const navigation = [
     ],
   },
   { name: 'Projects', href: '/projects' },
-  { name: 'Blogs & Insights', href: '#blogs' },
+  { name: 'Blogs & Insights', href: '/blog' },
   { name: 'Contact Us', href: '/contact' },
 ];
 
@@ -77,7 +77,14 @@ export function Navbar() {
           </div>
 
           {/* CTA Button */}
-          <div className="hidden lg:flex">
+          <div className="hidden lg:flex items-center gap-2">
+            <Link
+              href="/blog#blog-search"
+              aria-label="Search blog posts"
+              className="h-10 w-10 inline-flex items-center justify-center rounded-full border border-white/20 text-white hover:border-amber-400 hover:text-amber-400 transition-colors"
+            >
+              <Search className="w-4 h-4" />
+            </Link>
             <Button
               asChild
               className="bg-amber-400 hover:bg-amber-500 text-[#0F1923]"
