@@ -1,6 +1,9 @@
 export type BlogPost = {
   id: string;
   slug: string;
+  rawText?: string;
+  metaTitle?: string;
+  metaDescription?: string;
   title: string;
   excerpt: string;
   content: string[];
@@ -574,8 +577,171 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     tags: ['#B2B', '#Tracking', '#Compliance'],
   },
+  {
+    id: '10',
+    slug: 'uk-logistics-disruption-2026',
+    metaTitle:
+      'UK Logistics Disruption 2026 | Delays, Costs & Freight Challenges',
+    metaDescription:
+      'UK logistics disruption in 2026 driven by shipping delays, port congestion, and rising freight costs impacting global supply chains and freight operations.',
+    title:
+      'UK Logistics Disruption 2026: Delays, Rising Costs & Supply Chain Challenges Explained',
+    excerpt:
+      'UK logistics is experiencing structural disruption in 2026, with rising freight costs, shipping delays, and port congestion reshaping global supply chain performance.',
+    content: [
+      'Introduction: A System Under Structural Pressure',
+      'The logistics playbook is being rewritten.',
+      'What were once considered temporary disruptions — shipping delays, rising costs, and port congestion — have now become structural realities shaping global trade in 2026. For UK freight operators and supply chain leaders, uncertainty is no longer an exception. It is the operating environment.',
+      'From geopolitical instability to fuel volatility and capacity strain, the global logistics system is undergoing a fundamental transformation.',
+
+      'What Is Driving UK Logistics Disruption in 2026?',
+      'The current disruption is not caused by a single factor, but a combination of global pressures:',
+      'Ongoing geopolitical tensions impacting major shipping routes',
+      'Rerouting of vessels away from high-risk corridors',
+      'Fuel price volatility affecting transport costs',
+      'Increased insurance premiums and compliance requirements',
+      'Strain on global port infrastructure',
+      'These factors are reshaping how goods move into and out of the UK, increasing both cost and complexity.',
+
+      'Why Shipping Delays Are Increasing Globally',
+      'One of the most visible impacts of this disruption is extended transit time.',
+      'Shipping delays of 10 to 21 days are becoming increasingly common due to rerouting and capacity imbalances across global shipping networks. Alternative routes are longer, more congested, and less efficient than traditional corridors.',
+      'According to industry reporting, supply chain instability and rerouting pressures are significantly impacting global freight reliability.',
+      'Source: https://www.poundwholesale.co.uk/blog/politics-economics-business/uk-wholesale-supply-chain-update-2026-impact-of-middle-east-conflict-on-imports-pricing/',
+      'The result is a cascading effect:',
+      'Delayed shipments disrupt inventory cycles',
+      'Production schedules are thrown off balance',
+      'Retail availability becomes inconsistent',
+      'Customer expectations are increasingly difficult to meet',
+
+      'Port Congestion and Rerouting Challenges',
+      'As global trade routes shift, pressure is being redistributed across ports in Europe and the UK.',
+      'Ports are experiencing:',
+      'Higher vessel volumes due to rerouting',
+      'Irregular and unpredictable arrival schedules',
+      'Increased waiting times for unloading',
+      'Operational strain on infrastructure and workforce',
+      'This congestion is no longer seasonal or temporary — it is becoming a persistent structural challenge in global logistics.',
+      'Research shows that rerouting and shifting shipping flows are key contributors to rising congestion and inefficiencies in freight movement.',
+      'Source: https://air7seas.com/blog/how-the-2026-war-impacts-global-trade-shipping-disruptions-fixes-for-us-importers/',
+
+      'Rising Freight Costs and Fuel Volatility',
+      'The cost of moving goods is increasing across all transport modes.',
+      'Key drivers include:',
+      'Higher fuel prices due to global energy instability',
+      'Longer shipping routes increasing fuel consumption',
+      'Increased war-risk insurance premiums',
+      'Higher storage, handling, and demurrage costs',
+      'Recent analysis shows that geopolitical tensions have significantly impacted global fuel markets, increasing logistics operating costs across supply chains.',
+      'Source: https://towerlogistics.co.uk/iran-war-global-supply-chain-2026/',
+      'In the UK, manufacturers and importers are already feeling the impact, with input and transport costs rising sharply due to ongoing supply chain disruption.',
+      'Source: https://www.reuters.com/world/uk/uk-factories-see-biggest-month-on-month-jump-costs-since-1992-pmi-shows-2026-04-01/',
+
+      'The Growing Expectation Gap in Logistics',
+      'While logistics realities are changing rapidly, customer expectations remain largely unchanged.',
+      'Businesses still expect:',
+      'Fast delivery times',
+      'Predictable transit schedules',
+      'Stable pricing',
+      'However, the current environment makes these expectations increasingly difficult to meet. This has created a widening gap between expectation and operational reality.',
+      'For logistics providers, managing this gap now requires:',
+      'Clear communication',
+      'Transparent service levels',
+      'Realistic delivery forecasting',
+      'Stronger customer alignment',
+
+      'Industry Impact: Who Is Most Affected?',
+      'Retail & E-commerce',
+      'Retailers face stock shortages, delayed replenishment cycles, and rising last-mile delivery costs due to unstable import schedules.',
+      'Manufacturing',
+      'Production lines are increasingly vulnerable to delays in raw materials and components, forcing companies to build buffer inventory.',
+      'FMCG & Food Supply Chains',
+      'Perishable goods and packaging materials are particularly affected by transport delays and secondary shortages such as CO2 supply constraints.',
+      'Pharmaceuticals & Healthcare',
+      'Supply chains are under pressure from rising freight costs and regulatory constraints, impacting the movement of critical medicines.',
+      'Source: https://www.reuters.com/business/healthcare-pharmaceuticals/britain-medicine-supply-risk-if-middle-east-conflict-persists-trade-group-warns-2026-03-20/',
+
+      'From Efficiency to Resilience: The New Logistics Strategy',
+      'The traditional logistics model was built on efficiency — lean inventory, minimal buffer stock, and fast global movement.',
+      'That model is now being challenged.',
+      'Forward-thinking organizations are shifting toward:',
+      'Diversified supply chain networks',
+      'Increased inventory buffers',
+      'Real-time visibility and tracking systems',
+      'Stronger supplier collaboration models',
+      'The focus is moving from cost optimization to risk resilience.',
+
+      'What This Means for UK Freight Moving Forward',
+      'The UK remains highly exposed to global logistics disruption due to its reliance on international trade.',
+      'As global shipping routes remain unstable, businesses must:',
+      'Plan for longer lead times',
+      'Diversify sourcing and logistics partners',
+      'Build flexibility into supply chain operations',
+      'Strengthen risk management strategies',
+      'This is not a temporary phase — it represents a long-term structural shift in global freight dynamics.',
+
+      'Conclusion: Adapting to the New Logistics Reality',
+      'Delays, disruptions, and rising costs are no longer anomalies — they are the defining characteristics of modern logistics.',
+      'The companies that will succeed in this environment are not those waiting for stability to return, but those actively adapting to ongoing uncertainty.',
+      'At Clarusto Logistics, we believe that navigating this new landscape requires more than operational capability — it requires insight, agility, and strategic foresight.',
+
+      'Stay Ahead',
+      'For more insights on UK freight, global logistics trends, and supply chain strategy, follow Clarusto Logistics.',
+
+      'FAQs: UK Logistics Disruption 2026',
+      '1. What is causing UK logistics disruption in 2026?',
+      'UK logistics disruption in 2026 is being driven by a combination of geopolitical tensions, shipping route rerouting, fuel price volatility, and global port congestion. These factors are increasing transit times and operational costs across supply chains.',
+      '2. Why are shipping delays increasing globally?',
+      'Shipping delays are increasing due to longer alternative routes, restricted access to key trade corridors, and congestion at major ports. These factors are adding an estimated 10–21 days to transit times in many global freight lanes.',
+      '3. How is port congestion affecting UK freight?',
+      'Port congestion is causing longer vessel waiting times, slower unloading processes, and increased costs such as demurrage and detention. This is disrupting supply chain schedules and reducing overall logistics efficiency.',
+      '4. Why are freight costs rising in the UK?',
+      'Freight costs are rising due to higher fuel prices, longer shipping routes, increased insurance premiums, and additional handling charges caused by delays and rerouting of cargo.',
+      '5. Which industries are most affected by logistics disruption?',
+      'Retail, e-commerce, manufacturing, FMCG, and automotive sectors are among the most affected due to reliance on timely imports, just-in-time inventory systems, and global supplier networks.',
+      '6. Is UK logistics disruption temporary or long-term?',
+      'Current disruption trends indicate a structural shift rather than a temporary issue. Ongoing geopolitical instability and supply chain realignment suggest continued volatility in global logistics.',
+      '7. How can businesses manage supply chain disruption?',
+      'Businesses can manage disruption by diversifying suppliers, increasing inventory buffers, improving supply chain visibility, and working with logistics partners that offer flexible routing and contingency planning.',
+      '8. What is the future of UK logistics?',
+      'The future of UK logistics is shifting from efficiency-focused models to resilience-driven strategies. Companies are prioritizing flexibility, risk management, and real-time supply chain visibility.',
+    ],
+    date: 'Apr 17, 2026',
+    readTime: '7 min read',
+    category: 'Supply Chain & Logistics Insights',
+    image: 'https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg',
+    author: {
+      name: 'Editorial Desk',
+      avatar: 'https://i.pravatar.cc/120?img=60',
+    },
+    tags: [
+      'UK logistics disruption 2026',
+      'supply chain disruption UK',
+      'freight delays UK',
+      'shipping delays 2026',
+      'port congestion UK',
+      'rising freight costs UK',
+      'logistics industry trends',
+      'global supply chain disruption',
+      'UK freight forwarding',
+      'supply chain resilience',
+      'transport and logistics UK',
+      'international shipping delays',
+    ],
+  },
 ];
 
 export function getBlogBySlug(slug: string) {
   return BLOG_POSTS.find((post) => post.slug === slug);
+}
+
+function getPostTimestamp(date: string): number {
+  const parsed = Date.parse(date);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+export function getBlogsNewestFirst() {
+  return [...BLOG_POSTS].sort(
+    (a, b) => getPostTimestamp(b.date) - getPostTimestamp(a.date)
+  );
 }

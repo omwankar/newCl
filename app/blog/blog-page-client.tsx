@@ -18,7 +18,7 @@ import {
   Leaf,
   Globe,
 } from 'lucide-react';
-import { BLOG_POSTS } from '@/lib/blogs';
+import { BLOG_POSTS, getBlogsNewestFirst } from '@/lib/blogs';
 
 type BlogPageClientProps = {
   displayFontClass: string;
@@ -35,6 +35,7 @@ const CATEGORY_ITEMS = [
   { label: 'Industry News', icon: Newspaper, emoji: '📊' },
   { label: 'Tips & Guides', icon: Lightbulb, emoji: '💡' },
   { label: 'Sustainability', icon: Leaf, emoji: '🌱' },
+  { label: 'Supply Chain & Logistics Insights', icon: Newspaper, emoji: '📦' },
 ] as const;
 
 const categoryColors: Record<string, string> = {
@@ -46,6 +47,7 @@ const categoryColors: Record<string, string> = {
   'Industry News': 'bg-emerald-100 text-emerald-700',
   'Tips & Guides': 'bg-amber-100 text-amber-700',
   Sustainability: 'bg-green-100 text-green-700',
+  'Supply Chain & Logistics Insights': 'bg-slate-100 text-slate-700',
 };
 
 const heroTitleWords = 'Insights That Move Your Business Forward'.split(' ');
@@ -55,6 +57,8 @@ export function BlogPageClient({
   displayFontClass,
   bodyFontClass,
 }: BlogPageClientProps) {
+  const sortedPosts = useMemo(() => getBlogsNewestFirst(), []);
+  const [featuredIndex, setFeaturedIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState<string>('All Posts');
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [query, setQuery] = useState('');
@@ -82,19 +86,23 @@ export function BlogPageClient({
     setVisibleCount(PAGE_SIZE);
   }, [activeCategory, activeTag, query]);
 
+  useEffect(() => {
+    setFeaturedIndex(0);
+  }, [activeCategory, activeTag, query]);
+
   const tagCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    for (const post of BLOG_POSTS) {
+    for (const post of sortedPosts) {
       for (const tag of post.tags) {
         counts[tag] = (counts[tag] ?? 0) + 1;
       }
     }
     return counts;
-  }, []);
+  }, [sortedPosts]);
 
   const filteredPosts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
-    return BLOG_POSTS.filter((post) => {
+    return sortedPosts.filter((post) => {
       const categoryMatch =
         activeCategory === 'All Posts' || post.category === activeCategory;
       const tagMatch = !activeTag || post.tags.includes(activeTag);
@@ -107,32 +115,48 @@ export function BlogPageClient({
 
       return categoryMatch && tagMatch && searchMatch;
     });
-  }, [activeCategory, activeTag, query]);
+  }, [activeCategory, activeTag, query, sortedPosts]);
 
-  const featuredPost = useMemo(() => {
-    const fromFiltered = filteredPosts.find((post) => post.featured);
-    return fromFiltered ?? filteredPosts[0] ?? BLOG_POSTS[0];
-  }, [filteredPosts]);
+  const featuredCandidates = useMemo(() => {
+    const candidates = filteredPosts.length > 0 ? filteredPosts : sortedPosts;
+    const featured = candidates.find((post) => post.featured);
+    if (!featured) return candidates;
+    return [featured, ...candidates.filter((post) => post.id !== featured.id)];
+  }, [filteredPosts, sortedPosts]);
+
+  useEffect(() => {
+    if (featuredCandidates.length <= 1) return;
+    const interval = window.setInterval(() => {
+      setFeaturedIndex((prev) => (prev + 1) % featuredCandidates.length);
+    }, 5000);
+    return () => window.clearInterval(interval);
+  }, [featuredCandidates]);
+
+  const featuredPost =
+    featuredCandidates[featuredIndex % Math.max(featuredCandidates.length, 1)];
 
   const remainingPosts = useMemo(
-    () => filteredPosts.filter((post) => post.id !== featuredPost.id),
-    [featuredPost.id, filteredPosts]
+    () =>
+      filteredPosts.filter((post) =>
+        featuredPost ? post.id !== featuredPost.id : true
+      ),
+    [featuredPost, filteredPosts]
   );
 
   const visiblePosts = remainingPosts.slice(0, visibleCount);
   const hasMorePosts = visibleCount < remainingPosts.length;
-  const popularPosts = BLOG_POSTS.slice(0, 4);
+  const popularPosts = sortedPosts.slice(0, 4);
 
   const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { 'All Posts': BLOG_POSTS.length };
+    const counts: Record<string, number> = { 'All Posts': sortedPosts.length };
     for (const category of CATEGORY_ITEMS) {
       if (category.label === 'All Posts') continue;
-      counts[category.label] = BLOG_POSTS.filter(
+      counts[category.label] = sortedPosts.filter(
         (post) => post.category === category.label
       ).length;
     }
     return counts;
-  }, []);
+  }, [sortedPosts]);
 
   const resetFilters = () => {
     setActiveCategory('All Posts');

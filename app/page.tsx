@@ -10,7 +10,7 @@ import { PromiseSection } from '@/components/promise-section';
 import { StatsSection } from '@/components/stats-section';
 import { ServicePartners } from '@/components/service-partners';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
-import { BLOG_POSTS } from '@/lib/blogs';
+import { getBlogsNewestFirst } from '@/lib/blogs';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ReactNode } from 'react';
@@ -58,7 +58,7 @@ export default function Home() {
     { name: "Ma'aden (Saudi Arabian Mining Company)", logo: 'https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/072024/maaden.jpg?EbMm2gvNQB6Ub6S7INhZ1TTNWR5WFAPH&itok=yZWsuAyF' },
   ];
 
-  const featuredArticles = BLOG_POSTS.slice(0, 3);
+  const featuredArticles = getBlogsNewestFirst().slice(0, 3);
 
   const expertise = [
     { number: '2,000+', label: 'Integrated Supply Chain Expertise', features: ['Customized supply chain management', 'Freight forwarding solutions', 'Warehousing & distribution'] },
