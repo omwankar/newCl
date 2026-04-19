@@ -66,8 +66,8 @@ export default function ContactPage() {
       />
 
       {/* Contact Section */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mobile-section-y bg-background md:py-24">
+        <div className="app-container">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Contact Form */}
             <div className="lg:col-span-2">
@@ -94,14 +94,24 @@ export default function ContactPage() {
                     <Phone className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground">Phone</p>
-                      <p className="text-muted-foreground text-sm">+44 (0) 3300946908</p>
+                      <a
+                        href="tel:+443300946908"
+                        className="text-muted-foreground text-sm underline-offset-2 hover:underline"
+                      >
+                        +44 (0) 3300946908
+                      </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Mail className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground">Email</p>
-                      <p className="text-muted-foreground text-sm">info@clarustologistics.com</p>
+                      <a
+                        href="mailto:info@clarustologistics.com"
+                        className="text-muted-foreground text-sm underline-offset-2 hover:underline"
+                      >
+                        info@clarustologistics.com
+                      </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -131,8 +141,8 @@ export default function ContactPage() {
       </section>
 
       {/* Global Offices */}
-      <section className="py-16 md:py-24 bg-secondary/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mobile-section-y bg-secondary/10 md:py-24">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4 text-balance">
               Global Offices
@@ -180,8 +190,8 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mobile-section-y bg-background md:py-24">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4 text-balance">
               Clarusto in Action
@@ -208,8 +218,8 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mobile-section-y bg-background md:py-24">
+        <div className="app-container">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4 text-balance">
               Need More Information?
@@ -217,14 +227,23 @@ export default function ContactPage() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Visit our projects and services pages to review capability scope, sectors served, and operational strengths.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-5 text-sm font-medium">
-              <Link href="/services" className="text-amber-500 hover:text-amber-600">
+            <div className="flex flex-col items-stretch justify-center gap-3 text-sm font-medium sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
+              <Link
+                href="/services"
+                className="inline-flex min-h-12 items-center justify-center rounded-md px-4 py-2 text-amber-500 hover:text-amber-600 active:text-amber-700 sm:inline"
+              >
                 Explore Services
               </Link>
-              <Link href="/services/supply-chain" className="text-amber-500 hover:text-amber-600">
+              <Link
+                href="/services/supply-chain"
+                className="inline-flex min-h-12 items-center justify-center rounded-md px-4 py-2 text-amber-500 hover:text-amber-600 active:text-amber-700 sm:inline"
+              >
                 Supply Chain Management
               </Link>
-              <Link href="/about" className="text-amber-500 hover:text-amber-600">
+              <Link
+                href="/about"
+                className="inline-flex min-h-12 items-center justify-center rounded-md px-4 py-2 text-amber-500 hover:text-amber-600 active:text-amber-700 sm:inline"
+              >
                 Learn About Clarusto
               </Link>
             </div>

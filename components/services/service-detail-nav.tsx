@@ -4,29 +4,30 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
+
 const NAV_LINKS = [
-  { href: '/', label: 'Home', short: 'Home' },
-  { href: '/services/air-freight', label: 'Air Freight', short: 'Air' },
-  { href: '/services/sea-freight', label: 'Sea Freight', short: 'Sea' },
-  { href: '/services/land-transport', label: 'Land Transport', short: 'Land' },
-  { href: '/services/warehousing', label: 'Warehousing', short: 'WH' },
-  { href: '/services/supply-chain', label: 'Supply Chain', short: 'SCM' },
-  { href: '/services/customs-clearance', label: 'Customs', short: 'Customs' },
-  { href: '/services', label: 'All Services', short: 'All' },
+  { href: '/', label: 'Home' },
+  { href: '/services/air-freight', label: 'Air Freight' },
+  { href: '/services/sea-freight', label: 'Sea Freight' },
+  { href: '/services/land-transport', label: 'Land Transport' },
+  { href: '/services/warehousing', label: 'Warehousing' },
+  { href: '/services/supply-chain', label: 'Supply Chain' },
+  { href: '/services/customs-clearance', label: 'Customs' },
+  { href: '/services', label: 'All Services' },
 ] as const;
 
 function NavLink({ href, label, active }: { href: string; label: string; active: boolean }) {
   return (
     <Link
       href={href}
-      className="group relative px-1 py-2 text-sm font-medium text-[#f0f0f0]/90 transition-colors hover:text-[#f5a623]"
+      className="group relative flex min-h-11 cursor-pointer touch-manipulation items-center px-1 py-2 text-sm font-medium text-[#f0f0f0]/90 transition-colors hover:text-[#f5a623] active:text-[#f5a623]"
     >
       <span className="relative z-10">{label}</span>
       {active ? (
-        <span className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full bg-[#f5a623]" aria-hidden />
+        <span className="pointer-events-none absolute bottom-1 left-0 h-[2px] w-full bg-[#f5a623]" aria-hidden />
       ) : (
         <span
-          className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 bg-[#f5a623] transition-transform duration-300 ease-out group-hover:scale-x-100"
+          className="pointer-events-none absolute bottom-1 left-0 h-[2px] w-full origin-left scale-x-0 bg-[#f5a623] transition-transform duration-300 ease-out group-hover:scale-x-100 group-active:scale-x-75"
           aria-hidden
         />
       )}
@@ -43,6 +44,17 @@ export function ServiceDetailNav() {
   }, [pathname]);
 
   useEffect(() => {
+    if (!open) {
+      document.body.style.overflow = '';
+      return;
+    }
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
+  useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
@@ -52,13 +64,20 @@ export function ServiceDetailNav() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/95 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="sd-heading shrink-0 text-xl tracking-wide text-[#f0f0f0] sm:text-2xl">
+    <header
+      data-app-nav
+      className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/95 max-md:backdrop-blur-none md:backdrop-blur-md"
+    >
+      <div className="app-container flex h-14 max-h-14 items-center justify-between gap-3 md:h-16 md:max-h-none">
+        <Link
+          href="/"
+          className="sd-heading min-h-11 shrink-0 touch-manipulation text-lg tracking-wide text-[#f0f0f0] sm:text-xl md:text-2xl"
+          onClick={() => setOpen(false)}
+        >
           Clarusto<span className="text-[#f5a623]">.</span>
         </Link>
 
-        <nav className="hidden items-center gap-5 lg:flex xl:gap-6" aria-label="Main">
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-5" aria-label="Main">
           {NAV_LINKS.map((item) => (
             <NavLink
               key={item.href}
@@ -76,48 +95,56 @@ export function ServiceDetailNav() {
 
         <Link
           href="/contact"
-          className="sd-heading hidden rounded-sm bg-[#f5a623] px-4 py-2 text-sm tracking-wide text-[#0a0a0a] transition-opacity hover:opacity-90 lg:inline-flex"
+          className="sd-heading hidden min-h-11 cursor-pointer touch-manipulation items-center rounded-sm bg-[#f5a623] px-4 py-2 text-sm tracking-wide text-[#0a0a0a] transition-opacity hover:opacity-90 active:opacity-100 lg:inline-flex"
         >
           Get a Quote
         </Link>
 
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-md border border-white/15 p-2 text-[#f0f0f0] lg:hidden"
+          className="inline-flex min-h-11 min-w-11 cursor-pointer touch-manipulation items-center justify-center rounded-md border border-white/15 p-2 text-[#f0f0f0] hover:bg-white/5 active:bg-white/10 lg:hidden"
           aria-expanded={open}
           aria-controls="sd-mobile-nav"
+          aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          <span className="sr-only">Menu</span>
         </button>
       </div>
 
       {open && (
-        <div
-          id="sd-mobile-nav"
-          className="border-t border-white/10 bg-[#0a0a0a] px-4 py-4 lg:hidden"
-        >
-          <div className="flex flex-col gap-1">
-            {NAV_LINKS.map((item) => (
+        <>
+          <button
+            type="button"
+            className="fixed inset-0 z-40 cursor-pointer bg-black/50 touch-manipulation lg:hidden"
+            aria-label="Close menu"
+            onClick={() => setOpen(false)}
+          />
+          <div
+            id="sd-mobile-nav"
+            className="fixed left-0 right-0 top-14 z-40 max-h-[calc(100dvh-3.5rem)] overflow-y-auto overscroll-contain touch-scroll border-t border-white/10 bg-[#0a0a0a] pb-[max(1rem,env(safe-area-inset-bottom))] lg:hidden"
+          >
+            <div className="flex flex-col px-2 py-2">
+              {NAV_LINKS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="min-h-12 cursor-pointer px-3 py-3 text-base text-[#f0f0f0] active:bg-[#161616]"
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
               <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-md px-3 py-3 text-base text-[#f0f0f0] hover:bg-[#161616] hover:text-[#f5a623]"
+                href="/contact"
+                className="sd-heading mx-2 mt-2 flex min-h-12 cursor-pointer items-center justify-center rounded-sm bg-[#f5a623] px-3 py-3 text-center text-[#0a0a0a]"
                 onClick={() => setOpen(false)}
               >
-                {item.label}
+                Get a Quote
               </Link>
-            ))}
-            <Link
-              href="/contact"
-              className="sd-heading mt-2 rounded-sm bg-[#f5a623] px-3 py-3 text-center text-[#0a0a0a]"
-              onClick={() => setOpen(false)}
-            >
-              Get a Quote
-            </Link>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

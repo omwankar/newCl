@@ -129,8 +129,118 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-background text-foreground;
+    overflow-x: clip;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  @media (max-width: 767px) {
+    body {
+      line-height: 1.6;
+    }
+  }
+
+  :where(button, [role='button'], summary) {
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+
+  :where(a[href]) {
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+
+  :where(
+      h1:not([class*='text-']),
+      h2:not([class*='text-']),
+      h3:not([class*='text-'])
+    ) {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    line-height: 1.2;
+  }
+
+  :where(p:not([class*='text-']), li:not([class*='text-'])) {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  }
+}
+
+/* Max-width layout shell: full-bleed on small screens, 1200px cap on desktop */
+@layer utilities {
+  .app-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  @media (min-width: 768px) {
+    .app-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .app-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .text-heading-fluid {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    line-height: 1.15;
+  }
+
+  .text-body-fluid {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 767px) {
+    .mobile-section-y {
+      padding-top: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .mobile-card-pad {
+      padding: 1rem;
+    }
+
+    .mobile-radius {
+      border-radius: 0.75rem;
+    }
+
+    .mobile-shadow-soft {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .mobile-backdrop-none {
+      backdrop-filter: none !important;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  nav[data-app-nav] {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -383,6 +493,10 @@
 
   .home-reveal-trust-card[data-visible='true']:hover {
     transform: translateY(-4px);
+  }
+
+  .home-reveal-trust-card[data-visible='true']:active {
+    transform: translateY(-2px);
   }
 
   .home-dash-anim {

@@ -8,7 +8,7 @@ export function PromiseSection() {
 
   return (
     <section className="py-24 bg-background" ref={ref}>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="app-container max-w-4xl text-center">
         <Heart className={`w-12 h-12 text-amber-500 mx-auto mb-6 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} />
         <h2 className={`text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-6 ${isVisible ? 'animate-slide-up delay-100' : 'opacity-0'}`}>
           Every Shipment Carries More Than{' '}

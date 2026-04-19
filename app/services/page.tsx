@@ -31,7 +31,7 @@ export default function ServicesPage() {
 
       {/* Services Grid */}
       <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
               Our Service Portfolio
@@ -56,7 +56,7 @@ export default function ServicesPage() {
 
       {/* Infrastructure & Capabilities */}
       <section className="py-16 md:py-24 bg-secondary/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
               Infrastructure & Capabilities
@@ -108,7 +108,7 @@ export default function ServicesPage() {
 
       {/* Industries We Serve */}
       <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
               Industries We Serve

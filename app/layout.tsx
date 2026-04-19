@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { OrganizationJsonLd } from '@/components/organization-json-ld'
@@ -7,6 +7,17 @@ import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"], display: 'swap' });
 const _geistMono = Geist_Mono({ subsets: ["latin"], display: 'swap' });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#F8F6F1' },
+    { media: '(prefers-color-scheme: dark)', color: '#0F1923' },
+  ],
+  colorScheme: 'light dark',
+}
 
 // Example homepage usage of reusable SEO function.
 export const metadata: Metadata = {
@@ -27,6 +38,19 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/apple-icon.png',
   },
+  appleWebApp: {
+    capable: true,
+    title: 'Clarusto Logistics',
+    statusBarStyle: 'default',
+  },
+  formatDetection: {
+    telephone: true,
+    email: true,
+    address: true,
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
 }
 
 export default function RootLayout({
@@ -35,8 +59,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth overflow-x-clip" suppressHydrationWarning>
+      <body className="font-sans antialiased bg-background text-foreground min-h-[100dvh] overflow-x-clip text-base leading-relaxed md:leading-normal" suppressHydrationWarning>
         <OrganizationJsonLd />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

@@ -34,7 +34,7 @@ export function EnhancedHero() {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8 pt-24">
+      <div className="app-container relative z-10 max-w-[1200px] pt-20 md:pt-24">
         <div className="max-w-3xl">
           <span className="inline-block px-4 py-1.5 rounded-full bg-amber-400/20 text-amber-500 text-sm font-medium mb-6 animate-slide-up backdrop-blur-sm border border-amber-400/30">
             Global Logistics Solutions

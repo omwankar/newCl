@@ -43,7 +43,7 @@ const articles: Article[] = [
 export function ArticlesSection() {
   return (
     <section className="py-16 md:py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="app-container">
         <div className="mb-12 animate-fadeInUp">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">
             See Latest Articles From Our Company

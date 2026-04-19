@@ -98,7 +98,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <article className="bg-[#F5F5F0]">
         <BlogHero post={{ ...post, title: parsed.title, excerpt: post.excerpt }} />
         <section className="pt-28 pb-12 md:pb-16">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10">
+          <div className="app-container max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10">
             <div className="space-y-6">
               {parsed.sections.map((section, index) => (
                 <BlogSection key={`${section.heading}-${index}`} section={section} />

@@ -21,7 +21,7 @@ export function StatsSection() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 section-dark" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="app-container relative z-10">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-16 text-white">
           Expertise in Our{' '}
           <span className="text-amber-500">Services</span>

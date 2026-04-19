@@ -49,7 +49,7 @@ export default function AboutPage() {
 
       {/* Mission & Vision */}
       <section className="py-16 md:py-24 bg-[#F8F6F1]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <Reveal className="bg-white rounded-2xl p-8 border-t-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 mb-5">
@@ -76,7 +76,7 @@ export default function AboutPage() {
 
       {/* Key Highlights */}
       <section className="py-14 bg-[#0F1923] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: Award, number: '30+', label: 'Years of Excellence', sub: 'Est. 1992 in Saudi Arabia' },
@@ -106,7 +106,7 @@ export default function AboutPage() {
       <HistoryTimeline events={TIMELINE_EVENTS} />
 
       <section className="py-16 md:py-20 bg-[#F8F6F1]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <Reveal className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#0F1923] mb-3">Why Choose Clarusto?</h2>
             <p className="text-gray-500 text-lg">Over 30 years of trust, expertise & global reach</p>
@@ -132,7 +132,7 @@ export default function AboutPage() {
 
       {/* Values Section */}
       <section className="py-16 md:py-24 bg-[#F8F6F1]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <Reveal className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
               Our Core Values
@@ -183,7 +183,7 @@ export default function AboutPage() {
       </section>
 
       <section className="py-16 bg-[#0F1923] text-white">
-        <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <Reveal className="app-container text-center">
           <h2 className="text-3xl font-bold mb-3">Our Certifications</h2>
           <p className="text-white/60 mb-10">Globally recognised standards that back our commitment to quality</p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -197,7 +197,7 @@ export default function AboutPage() {
       </section>
 
       <section className="py-16 bg-[#F8F6F1]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <Reveal className="text-center mb-10">
             <h2 className="text-3xl font-bold text-[#0F1923] mb-2">Our Global Offices</h2>
             <div className="h-1 w-16 bg-amber-400 mx-auto"></div>

@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { ChevronDown, Menu, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -27,131 +28,179 @@ const navigation = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
+  useEffect(() => {
+    setIsOpen(false);
+    setOpenSubmenu(null);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   return (
-    <nav className="sticky top-0 z-50 bg-[#0F1923]/95 backdrop-blur-sm border-b border-border shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/clarusto-logo-light.png"
-              alt="Clarusto Logistics"
-              width={164}
-              height={45}
-              className="h-9 w-auto"
-              priority
-            />
-          </Link>
+    <nav
+      data-app-nav
+      className="sticky top-0 z-50 border-b border-border bg-[#0F1923]/95 shadow-sm max-md:backdrop-blur-none md:backdrop-blur-sm"
+    >
+      <div className="app-container flex h-14 max-h-14 min-h-14 items-center justify-between md:h-16 md:max-h-none md:min-h-0">
+        <Link
+          href="/"
+          className="flex min-h-11 min-w-0 shrink-0 touch-manipulation items-center gap-2 py-1"
+          onClick={() => setIsOpen(false)}
+        >
+          <Image
+            src="/clarusto-logo-light.png"
+            alt="Clarusto Logistics"
+            width={164}
+            height={45}
+            className="h-8 w-auto max-w-[min(164px,45vw)] md:h-9"
+            priority
+          />
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navigation.map((item) => (
-              <div key={item.name} className="relative group">
-                <Link
-                  href={item.href}
-                  className="px-3 py-2 text-sm font-medium text-white hover:text-amber-500 transition-colors flex items-center gap-1"
-                >
-                  {item.name}
-                  {'submenu' in item && <ChevronDown className="w-4 h-4" />}
-                </Link>
+        <div className="hidden items-center gap-1 lg:flex">
+          {navigation.map((item) => (
+            <div key={item.name} className="relative group">
+              <Link
+                href={item.href}
+                className="flex min-h-11 cursor-pointer touch-manipulation items-center gap-1 px-3 py-2 text-sm font-medium text-white transition-colors hover:text-amber-500 active:text-amber-400"
+              >
+                {item.name}
+                {'submenu' in item && <ChevronDown className="h-4 w-4" />}
+              </Link>
 
-                {/* Submenu */}
-                {'submenu' in item && item.submenu && (
-                  <div className="absolute left-0 mt-0 w-48 bg-white border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                    {item.submenu.map((subitem) => (
-                      <Link
-                        key={subitem.name}
-                        href={subitem.href}
-                        className="block px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-secondary-foreground first:rounded-t-lg last:rounded-b-lg transition-colors"
-                      >
-                        {subitem.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <div className="hidden lg:flex items-center gap-2">
-            <Link
-              href="/blog#blog-search"
-              aria-label="Search blog posts"
-              className="h-10 w-10 inline-flex items-center justify-center rounded-full border border-white/20 text-white hover:border-amber-400 hover:text-amber-400 transition-colors"
-            >
-              <Search className="w-4 h-4" />
-            </Link>
-            <Button
-              asChild
-              className="bg-amber-400 hover:bg-amber-500 text-[#0F1923]"
-            >
-              <Link href="/contact">Get a Quote</Link>
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-muted"
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+              {'submenu' in item && item.submenu && (
+                <div className="invisible absolute left-0 mt-0 w-48 rounded-lg border border-border bg-white opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                  {item.submenu.map((subitem) => (
+                    <Link
+                      key={subitem.name}
+                      href={subitem.href}
+                      className="block min-h-12 cursor-pointer px-4 py-3 text-sm text-foreground first:rounded-t-lg last:rounded-b-lg transition-colors hover:bg-secondary hover:text-secondary-foreground active:bg-secondary/90"
+                    >
+                      {subitem.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="lg:hidden pb-4">
-            {navigation.map((item) => (
-              <div key={item.name}>
-                <button
-                  onClick={() =>
-                    setOpenSubmenu(openSubmenu === item.name ? null : item.name)
-                  }
-                  className="w-full text-left px-3 py-2 text-sm font-medium text-foreground hover:text-amber-500 transition-colors flex items-center justify-between"
-                >
-                  {item.name}
-                  {'submenu' in item && (
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform ${
-                        openSubmenu === item.name ? 'rotate-180' : ''
-                      }`}
-                    />
-                  )}
-                </button>
+        <div className="hidden items-center gap-2 lg:flex">
+          <Link
+            href="/blog#blog-search"
+            aria-label="Search blog posts"
+            className="inline-flex h-11 min-h-11 w-11 min-w-11 cursor-pointer touch-manipulation items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-amber-400 hover:text-amber-400 active:border-amber-500"
+          >
+            <Search className="h-4 w-4" />
+          </Link>
+          <Button asChild className="bg-amber-400 hover:bg-amber-500 text-[#0F1923]">
+            <Link href="/contact">Get a Quote</Link>
+          </Button>
+        </div>
 
-                {/* Mobile Submenu */}
-                {'submenu' in item &&
-                  item.submenu &&
-                  openSubmenu === item.name && (
-                    <div className="bg-muted">
-                      {item.submenu.map((subitem) => (
-                        <Link
-                          key={subitem.name}
-                          href={subitem.href}
-                          className="block px-6 py-2 text-sm text-foreground hover:text-amber-500 transition-colors"
-                        >
-                          {subitem.name}
-                        </Link>
-                      ))}
-                    </div>
+        <button
+          type="button"
+          onClick={() => setIsOpen((o) => !o)}
+          className="inline-flex min-h-11 min-w-11 cursor-pointer touch-manipulation items-center justify-center rounded-lg border border-white/10 p-2 text-white hover:bg-white/10 active:bg-white/15 lg:hidden"
+          aria-expanded={isOpen}
+          aria-controls="mobile-nav-panel"
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+        >
+          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
+
+      {isOpen && (
+        <>
+          <button
+            type="button"
+            className="fixed inset-0 z-40 cursor-pointer bg-black/50 touch-manipulation lg:hidden"
+            aria-label="Close menu"
+            onClick={() => setIsOpen(false)}
+          />
+          <div
+            id="mobile-nav-panel"
+            className="fixed left-0 right-0 top-14 z-40 max-h-[calc(100dvh-3.5rem)] overflow-y-auto overscroll-contain touch-scroll border-t border-white/10 bg-[#0F1923] pb-[max(1rem,env(safe-area-inset-bottom))] lg:hidden"
+          >
+            <div className="flex flex-col px-2 py-2">
+              {navigation.map((item) => (
+                <div key={item.name} className="border-b border-white/10 last:border-b-0">
+                  {'submenu' in item && item.submenu ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenSubmenu(openSubmenu === item.name ? null : item.name)
+                        }
+                        className="flex min-h-12 w-full touch-manipulation items-center justify-between px-3 py-3 text-left text-base font-medium text-[#f0f0f0]"
+                      >
+                        {item.name}
+                        <ChevronDown
+                          className={`h-4 w-4 shrink-0 transition-transform ${
+                            openSubmenu === item.name ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                      {openSubmenu === item.name && (
+                        <div className="border-t border-white/5 bg-black/20">
+                          {item.submenu.map((subitem) => (
+                            <Link
+                              key={subitem.name}
+                              href={subitem.href}
+                              className="block min-h-12 cursor-pointer px-5 py-3 text-sm text-[#f0f0f0] active:bg-white/10"
+                              onClick={() => setIsOpen(false)}
+                            >
+                              {subitem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="flex min-h-12 cursor-pointer items-center px-3 py-3 text-base font-medium text-[#f0f0f0] active:bg-white/10"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
                   )}
+                </div>
+              ))}
+              <div className="mt-3 px-2 pb-2">
+                <Button
+                  asChild
+                  className="h-12 w-full bg-amber-400 text-base text-[#0F1923] hover:bg-amber-500"
+                >
+                  <Link href="/contact" onClick={() => setIsOpen(false)}>
+                    Get a Quote
+                  </Link>
+                </Button>
+                <Link
+                  href="/blog#blog-search"
+                  className="mt-2 flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/20 text-sm text-[#f0f0f0]"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Search className="h-4 w-4" />
+                  Search blog
+                </Link>
               </div>
-            ))}
-            <div className="px-3 py-2 pt-4 border-t border-border">
-              <Button
-                asChild
-                className="w-full bg-amber-400 hover:bg-amber-500 text-[#0F1923]"
-              >
-                <Link href="/contact">Get a Quote</Link>
-              </Button>
             </div>
           </div>
-        )}
-      </div>
+        </>
+      )}
     </nav>
   );
 }

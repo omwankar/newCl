@@ -9,7 +9,7 @@ export default function SupplyChainManagementPage() {
       <Navbar />
       <main>
         <section className="bg-[#0F1923] py-20 text-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="app-container">
             <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
               Supply Chain Management
             </h1>
@@ -29,7 +29,7 @@ export default function SupplyChainManagementPage() {
         </section>
 
         <section className="bg-background py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="app-container">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               What We Manage
             </h2>

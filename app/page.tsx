@@ -189,7 +189,7 @@ export default function Home() {
 
       {/* SHOWCASE — Bento */}
       <section className="relative py-12 md:py-16 bg-[#0F1923] text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <Reveal>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400/90">Capabilities</p>
@@ -239,7 +239,7 @@ export default function Home() {
 
       {/* PARTNERS — marquee */}
       <section className="py-16 md:py-24 bg-background overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <Reveal className="mb-10 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-500">Partners</p>
             <h2 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-foreground">Trusted by Industry Leaders</h2>
@@ -313,7 +313,7 @@ export default function Home() {
         ref={expertiseRef}
         className="py-16 md:py-24 bg-[#0F1923] text-primary-foreground border-t-4 border-amber-400"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <Reveal>
             <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-amber-400/90">Expertise</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center mt-2">
@@ -335,7 +335,7 @@ export default function Home() {
 
       {/* BLOGS */}
       <section className="py-16 md:py-24 bg-background" id="blogs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <Reveal>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-500">Insights</p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-2 text-foreground mt-2">
@@ -394,7 +394,7 @@ export default function Home() {
       {/* CTA — split navy */}
       <section className="relative border-t-4 border-amber-400 bg-[#0F1923] py-16 md:py-20 text-white overflow-hidden">
         <div className="pointer-events-none absolute right-0 top-1/2 h-[420px] w-[420px] -translate-y-1/2 translate-x-1/4 rounded-full bg-amber-400 opacity-10 motion-reduce:opacity-0" />
-        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+        <div className="app-container relative z-10 grid max-w-[1200px] grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-2">
           <Reveal>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400/90">Next step</p>
             <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight">Ready to Transform Your Logistics?</h2>
@@ -431,7 +431,7 @@ export default function Home() {
         ref={trustSectionRef}
         className="py-12 md:py-16 bg-gradient-to-b from-background to-muted/40 overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="grid lg:grid-cols-2 gap-10 xl:gap-14 items-start">
             <Reveal>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-500">Trust</p>

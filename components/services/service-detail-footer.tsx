@@ -11,9 +11,9 @@ const FOOTER_SERVICES = [
 
 export function ServiceDetailFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#0a0a0a] py-14 text-[#a0a0a0]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="border-t border-white/10 bg-[#0a0a0a] py-10 text-[#a0a0a0] md:py-14">
+      <div className="app-container">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-10 lg:grid-cols-4">
           <div>
             <p className="sd-heading text-2xl tracking-wide text-[#f0f0f0]">
               Clarusto Logistics
@@ -27,7 +27,10 @@ export function ServiceDetailFooter() {
             <ul className="mt-4 space-y-2 text-sm">
               {FOOTER_SERVICES.map((s) => (
                 <li key={s.href}>
-                  <Link href={s.href} className="hover:text-[#f5a623]">
+                  <Link
+                    href={s.href}
+                    className="inline-flex min-h-11 cursor-pointer touch-manipulation items-center py-1 hover:text-[#f5a623] active:text-[#f5a623]"
+                  >
                     {s.label}
                   </Link>
                 </li>
@@ -38,22 +41,22 @@ export function ServiceDetailFooter() {
             <p className="sd-heading text-sm tracking-widest text-[#f5a623]">Company</p>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <Link href="/" className="hover:text-[#f5a623]">
+                <Link href="/" className="inline-flex min-h-11 cursor-pointer touch-manipulation items-center py-1 hover:text-[#f5a623] active:text-[#f5a623]">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-[#f5a623]">
+                <Link href="/services" className="inline-flex min-h-11 cursor-pointer touch-manipulation items-center py-1 hover:text-[#f5a623] active:text-[#f5a623]">
                   All services
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#f5a623]">
+                <Link href="/about" className="inline-flex min-h-11 cursor-pointer touch-manipulation items-center py-1 hover:text-[#f5a623] active:text-[#f5a623]">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[#f5a623]">
+                <Link href="/contact" className="inline-flex min-h-11 cursor-pointer touch-manipulation items-center py-1 hover:text-[#f5a623] active:text-[#f5a623]">
                   Contact
                 </Link>
               </li>
@@ -66,7 +69,7 @@ export function ServiceDetailFooter() {
             </p>
             <Link
               href="/contact"
-              className="sd-heading mt-4 inline-block rounded-sm border border-[#f5a623] px-4 py-2 text-sm tracking-wide text-[#f5a623] hover:bg-[#f5a623] hover:text-[#0a0a0a]"
+              className="sd-heading mt-4 inline-flex min-h-12 cursor-pointer touch-manipulation items-center justify-center rounded-sm border border-[#f5a623] px-4 py-3 text-sm tracking-wide text-[#f5a623] hover:bg-[#f5a623] hover:text-[#0a0a0a] active:opacity-90"
             >
               Contact us
             </Link>

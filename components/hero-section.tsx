@@ -32,7 +32,7 @@ export function HeroSection({
       }}
     >
       <div
-        className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center ${
+        className={`app-container h-full flex flex-col justify-center ${
           isCompact ? 'py-16' : 'py-20'
         }`}
       >

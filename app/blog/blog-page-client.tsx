@@ -170,7 +170,7 @@ export function BlogPageClient({
       id="blog-search"
     >
       <section className="bg-[#0A1628] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+        <div className="app-container pt-14 pb-10">
           <p className="uppercase tracking-[0.18em] text-xs text-orange-300 font-semibold">
             Freight Intelligence Journal
           </p>
@@ -204,16 +204,17 @@ export function BlogPageClient({
               <input
                 aria-label="Search blog posts"
                 type="search"
+                enterKeyHint="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search articles, categories, or tags..."
-                className="h-12 w-full rounded-full border border-white/20 bg-white/10 pl-11 pr-4 text-sm placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-[#FF5C00]"
+                className="min-h-12 h-12 w-full touch-manipulation rounded-full border border-white/20 bg-white/10 pl-11 pr-4 text-base placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-[#FF5C00]"
               />
             </label>
             <button
               type="button"
               onClick={resetFilters}
-              className="h-12 rounded-full border border-white/20 px-6 text-sm font-semibold hover:border-[#FF5C00] hover:text-[#FF5C00] transition-colors"
+              className="min-h-12 h-12 touch-manipulation rounded-full border border-white/20 px-6 text-sm font-semibold hover:border-[#FF5C00] hover:text-[#FF5C00] active:border-[#FF5C00] active:text-[#FF5C00] transition-colors"
               aria-label="Reset all filters"
             >
               Reset Filters
@@ -222,8 +223,8 @@ export function BlogPageClient({
         </div>
       </section>
 
-      <section className="sticky top-16 z-30 border-y border-slate-200 bg-[#F5F5F0]/95 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <section className="sticky top-14 z-30 border-y border-slate-200 bg-[#F5F5F0]/95 max-md:backdrop-blur-none md:backdrop-blur">
+        <div className="app-container py-3">
           <div className="flex gap-2 overflow-x-auto pb-1">
             {CATEGORY_ITEMS.map((category) => {
               const Icon = category.icon;
@@ -265,7 +266,7 @@ export function BlogPageClient({
       </section>
 
       <section className="py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <Link
             href={`/blog/${featuredPost.slug}`}
             className="group block overflow-hidden rounded-3xl ring-1 ring-slate-200"
@@ -318,7 +319,7 @@ export function BlogPageClient({
       </section>
 
       <section className="pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_330px] gap-10">
+        <div className="app-container grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_330px] gap-10">
           <section aria-label="Blog posts" className="space-y-6">
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

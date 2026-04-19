@@ -100,7 +100,7 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John" {...field} />
+                    <Input placeholder="John" autoComplete="given-name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,7 +113,7 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Doe" {...field} />
+                    <Input placeholder="Doe" autoComplete="family-name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,7 +130,13 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="john@example.com" {...field} />
+                    <Input
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      placeholder="john@example.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,7 +149,13 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input placeholder="+1 (555) 000-0000" {...field} />
+                    <Input
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      placeholder="+1 (555) 000-0000"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,7 +172,11 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>Company (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your Company Name" {...field} />
+                    <Input
+                      placeholder="Your Company Name"
+                      autoComplete="organization"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -203,6 +219,7 @@ export function ContactForm() {
                   <Textarea
                     placeholder="Tell us about your logistics needs..."
                     rows={6}
+                    autoComplete="off"
                     {...field}
                   />
                 </FormControl>

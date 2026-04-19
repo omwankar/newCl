@@ -16,7 +16,7 @@ export function EnhancedServices() {
 
   return (
     <section id="services" className="py-24 bg-background" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="app-container">
         <div className="text-center mb-16">
           <span className="text-amber-500 font-semibold text-sm uppercase tracking-widest">What We Offer</span>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mt-3">

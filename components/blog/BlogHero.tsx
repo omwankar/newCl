@@ -10,7 +10,7 @@ type BlogHeroProps = {
 export function BlogHero({ post }: BlogHeroProps) {
   return (
     <section className="bg-[#0A1628] text-white pt-10 md:pt-14">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="app-container max-w-6xl">
         <Link
           href="/blog"
           className="inline-flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200 mb-6"
@@ -49,7 +49,7 @@ export function BlogHero({ post }: BlogHeroProps) {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 -mb-20 md:-mb-24 relative z-10">
+      <div className="app-container max-w-6xl mt-10 -mb-20 md:-mb-24 relative z-10">
         <div className="relative h-[420px] md:h-[500px] rounded-t-2xl overflow-hidden border border-white/10">
           <Image
             src={post.image}

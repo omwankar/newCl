@@ -93,7 +93,7 @@ export default function ProjectsPage() {
 
       {/* Case Studies Grid */}
       <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4 text-balance">
               Featured Projects
@@ -141,7 +141,7 @@ export default function ProjectsPage() {
 
       {/* Stats Section */}
       <section className="py-16 md:py-24 bg-primary text-primary-foreground">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-5xl md:text-6xl font-bold mb-2 text-amber-400">2000+</div>
@@ -164,7 +164,7 @@ export default function ProjectsPage() {
       </section>
 
       <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4 text-balance">
               Project Image Gallery
@@ -191,7 +191,7 @@ export default function ProjectsPage() {
 
       {/* Industries Section */}
       <section className="py-16 md:py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="app-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4 text-balance">
               Industries We Serve
@@ -221,7 +221,7 @@ export default function ProjectsPage() {
 
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-secondary/10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="app-container max-w-4xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-6 text-balance">
             Ready for Your Success Story?
           </h2>
