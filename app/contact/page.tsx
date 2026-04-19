@@ -221,7 +221,7 @@ export default function ContactPage() {
               <Link href="/services" className="text-amber-500 hover:text-amber-600">
                 Explore Services
               </Link>
-              <Link href="/supply-chain-management" className="text-amber-500 hover:text-amber-600">
+              <Link href="/services/supply-chain" className="text-amber-500 hover:text-amber-600">
                 Supply Chain Management
               </Link>
               <Link href="/about" className="text-amber-500 hover:text-amber-600">

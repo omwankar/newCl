@@ -72,28 +72,33 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Services</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/services#air-freight" className="hover:text-amber-500 transition-colors">
+                <Link href="/services/air-freight" className="hover:text-amber-500 transition-colors">
                   Air Freight
                 </Link>
               </li>
               <li>
-                <Link href="/services#sea-freight" className="hover:text-amber-500 transition-colors">
+                <Link href="/services/sea-freight" className="hover:text-amber-500 transition-colors">
                   Sea Freight
                 </Link>
               </li>
               <li>
-                <Link href="/services#land-transport" className="hover:text-amber-500 transition-colors">
+                <Link href="/services/land-transport" className="hover:text-amber-500 transition-colors">
                   Land Transport
                 </Link>
               </li>
               <li>
-                <Link href="/services#warehousing" className="hover:text-amber-500 transition-colors">
+                <Link href="/services/warehousing" className="hover:text-amber-500 transition-colors">
                   Warehousing
                 </Link>
               </li>
               <li>
-                <Link href="/supply-chain-management" className="hover:text-amber-500 transition-colors">
+                <Link href="/services/supply-chain" className="hover:text-amber-500 transition-colors">
                   Supply Chain
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/customs-clearance" className="hover:text-amber-500 transition-colors">
+                  Customs Clearance
                 </Link>
               </li>
             </ul>

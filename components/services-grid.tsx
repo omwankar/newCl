@@ -1,6 +1,16 @@
+import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import * as Icons from 'lucide-react';
 import { Service } from '@/lib/types';
+
+const SERVICE_DETAIL_HREF: Partial<Record<string, string>> = {
+  'air-freight': '/services/air-freight',
+  'sea-freight': '/services/sea-freight',
+  'land-transport': '/services/land-transport',
+  warehousing: '/services/warehousing',
+  'supply-chain': '/services/supply-chain',
+  'customs-clearance': '/services/customs-clearance',
+};
 
 interface ServicesGridProps {
   services: Service[];
@@ -17,8 +27,10 @@ export function ServicesGrid({ services, variant = 'grid' }: ServicesGridProps) 
   if (variant === 'list') {
     return (
       <div className="space-y-4">
-        {services.map((service) => (
-          <Card key={service.id} className="hover:shadow-md transition-shadow">
+        {services.map((service) => {
+          const detailHref = SERVICE_DETAIL_HREF[service.id];
+          const inner = (
+            <>
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
@@ -42,31 +54,52 @@ export function ServicesGrid({ services, variant = 'grid' }: ServicesGridProps) 
                 </ul>
               </CardContent>
             )}
-          </Card>
-        ))}
+          </>
+          );
+          return (
+            <Card key={service.id} className="hover:shadow-md transition-shadow">
+              {detailHref ? (
+                <Link href={detailHref} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  {inner}
+                </Link>
+              ) : (
+                inner
+              )}
+            </Card>
+          );
+        })}
       </div>
     );
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {services.map((service) => (
-        <Card
-          key={service.id}
-          id={service.id}
-          className="hover:shadow-lg hover:border-accent transition-all duration-300 h-full"
-        >
-          <CardHeader>
-            <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center mb-4">
-              {getIcon(service.icon)}
-            </div>
-            <CardTitle className="text-lg">{service.name}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription>{service.description}</CardDescription>
-          </CardContent>
-        </Card>
-      ))}
+      {services.map((service) => {
+        const detailHref = SERVICE_DETAIL_HREF[service.id];
+        const card = (
+          <Card
+            id={service.id}
+            className="hover:shadow-lg hover:border-accent h-full transition-all duration-300"
+          >
+            <CardHeader>
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                {getIcon(service.icon)}
+              </div>
+              <CardTitle className="text-lg">{service.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>{service.description}</CardDescription>
+            </CardContent>
+          </Card>
+        );
+        return detailHref ? (
+          <Link key={service.id} href={detailHref} className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            {card}
+          </Link>
+        ) : (
+          card
+        );
+      })}
     </div>
   );
 }

@@ -47,7 +47,7 @@ export default function ServicesPage() {
             <p className="mt-2 text-muted-foreground">
               Explore our specialized service page for planning, inventory flow, and multimodal coordination.
             </p>
-            <Link href="/supply-chain-management" className="mt-4 inline-block font-semibold text-amber-500 hover:text-amber-600">
+            <Link href="/services/supply-chain" className="mt-4 inline-block font-semibold text-amber-500 hover:text-amber-600">
               View Supply Chain Management
             </Link>
           </div>
