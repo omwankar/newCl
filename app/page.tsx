@@ -334,56 +334,58 @@ export default function Home() {
       </section>
 
       {/* BLOGS */}
-      <section className="py-16 md:py-24 bg-background" id="blogs">
+      <section className="mobile-section-y bg-background md:py-24" id="blogs">
         <div className="app-container">
           <Reveal>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-500">Insights</p>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-2 text-foreground mt-2">
+            <h2 className="mt-2 mb-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
               See Latest Articles From Our Company
             </h2>
-            <div className="h-1 w-20 bg-amber-400 mb-8 md:mb-12" />
+            <div className="mb-6 h-1 w-20 bg-amber-400 md:mb-12" />
           </Reveal>
-          <div className="-mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0">
+
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3">
             {featuredArticles.map((article) => (
-              <Reveal
-                key={article.id}
-                className="min-w-[min(100%,320px)] shrink-0 snap-center md:min-w-0"
-              >
-                <article className="bg-white ring-1 ring-border rounded-lg overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 hover:ring-amber-400/40 transition-all duration-300 group h-full flex flex-col">
-                  <div className="relative h-48 bg-muted overflow-hidden">
+              <Reveal key={article.id} className="w-full">
+                <article className="group flex h-full flex-col overflow-hidden rounded-xl bg-white ring-1 ring-border shadow-sm transition-all duration-300 hover:ring-amber-400/40 hover:shadow-xl md:hover:-translate-y-2">
+                  <div className="relative h-52 overflow-hidden bg-muted sm:h-56 md:h-48">
                     <Image
                       src={article.image}
                       alt={article.title}
                       fill
-                      sizes="(max-width: 768px) 85vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover motion-safe:transition-transform motion-safe:duration-[600ms] motion-safe:ease-out group-hover:scale-[1.08] motion-reduce:group-hover:scale-100"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-black/15 group-hover:bg-black/5 transition-colors duration-500" />
+                    <div className="absolute inset-0 bg-black/15 transition-colors duration-500 group-hover:bg-black/5" />
                     <span className="absolute left-3 top-3 rounded-full bg-amber-400/95 px-2.5 py-1 text-[11px] font-bold text-[#0F1923]">
                       {article.category}
                     </span>
                   </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    <p className="text-sm text-amber-600 font-semibold mb-3 border-b border-amber-400 pb-3">
+                  <div className="flex flex-1 flex-col p-4 sm:p-5 md:p-6">
+                    <p className="mb-3 border-b border-amber-400 pb-3 text-sm font-semibold text-amber-600">
                       {article.date} · {article.readTime}
                     </p>
-                    <h3 className="text-lg font-bold tracking-tight text-foreground mb-3">{article.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-4 flex-1">{article.excerpt}</p>
+                    <h3 className="mb-3 line-clamp-2 text-lg font-bold tracking-tight text-foreground">{article.title}</h3>
+                    <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-3">{article.excerpt}</p>
                     <Link
                       href={`/blog/${article.slug}`}
-                      className="text-amber-500 hover:text-amber-600 font-semibold text-sm inline-flex items-center gap-1 group/link"
+                      className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-amber-500 transition-colors hover:text-amber-600"
                     >
                       <span>Read More</span>
-                      <span className="transition-transform duration-300 group-hover/link:translate-x-1">→</span>
+                      <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                     </Link>
                   </div>
                 </article>
               </Reveal>
             ))}
           </div>
-          <div className="text-center mt-10">
-            <Link href="/blog" className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-600 font-semibold">
+
+          <div className="mt-8 text-center md:mt-10">
+            <Link
+              href="/blog"
+              className="inline-flex min-h-11 items-center justify-center gap-2 px-2 text-sm font-semibold text-amber-500 transition-colors hover:text-amber-600"
+            >
               View All Blogs
               <span>→</span>
             </Link>

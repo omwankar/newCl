@@ -50,7 +50,12 @@ export function EnhancedHero() {
             <Button asChild size="lg" className="bg-amber-400 hover:bg-amber-500 text-[#0F1923] text-base px-8 shadow-lg">
               <Link href="/contact">Get a Quote</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 text-base px-8 backdrop-blur-sm">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white/70 bg-[#0F1923]/55 text-white hover:text-white hover:border-amber-400 hover:bg-[#0F1923]/75 active:text-white active:bg-[#0F1923]/85 text-base px-8 shadow-md backdrop-blur-sm"
+            >
               <Link href="/services">Our Services</Link>
             </Button>
           </div>
