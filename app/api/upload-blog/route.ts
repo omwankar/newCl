@@ -3,6 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { PDFParse } from 'pdf-parse';
+import { put } from '@vercel/blob';
 import {
   detectCategory,
   extractFaqsFromText,
@@ -51,12 +52,22 @@ async function saveUploadedImage(imageFile: File): Promise<string> {
     throw new Error('Unsupported image format. Please upload JPG, PNG, WEBP, or GIF.');
   }
 
-  const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-  await mkdir(uploadsDir, { recursive: true });
   const ext = getImageExtension(imageFile.type);
   const safeName = `${Date.now()}-${randomUUID()}.${ext}`;
-  const filePath = path.join(uploadsDir, safeName);
   const buffer = Buffer.from(await imageFile.arrayBuffer());
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const result = await put(`blog-images/${safeName}`, buffer, {
+      access: 'public',
+      contentType: imageFile.type,
+      addRandomSuffix: false,
+      cacheControlMaxAge: 31536000,
+    });
+    return result.url;
+  }
+
+  const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+  await mkdir(uploadsDir, { recursive: true });
+  const filePath = path.join(uploadsDir, safeName);
   await writeFile(filePath, buffer);
   return `/uploads/${safeName}`;
 }
@@ -178,7 +189,7 @@ export async function POST(request: Request) {
     });
 
     const slug = generateSlug(created.title);
-    const existing = getAllBlogs();
+    const existing = await getAllBlogs();
     if (existing.some((post) => post.slug === slug)) {
       return NextResponse.json(
         {
@@ -190,7 +201,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const uploadedBlogs = readBlogData();
+    const uploadedBlogs = await readBlogData();
     const nextPost: BlogPost = {
       ...created,
       slug,
@@ -198,7 +209,7 @@ export async function POST(request: Request) {
     };
 
     try {
-      writeBlogDataSafely([...uploadedBlogs, nextPost]);
+      await writeBlogDataSafely([...uploadedBlogs, nextPost]);
     } catch {
       return NextResponse.json(
         {

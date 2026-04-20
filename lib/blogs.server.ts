@@ -8,8 +8,8 @@ function getPostTimestamp(date: string): number {
   return Number.isNaN(parsed) ? 0 : parsed;
 }
 
-export function getAllBlogs(): BlogPost[] {
-  const uploaded = readBlogData();
+export async function getAllBlogs(): Promise<BlogPost[]> {
+  const uploaded = await readBlogData();
   if (uploaded.length === 0) return BLOG_POSTS;
 
   const bySlug = new Map<string, BlogPost>();
@@ -23,12 +23,14 @@ export function getAllBlogs(): BlogPost[] {
   return Array.from(bySlug.values());
 }
 
-export function getBlogBySlug(slug: string) {
-  return getAllBlogs().find((post) => post.slug === slug);
+export async function getBlogBySlug(slug: string) {
+  const blogs = await getAllBlogs();
+  return blogs.find((post) => post.slug === slug);
 }
 
-export function getBlogsNewestFirst() {
-  return [...getAllBlogs()].sort(
+export async function getBlogsNewestFirst() {
+  const blogs = await getAllBlogs();
+  return [...blogs].sort(
     (a, b) => getPostTimestamp(b.date) - getPostTimestamp(a.date)
   );
 }

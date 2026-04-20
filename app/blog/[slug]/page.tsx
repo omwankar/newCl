@@ -13,12 +13,14 @@ import {
 import { BlogSection } from '@/components/blog/BlogSection';
 import { FAQSection } from '@/components/blog/FAQSection';
 
+export const dynamic = 'force-dynamic';
+
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  const blogs = getAllBlogs();
+  const blogs = await getAllBlogs();
   const slugs = new Set<string>();
   blogs.forEach((post) => {
     slugs.add(post.slug);
@@ -31,9 +33,9 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const blogs = getAllBlogs();
+  const blogs = await getAllBlogs();
   const post =
-    getBlogBySlug(slug) ??
+    (await getBlogBySlug(slug)) ??
     blogs.find((item) => generateSlugFromTitle(item.title) === slug);
 
   if (!post) {
@@ -75,9 +77,9 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const blogs = getAllBlogs();
+  const blogs = await getAllBlogs();
   const post =
-    getBlogBySlug(slug) ??
+    (await getBlogBySlug(slug)) ??
     blogs.find((item) => generateSlugFromTitle(item.title) === slug);
 
   if (!post) {

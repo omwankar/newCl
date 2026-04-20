@@ -5,6 +5,8 @@ import { Footer } from '@/components/footer';
 import { BlogPageClient } from './blog-page-client';
 import { getBlogsNewestFirst } from '@/lib/blogs.server';
 
+export const dynamic = 'force-dynamic';
+
 const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
   weight: ['600', '700'],
@@ -17,8 +19,8 @@ const dmSans = DM_Sans({
   display: 'swap',
 });
 
-export default function BlogPage() {
-  const initialPosts = getBlogsNewestFirst();
+export default async function BlogPage() {
+  const initialPosts = await getBlogsNewestFirst();
   const blogSchema = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
