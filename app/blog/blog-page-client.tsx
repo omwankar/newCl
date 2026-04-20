@@ -487,13 +487,14 @@ export function BlogPageClient({
                     href={`/blog/${post.slug}`}
                     className="flex items-center gap-3 group"
                   >
-                    <ResponsiveBlogImage
-                      src={post.image}
-                      alt={post.title}
-                      mode="cover"
-                      sizes="70px"
-                      className="rounded-md h-14 w-[70px]"
-                    />
+                    <div className="h-14 w-[70px] shrink-0 overflow-hidden rounded-md bg-slate-100">
+                      <ResponsiveBlogImage
+                        src={post.image}
+                        alt={post.title}
+                        mode="cover"
+                        sizes="70px"
+                      />
+                    </div>
                     <div>
                       <p className="text-sm font-semibold line-clamp-2 group-hover:text-[#FF5C00] transition-colors">
                         {post.title}

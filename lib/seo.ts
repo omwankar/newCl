@@ -17,8 +17,10 @@ export const siteConfig = {
   },
   socialLinks: [
     'https://www.linkedin.com/company/clarusto-logistics',
-    'https://x.com/clarustologistic',
-    'https://www.facebook.com/clarustologistics',
+    'https://www.facebook.com/Clarustologistics',
+    'https://www.instagram.com/clarustologistics',
+    'https://x.com/ClarLogistics',
+    'https://in.pinterest.com/clarustologistics/clarusto-logistics/',
   ],
 };
 

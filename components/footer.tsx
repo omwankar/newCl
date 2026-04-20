@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Mail, MapPin, Linkedin, Facebook, Twitter } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
+import {
+  FaLinkedinIn,
+  FaFacebookF,
+  FaInstagram,
+  FaXTwitter,
+  FaPinterestP,
+} from 'react-icons/fa6';
 import { OFFICES } from '@/lib/constants';
 
 export function Footer() {
@@ -24,13 +31,19 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <Link href="https://www.linkedin.com/company/clarusto-logistics" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer">
-                <Linkedin className="w-5 h-5" />
+                <FaLinkedinIn className="h-5 w-5" />
               </Link>
-              <Link href="https://www.facebook.com/clarustologistics" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer">
-                <Facebook className="w-5 h-5" />
+              <Link href="https://www.facebook.com/Clarustologistics" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <FaFacebookF className="h-5 w-5" />
               </Link>
-              <Link href="https://x.com/clarustologistic" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer">
-                <Twitter className="w-5 h-5" />
+              <Link href="https://www.instagram.com/clarustologistics" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <FaInstagram className="h-5 w-5" />
+              </Link>
+              <Link href="https://x.com/ClarLogistics" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                <FaXTwitter className="h-5 w-5" />
+              </Link>
+              <Link href="https://in.pinterest.com/clarustologistics/clarusto-logistics/" className="hover:text-amber-500 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+                <FaPinterestP className="h-5 w-5" />
               </Link>
             </div>
           </div>
