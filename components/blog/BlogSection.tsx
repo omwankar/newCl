@@ -1,4 +1,5 @@
 import type { ParsedBlogSection } from '@/lib/blog-parser';
+import { InlineRichText } from '@/components/blog/inline-rich-text';
 
 type BlogSectionProps = {
   section: ParsedBlogSection;
@@ -14,7 +15,7 @@ export function BlogSection({ section }: BlogSectionProps) {
           key={`${section.heading}-p-${index}`}
           className="text-base md:text-lg text-foreground/90 leading-loose mb-4 last:mb-0"
         >
-          {paragraph}
+          <InlineRichText text={paragraph} />
         </p>
       ))}
 

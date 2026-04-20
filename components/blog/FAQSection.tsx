@@ -1,4 +1,5 @@
 import type { ParsedBlogFAQ } from '@/lib/blog-parser';
+import { InlineRichText } from '@/components/blog/inline-rich-text';
 
 type FAQSectionProps = {
   faqs: ParsedBlogFAQ[];
@@ -21,7 +22,7 @@ export function FAQSection({ faqs }: FAQSectionProps) {
               {faq.question}
             </summary>
             <p className="mt-3 text-base text-foreground/90 leading-relaxed">
-              {faq.answer}
+              <InlineRichText text={faq.answer} />
             </p>
           </details>
         ))}
