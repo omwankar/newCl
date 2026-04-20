@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { PDFParse } from 'pdf-parse';
 import { put } from '@vercel/blob';
 import {
   detectCategory,
@@ -113,6 +112,7 @@ export async function POST(request: Request) {
       contentText = cleanText(await file.text());
     } else if (extension === 'pdf') {
       try {
+        const { PDFParse } = await import('pdf-parse');
         const arrayBuffer = await file.arrayBuffer();
         const parser = new PDFParse({ data: Buffer.from(arrayBuffer) });
         const parsed = await parser.getText();
