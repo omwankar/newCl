@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, CalendarDays, Clock3, User } from 'lucide-react';
 import type { BlogPost } from '@/lib/blogs';
+import { ResponsiveBlogImage } from '@/components/blog/ResponsiveBlogImage';
 
 type BlogHeroProps = {
   post: BlogPost;
@@ -50,14 +50,15 @@ export function BlogHero({ post }: BlogHeroProps) {
       </div>
 
       <div className="app-container max-w-6xl mt-10 -mb-20 md:-mb-24 relative z-10">
-        <div className="relative h-[420px] md:h-[500px] rounded-t-2xl overflow-hidden border border-white/10">
-          <Image
+        <div className="relative h-[400px] md:h-[500px] rounded-t-2xl overflow-hidden border border-white/10">
+          <ResponsiveBlogImage
             src={post.image}
             alt={post.title}
-            fill
-            className="object-cover"
             priority
+            mode="contain"
+            sizes="100vw"
           />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-black/10 to-transparent" />
         </div>
       </div>
     </section>

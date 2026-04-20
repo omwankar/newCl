@@ -874,17 +874,45 @@ In the 2026 landscape, manual entry is a massive risk. Forwarders who are not ST
   },
 ];
 
-export function getBlogBySlug(slug: string) {
-  return BLOG_POSTS.find((post) => post.slug === slug);
-}
-
 function getPostTimestamp(date: string): number {
   const parsed = Date.parse(date);
   return Number.isNaN(parsed) ? 0 : parsed;
 }
 
+export function getAllBlogs(): BlogPost[] {
+  const uploaded = readUploadedBlogs();
+  if (uploaded.length === 0) return BLOG_POSTS;
+
+  const bySlug = new Map<string, BlogPost>();
+  for (const post of BLOG_POSTS) {
+    bySlug.set(post.slug, post);
+  }
+  for (const post of uploaded) {
+    if (!post?.slug) continue;
+    bySlug.set(post.slug, post);
+  }
+  return Array.from(bySlug.values());
+}
+
+function readUploadedBlogs(): BlogPost[] {
+  if (typeof window !== 'undefined') return [];
+  try {
+    const loader = Function('return require')() as <T>(id: string) => T;
+    const { readBlogData } = loader<{ readBlogData: () => BlogPost[] }>(
+      './blog-storage'
+    );
+    return readBlogData();
+  } catch {
+    return [];
+  }
+}
+
+export function getBlogBySlug(slug: string) {
+  return getAllBlogs().find((post) => post.slug === slug);
+}
+
 export function getBlogsNewestFirst() {
-  return [...BLOG_POSTS].sort(
+  return [...getAllBlogs()].sort(
     (a, b) => getPostTimestamp(b.date) - getPostTimestamp(a.date)
   );
 }

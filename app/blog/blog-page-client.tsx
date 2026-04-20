@@ -18,11 +18,13 @@ import {
   Leaf,
   Globe,
 } from 'lucide-react';
-import { BLOG_POSTS, getBlogsNewestFirst } from '@/lib/blogs';
+import type { BlogPost } from '@/lib/blogs';
+import { ResponsiveBlogImage } from '@/components/blog/ResponsiveBlogImage';
 
 type BlogPageClientProps = {
   displayFontClass: string;
   bodyFontClass: string;
+  initialPosts: BlogPost[];
 };
 
 const CATEGORY_ITEMS = [
@@ -56,8 +58,9 @@ const PAGE_SIZE = 6;
 export function BlogPageClient({
   displayFontClass,
   bodyFontClass,
+  initialPosts,
 }: BlogPageClientProps) {
-  const sortedPosts = useMemo(() => getBlogsNewestFirst(), []);
+  const sortedPosts = useMemo(() => initialPosts, [initialPosts]);
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState<string>('All Posts');
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -135,16 +138,8 @@ export function BlogPageClient({
   const featuredPost =
     featuredCandidates[featuredIndex % Math.max(featuredCandidates.length, 1)];
 
-  const remainingPosts = useMemo(
-    () =>
-      filteredPosts.filter((post) =>
-        featuredPost ? post.id !== featuredPost.id : true
-      ),
-    [featuredPost, filteredPosts]
-  );
-
-  const visiblePosts = remainingPosts.slice(0, visibleCount);
-  const hasMorePosts = visibleCount < remainingPosts.length;
+  const visiblePosts = filteredPosts.slice(0, visibleCount);
+  const hasMorePosts = visibleCount < filteredPosts.length;
   const popularPosts = sortedPosts.slice(0, 4);
 
   const categoryCounts = useMemo(() => {
@@ -272,14 +267,18 @@ export function BlogPageClient({
             className="group block overflow-hidden rounded-3xl ring-1 ring-slate-200"
             aria-label={`Read featured post: ${featuredPost.title}`}
           >
-            <div className="relative h-[380px] sm:h-[480px] overflow-hidden">
-              <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.5 }}>
-                <Image
+            <div className="relative h-[380px] sm:h-[480px] overflow-hidden bg-[#0A1628]">
+              <motion.div
+                className="h-full"
+                whileHover={{ scale: 1.04 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ResponsiveBlogImage
                   src={featuredPost.image}
                   alt={featuredPost.title}
-                  fill
-                  className="object-cover"
                   priority
+                  mode="contain"
+                  sizes="100vw"
                 />
               </motion.div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/90 via-[#0A1628]/40 to-transparent" />
@@ -364,12 +363,15 @@ export function BlogPageClient({
                         }}
                         className="group rounded-2xl bg-white ring-1 ring-slate-200 overflow-hidden flex flex-col"
                       >
-                        <Link href={`/blog/${post.slug}`} className="block relative h-44">
-                          <Image
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="block relative h-[220px] md:aspect-[16/9] md:h-auto"
+                        >
+                          <ResponsiveBlogImage
                             src={post.image}
                             alt={post.title}
-                            fill
-                            className="object-cover"
+                            mode="cover"
+                            sizes="(max-width: 768px) 100vw, 33vw"
                           />
                         </Link>
 
@@ -485,12 +487,12 @@ export function BlogPageClient({
                     href={`/blog/${post.slug}`}
                     className="flex items-center gap-3 group"
                   >
-                    <Image
+                    <ResponsiveBlogImage
                       src={post.image}
                       alt={post.title}
-                      width={70}
-                      height={56}
-                      className="rounded-md object-cover h-14 w-[70px]"
+                      mode="cover"
+                      sizes="70px"
+                      className="rounded-md h-14 w-[70px]"
                     />
                     <div>
                       <p className="text-sm font-semibold line-clamp-2 group-hover:text-[#FF5C00] transition-colors">

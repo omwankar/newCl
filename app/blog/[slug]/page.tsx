@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { BLOG_POSTS, getBlogBySlug } from '@/lib/blogs';
+import { getAllBlogs, getBlogBySlug } from '@/lib/blogs.server';
 import { absoluteUrl } from '@/lib/seo';
 import { BlogHero } from '@/components/blog/BlogHero';
 import { BlogSidebar } from '@/components/blog/BlogSidebar';
@@ -18,8 +18,9 @@ type BlogPostPageProps = {
 };
 
 export async function generateStaticParams() {
+  const blogs = getAllBlogs();
   const slugs = new Set<string>();
-  BLOG_POSTS.forEach((post) => {
+  blogs.forEach((post) => {
     slugs.add(post.slug);
     slugs.add(generateSlugFromTitle(post.title));
   });
@@ -30,9 +31,10 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
+  const blogs = getAllBlogs();
   const post =
     getBlogBySlug(slug) ??
-    BLOG_POSTS.find((item) => generateSlugFromTitle(item.title) === slug);
+    blogs.find((item) => generateSlugFromTitle(item.title) === slug);
 
   if (!post) {
     return {
@@ -73,9 +75,10 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
+  const blogs = getAllBlogs();
   const post =
     getBlogBySlug(slug) ??
-    BLOG_POSTS.find((item) => generateSlugFromTitle(item.title) === slug);
+    blogs.find((item) => generateSlugFromTitle(item.title) === slug);
 
   if (!post) {
     notFound();
@@ -84,7 +87,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const rawInput = post.rawText ?? `${post.title}\n\n${post.content.join('\n\n')}`;
   const parsed = parseRawBlogText(rawInput);
 
-  const relatedPosts = BLOG_POSTS.filter((item) => item.slug !== post.slug)
+  const relatedPosts = blogs.filter((item) => item.slug !== post.slug)
     .sort((a, b) => {
       if (a.category === post.category && b.category !== post.category) return -1;
       if (a.category !== post.category && b.category === post.category) return 1;

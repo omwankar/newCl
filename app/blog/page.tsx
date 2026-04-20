@@ -3,6 +3,7 @@ import { Barlow_Condensed, DM_Sans } from 'next/font/google';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { BlogPageClient } from './blog-page-client';
+import { getBlogsNewestFirst } from '@/lib/blogs.server';
 
 const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
@@ -17,6 +18,7 @@ const dmSans = DM_Sans({
 });
 
 export default function BlogPage() {
+  const initialPosts = getBlogsNewestFirst();
   const blogSchema = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
@@ -39,6 +41,7 @@ export default function BlogPage() {
       <BlogPageClient
         displayFontClass={barlowCondensed.className}
         bodyFontClass={dmSans.className}
+        initialPosts={initialPosts}
       />
       <Script
         id="blog-schema"

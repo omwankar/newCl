@@ -9,7 +9,7 @@ import { PromiseSection } from '@/components/promise-section';
 import { StatsSection } from '@/components/stats-section';
 import { ServicePartners } from '@/components/service-partners';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
-import { getBlogsNewestFirst } from '@/lib/blogs';
+import { BLOG_POSTS, type BlogPost } from '@/lib/blogs';
 import Link from 'next/link';
 import Image from 'next/image';
 import { type CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
@@ -127,6 +127,11 @@ export default function Home() {
   const { ref: trustSectionRef, isVisible: isTrustSectionVisible } = useScrollAnimation(0.1);
   const expertiseRef = useRef<HTMLElement>(null);
   const [expertiseActive, setExpertiseActive] = useState(false);
+  const [featuredArticles, setFeaturedArticles] = useState<BlogPost[]>(() =>
+    [...BLOG_POSTS]
+      .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+      .slice(0, 3)
+  );
 
   useEffect(() => {
     const el = expertiseRef.current;
@@ -163,7 +168,24 @@ export default function Home() {
     { name: "Ma'aden (Saudi Arabian Mining Company)", logo: 'https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/072024/maaden.jpg?EbMm2gvNQB6Ub6S7INhZ1TTNWR5WFAPH&itok=yZWsuAyF' },
   ];
 
-  const featuredArticles = getBlogsNewestFirst().slice(0, 3);
+  useEffect(() => {
+    let active = true;
+    const loadLatestBlogs = async () => {
+      try {
+        const response = await fetch('/api/blogs?limit=3');
+        if (!response.ok) return;
+        const posts = (await response.json()) as BlogPost[];
+        if (!active || !Array.isArray(posts) || posts.length === 0) return;
+        setFeaturedArticles(posts);
+      } catch {
+        // Keep static fallback when API call fails.
+      }
+    };
+    void loadLatestBlogs();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const expertise = [
     { number: '2,000+', label: 'Integrated Supply Chain Expertise', features: ['Customized supply chain management', 'Freight forwarding solutions', 'Warehousing & distribution'] },

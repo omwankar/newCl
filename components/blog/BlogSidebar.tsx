@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import type { BlogPost } from '@/lib/blogs';
+import { ResponsiveBlogImage } from '@/components/blog/ResponsiveBlogImage';
 
 type BlogSidebarProps = {
   post: BlogPost;
@@ -19,11 +19,12 @@ export function BlogSidebar({ post, relatedPosts }: BlogSidebarProps) {
           {relatedPosts.map((related) => (
             <Link key={related.slug} href={`/blog/${related.slug}`} className="group flex gap-3">
               <div className="relative h-12 w-16 rounded-md overflow-hidden shrink-0">
-                <Image
+                <ResponsiveBlogImage
                   src={related.image}
                   alt={related.title}
-                  fill
-                  className="object-cover transition-transform group-hover:scale-105"
+                  mode="cover"
+                  sizes="64px"
+                  className="transition-transform group-hover:scale-105"
                 />
               </div>
               <div>
