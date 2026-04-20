@@ -33,7 +33,7 @@ function isHeading(line: string): boolean {
   if (text.endsWith(':')) return true;
   if (text.length > 90) return false;
   if (/^(https?:\/\/|source:)/i.test(text)) return false;
-  if (/^\d+[\).\s-]/.test(text)) return false;
+  if (/^\d+[\).\s-]+[A-Za-z].{6,}$/.test(text) && !/[.!?]$/.test(text)) return true;
   if (/^[A-Za-z0-9&(),\-\/\s]+$/.test(text) && !/[.!?]$/.test(text)) return true;
   return false;
 }

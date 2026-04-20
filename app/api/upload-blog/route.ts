@@ -10,6 +10,7 @@ import {
   generateBlogPost,
   generateSlug,
   normalizeBlogText,
+  preprocessUploadedBlogText,
   understandUploadContent,
 } from '@/lib/blog-generator';
 import { readBlogData, writeBlogDataSafely } from '@/lib/blog-storage';
@@ -28,7 +29,89 @@ const ALLOWED_IMAGE_TYPES = new Set([
 ]);
 
 function cleanText(input: string): string {
-  return normalizeBlogText(input);
+  return preprocessUploadedBlogText(normalizeBlogText(input));
+}
+
+async function structureWithAI(input: string, providedTitle?: string): Promise<string> {
+  const geminiApiKey = process.env.GEMINI_API_KEY;
+  const openAiApiKey = process.env.OPENAI_API_KEY;
+  if (!geminiApiKey && !openAiApiKey) return input;
+
+  const systemPrompt =
+    'You clean and structure raw blog text. Output plain text only. Keep original meaning, remove duplicate blocks, preserve one title and clear section headings, and avoid extra commentary.';
+  const userPrompt = `Title hint: ${providedTitle || 'None'}\n\nRaw blog:\n${input}`;
+
+  try {
+    if (geminiApiKey) {
+      const geminiResponse = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: 'user',
+                parts: [
+                  {
+                    text: `${systemPrompt}\n\n${userPrompt}`,
+                  },
+                ],
+              },
+            ],
+            generationConfig: {
+              temperature: 0.2,
+            },
+          }),
+        }
+      );
+
+      if (geminiResponse.ok) {
+        const geminiData = (await geminiResponse.json()) as {
+          candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+        };
+        const geminiOutput = geminiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+        if (geminiOutput) return cleanText(geminiOutput);
+      }
+    }
+
+    if (openAiApiKey) {
+      const openAiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${openAiApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          temperature: 0.2,
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+            },
+            {
+              role: 'user',
+              content: userPrompt,
+            },
+          ],
+        }),
+      });
+
+      if (!openAiResponse.ok) return input;
+      const openAiData = (await openAiResponse.json()) as {
+        choices?: Array<{ message?: { content?: string } }>;
+      };
+      const openAiOutput = openAiData.choices?.[0]?.message?.content?.trim();
+      return openAiOutput ? cleanText(openAiOutput) : input;
+    }
+
+    return input;
+  } catch {
+    return input;
+  }
 }
 
 function buildMeta(post: BlogPost) {
@@ -149,6 +232,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    contentText = await structureWithAI(contentText, title || undefined);
 
     const understanding = understandUploadContent(contentText, title || undefined);
     if (!understanding.isLikelyBlog) {

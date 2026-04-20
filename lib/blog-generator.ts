@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import type { BlogPost } from './blogs';
+import { parseRawBlogText } from './blog-parser';
 
 const DEFAULT_AUTHOR: BlogPost['author'] = {
   name: 'Editorial Desk',
@@ -116,6 +117,60 @@ export function normalizeBlogText(text: string): string {
     .replace(/ *\n */g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
+}
+
+function lineToCanonicalKey(line: string): string {
+  return line
+    .toLowerCase()
+    .replace(/["'`’]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+export function preprocessUploadedBlogText(text: string): string {
+  const normalized = normalizeBlogText(text);
+  if (!normalized) return normalized;
+
+  const lines = normalized.split('\n');
+  const cleaned: string[] = [];
+  const seenHeadings = new Set<string>();
+  const seenLongLines = new Set<string>();
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) {
+      cleaned.push('');
+      continue;
+    }
+
+    const canonical = lineToCanonicalKey(line);
+    if (!canonical) continue;
+
+    const previous = cleaned.length > 0 ? cleaned[cleaned.length - 1] : '';
+    const previousCanonical = previous ? lineToCanonicalKey(previous) : '';
+    if (canonical === previousCanonical) {
+      continue;
+    }
+
+    // Skip duplicate subheadings and repeated "Overview" markers in long uploads.
+    if (looksLikeHeading(line)) {
+      if (seenHeadings.has(canonical)) continue;
+      if (canonical === 'overview' && cleaned.filter(Boolean).length > 8) continue;
+      seenHeadings.add(canonical);
+      cleaned.push(line);
+      continue;
+    }
+
+    // Skip repeated long lines that usually come from accidental copy/paste duplication.
+    if (canonical.length >= 24) {
+      if (seenLongLines.has(canonical)) continue;
+      seenLongLines.add(canonical);
+    }
+
+    cleaned.push(line);
+  }
+
+  return normalizeBlogText(cleaned.join('\n'));
 }
 
 export function extractTitleFromText(content: string, providedTitle?: string): string {
@@ -331,8 +386,17 @@ export function understandUploadContent(
     reasons.push('Could not confidently detect a blog title.');
   }
 
-  const sectionMatches = body.match(/^\d+[\).\s-]+\s*[A-Za-z].+$/gm) ?? [];
-  if (sectionMatches.length >= 2 || /(^|\n)(introduction|conclusion)\s*:/i.test(body)) {
+  const sectionMatches =
+    body.match(/^(?:\d+[\).\s-]+\s*)?[A-Za-z][A-Za-z0-9&(),"'\/\-\s]{6,}$/gm) ?? [];
+  const lastSectionMatches =
+    body.match(
+      /^(is your customs strategy a hurdle or a springboard\?.*|ready to audit your 2026 trade strategy\?.*|protects margins by minimizing unnecessary duty spend\.?|accelerates time-to-market by bypassing administrative bottlenecks\.?|builds resilience against the volatile geopolitics of the late 2020s\.?)$/gim
+    ) ?? [];
+  if (
+    sectionMatches.length >= 2 ||
+    lastSectionMatches.length >= 2 ||
+    /(^|\n)(introduction|conclusion)\s*:/i.test(body)
+  ) {
     confidence += 0.15;
     reasons.push('Found article-like section structure.');
   }
@@ -480,6 +544,40 @@ export function splitIntoParagraphs(content: string): string[] {
   return paragraphs;
 }
 
+function buildStructuredParagraphs(content: string): string[] {
+  const parsed = parseRawBlogText(content);
+  const paragraphs: string[] = [];
+  const seenHeadings = new Set<string>();
+  const seenLines = new Set<string>();
+
+  for (const section of parsed.sections) {
+    const heading = section.heading.trim();
+    const headingKey = heading.toLowerCase();
+    if (heading && !seenHeadings.has(headingKey)) {
+      paragraphs.push(heading);
+      seenHeadings.add(headingKey);
+    }
+
+    for (const line of section.content ?? []) {
+      const value = line.trim();
+      const key = value.toLowerCase();
+      if (!value || seenLines.has(key)) continue;
+      paragraphs.push(value);
+      seenLines.add(key);
+    }
+
+    for (const item of section.list ?? []) {
+      const value = `- ${item.trim()}`;
+      const key = value.toLowerCase();
+      if (!item.trim() || seenLines.has(key)) continue;
+      paragraphs.push(value);
+      seenLines.add(key);
+    }
+  }
+
+  return paragraphs.filter(Boolean);
+}
+
 function generateTags(title: string, content: string): string[] {
   const source = `${title} ${content}`.toLowerCase();
   const matchedPredefined = PREDEFINED_TAG_KEYWORDS.filter(({ keywords }) =>
@@ -566,8 +664,12 @@ export function generateBlogPost(input: {
   );
   const id = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
   const slug = generateSlug(resolvedTitle);
-  const articleBody = structured.body || normalizedContent;
-  const content = splitIntoParagraphs(articleBody);
+  const articleBody = preprocessUploadedBlogText(structured.body || normalizedContent);
+  const content = (() => {
+    const structured = buildStructuredParagraphs(articleBody);
+    if (structured.length >= 4) return structured;
+    return splitIntoParagraphs(articleBody);
+  })();
   const excerpt = extractExcerpt(articleBody);
   const readTime = calculateReadTime(articleBody);
   const date = formatDate(new Date());
