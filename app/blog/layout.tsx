@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { absoluteUrl } from '@/lib/seo';
+import { BlogRouteTransition } from '@/components/blog/BlogRouteTransition';
 
 export const metadata: Metadata = {
   title:
@@ -43,5 +44,5 @@ export const metadata: Metadata = {
 export default function BlogLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <BlogRouteTransition>{children}</BlogRouteTransition>;
 }

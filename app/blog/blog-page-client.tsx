@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { type MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { motion, AnimatePresence, animate, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -18,8 +18,15 @@ import {
   Leaf,
   Globe,
 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import Lenis from 'lenis';
 import type { BlogPost } from '@/lib/blogs';
 import { ResponsiveBlogImage } from '@/components/blog/ResponsiveBlogImage';
+import { CustomCursor } from '@/components/blog/CustomCursor';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type BlogPageClientProps = {
   displayFontClass: string;
@@ -54,12 +61,41 @@ const categoryColors: Record<string, string> = {
 
 const heroTitleWords = 'Insights That Move Your Business Forward'.split(' ');
 const PAGE_SIZE = 6;
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&';
+
+function useCountUp(end: number, active: boolean, duration = 2000) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!active) return;
+    let raf = 0;
+    const start = performance.now();
+
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - (1 - progress) ** 3;
+      setCount(Math.round(end * eased));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [active, duration, end]);
+
+  return count;
+}
 
 export function BlogPageClient({
   displayFontClass,
   bodyFontClass,
   initialPosts,
 }: BlogPageClientProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const rootRef = useRef<HTMLElement>(null);
+  const horizontalSectionRef = useRef<HTMLElement>(null);
+  const horizontalTrackRef = useRef<HTMLDivElement>(null);
+  const horizontalProgressRef = useRef<HTMLDivElement>(null);
+  const [statsVisible, setStatsVisible] = useState(false);
   const sortedPosts = useMemo(() => initialPosts, [initialPosts]);
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState<string>('All Posts');
@@ -68,6 +104,9 @@ export function BlogPageClient({
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [isLoading, setIsLoading] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const shipmentsCount = useCountUp(10000, statsVisible, 1800);
+  const articlesCount = useCountUp(sortedPosts.length || 500, statsVisible, 1800);
+  const onTimeCount = useCountUp(98, statsVisible, 1800);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
@@ -135,6 +174,112 @@ export function BlogPageClient({
     return () => window.clearInterval(interval);
   }, [featuredCandidates]);
 
+  useEffect(() => {
+    if (prefersReducedMotion || typeof window === 'undefined') return;
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+    let rafId = 0;
+    const raf = (time: number) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const nodes = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-scramble-heading]')
+    );
+    if (nodes.length === 0) return;
+    const seen = new WeakSet<HTMLElement>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const target = entry.target as HTMLElement;
+          if (seen.has(target)) continue;
+          const finalText = target.dataset.scrambleHeading ?? target.innerText;
+          seen.add(target);
+          let iteration = 0;
+          const interval = window.setInterval(() => {
+            target.innerText = finalText
+              .split('')
+              .map((letter, i) => {
+                if (letter === ' ') return ' ';
+                if (i < iteration) return finalText[i];
+                return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+              })
+              .join('');
+            if (iteration >= finalText.length) {
+              window.clearInterval(interval);
+              target.innerText = finalText;
+            }
+            iteration += 1 / 3;
+          }, 40);
+          observer.unobserve(target);
+        }
+      },
+      { threshold: 0.35 }
+    );
+    for (const node of nodes) observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = document.getElementById('blog-stats-strip');
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setStatsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useGSAP(
+    () => {
+      if (
+        prefersReducedMotion ||
+        typeof window === 'undefined' ||
+        !horizontalSectionRef.current ||
+        !horizontalTrackRef.current
+      ) {
+        return;
+      }
+      const trigger = gsap.to(horizontalTrackRef.current, {
+        x: () =>
+          -(
+            horizontalTrackRef.current!.scrollWidth - window.innerWidth
+          ) + 'px',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: horizontalSectionRef.current,
+          pin: true,
+          scrub: 1,
+          end: () => '+=' + horizontalTrackRef.current!.scrollWidth,
+          onUpdate: (self) => {
+            if (!horizontalProgressRef.current) return;
+            horizontalProgressRef.current.style.transform = `scaleX(${self.progress})`;
+          },
+        },
+      });
+      return () => trigger.kill();
+    },
+    { scope: rootRef, dependencies: [prefersReducedMotion] }
+  );
+
   const featuredPost =
     featuredCandidates[featuredIndex % Math.max(featuredCandidates.length, 1)];
 
@@ -159,35 +304,133 @@ export function BlogPageClient({
     setQuery('');
   };
 
+  const handleCardMouseMove = (
+    event: MouseEvent<HTMLElement>
+  ) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left - rect.width / 2) * 0.15;
+    const y = (event.clientY - rect.top - rect.height / 2) * 0.15;
+    animate(
+      event.currentTarget,
+      { x, y },
+      { type: 'spring', stiffness: 200, damping: 20 }
+    );
+    const imageNode = event.currentTarget.querySelector<HTMLElement>('[data-card-image]');
+    if (imageNode) {
+      const pointerY = (event.clientY - rect.top) / rect.height - 0.5;
+      gsap.to(imageNode, {
+        yPercent: pointerY * -8,
+        scale: 1.1,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+    }
+  };
+
+  const handleCardMouseLeave = (event: MouseEvent<HTMLElement>) => {
+    animate(
+      event.currentTarget,
+      { x: 0, y: 0 },
+      { type: 'spring', stiffness: 200, damping: 20 }
+    );
+    const imageNode = event.currentTarget.querySelector<HTMLElement>('[data-card-image]');
+    if (imageNode) {
+      gsap.to(imageNode, {
+        yPercent: 0,
+        scale: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+    }
+  };
+
   return (
-    <main
-      className={`min-h-screen bg-[#F5F5F0] text-[#1A1A2E] ${bodyFontClass}`}
+    <motion.main
+      ref={rootRef}
+      className={`blog-premium-page min-h-screen bg-[#F5F5F0] text-[#1A1A2E] ${bodyFontClass}`}
       id="blog-search"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: 'easeInOut' }}
     >
+      <CustomCursor />
       <section className="bg-[#0A1628] text-white">
-        <div className="app-container pt-14 pb-10">
+        <motion.div
+          className="app-container relative overflow-hidden pt-14 pb-10"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
+        >
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute right-0 top-8 text-[180px] font-bold leading-none text-white/[0.04] md:text-[260px]"
+            animate={prefersReducedMotion ? undefined : { y: [0, -20, 0] }}
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: 'easeInOut',
+            }}
+          >
+            2026
+          </motion.div>
+          {!prefersReducedMotion && (
+            <div className="pointer-events-none absolute inset-0 -z-[1]">
+              <motion.div
+                className="absolute left-[-10%] top-[-20%] h-56 w-56 rounded-full bg-[#FF5C00] opacity-30 blur-3xl"
+                animate={{ x: [0, 80, -40, 0], y: [0, -60, 40, 0] }}
+                transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <motion.div
+                className="absolute right-[-8%] top-[10%] h-72 w-72 rounded-full bg-[#2E7DFF] opacity-25 blur-3xl"
+                animate={{ x: [0, -100, 60, 0], y: [0, 80, -30, 0] }}
+                transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <motion.div
+                className="absolute bottom-[-20%] left-[20%] h-64 w-64 rounded-full bg-[#FAC12E] opacity-30 blur-3xl"
+                animate={{ x: [0, 60, -80, 0], y: [0, -40, 70, 0] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <motion.div
+                className="absolute bottom-[-10%] right-[12%] h-48 w-48 rounded-full bg-[#8B5CF6] opacity-30 blur-3xl"
+                animate={{ x: [0, -50, 90, 0], y: [0, 60, -50, 0] }}
+                transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </div>
+          )}
           <p className="uppercase tracking-[0.18em] text-xs text-orange-300 font-semibold">
             Freight Intelligence Journal
           </p>
           <h1
             className={`${displayFontClass} mt-4 text-4xl sm:text-5xl lg:text-6xl leading-[0.95] tracking-tight`}
+            data-scramble-heading="Insights That Move Your Business Forward"
           >
             {heroTitleWords.map((word, index) => (
-              <motion.span
-                key={`${word}-${index}`}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: index * 0.06 }}
-                className="inline-block mr-3"
-              >
-                {word}
-              </motion.span>
+              <span key={`${word}-${index}`} className="mr-3 inline-block overflow-hidden">
+                <motion.span
+                  initial={{ y: '110%', rotate: 3, opacity: 0 }}
+                  animate={{ y: '0%', rotate: 0, opacity: 1 }}
+                  transition={{
+                    duration: 0.75,
+                    delay: index * 0.08,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="inline-block"
+                >
+                  {word}
+                </motion.span>
+              </span>
             ))}
           </h1>
-          <p className="mt-6 text-base sm:text-lg text-white/80 max-w-3xl">
+          <motion.p
+            className="mt-6 max-w-3xl text-base text-white/80 sm:text-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
+          >
             Expert insights on freight forwarding, warehousing, air cargo, ocean
             shipping, and supply chain optimization.
-          </p>
+          </motion.p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-[1fr_auto]">
             <label className="relative block">
@@ -215,7 +458,7 @@ export function BlogPageClient({
               Reset Filters
             </button>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <section className="sticky top-14 z-30 border-y border-slate-200 bg-[#F5F5F0]/95 max-md:backdrop-blur-none md:backdrop-blur">
@@ -237,17 +480,19 @@ export function BlogPageClient({
                   aria-label={`Filter by ${category.label}`}
                   aria-pressed={isActive}
                 >
-                  {isActive && (
-                    <motion.span
-                      layoutId="active-category-pill"
-                      className="absolute inset-0 rounded-full bg-[#FF5C00]/20"
-                      transition={{
-                        type: 'spring',
-                        stiffness: 320,
-                        damping: 28,
-                      }}
-                    />
-                  )}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeTag"
+                        className="absolute inset-0 rounded-full bg-[#FF5C00]/20"
+                        transition={{
+                          type: 'spring',
+                          stiffness: 320,
+                          damping: 28,
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
                   <span className="relative z-10 inline-flex items-center gap-2">
                     <span aria-hidden="true">{category.emoji}</span>
                     <Icon className="h-4 w-4" />
@@ -293,6 +538,7 @@ export function BlogPageClient({
                 </span>
                 <h2
                   className={`${displayFontClass} mt-4 text-3xl sm:text-4xl md:text-5xl text-white leading-[0.95] max-w-4xl`}
+                  data-scramble-heading={featuredPost.title}
                 >
                   {featuredPost.title}
                 </h2>
@@ -314,6 +560,76 @@ export function BlogPageClient({
               </div>
             </div>
           </Link>
+        </div>
+      </section>
+
+      <section className="border-y border-slate-200 bg-white/50 py-3">
+        <div className="app-container overflow-hidden">
+          <div className="blog-marquee-inner flex min-w-max items-center gap-8 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+            {Array.from({ length: 2 }).map((_, idx) => (
+              <span key={`marquee-a-${idx}`}>
+                Freight Insights • Supply Chain • Shipping News • Logistics •
+                Industry Trends •
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="blog-stats-strip"
+        className="border-b border-slate-200 bg-[#0F1923] py-4 text-white"
+      >
+        <motion.div
+          className="app-container flex flex-wrap items-center gap-4 text-sm font-semibold uppercase tracking-[0.12em] md:gap-8"
+          initial={prefersReducedMotion ? false : { opacity: 0, x: -60 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+        >
+          <span>{shipmentsCount.toLocaleString()}+ Shipments Tracked</span>
+          <span className="text-white/40">•</span>
+          <span>{articlesCount}+ Articles</span>
+          <span className="text-white/40">•</span>
+          <span>{onTimeCount}% On-Time</span>
+        </motion.div>
+      </section>
+
+      <section ref={horizontalSectionRef} className="relative bg-[#0A1628] py-10 text-white">
+        <div className="app-container mb-6">
+          <h2
+            className={`${displayFontClass} text-3xl uppercase tracking-tight md:text-4xl`}
+            data-scramble-heading="Featured Posts"
+          >
+            Featured Posts
+          </h2>
+        </div>
+        <div ref={horizontalTrackRef} className="flex min-w-max gap-5 px-4 md:px-8">
+          {featuredCandidates.slice(0, Math.min(6, featuredCandidates.length)).map((post) => (
+            <article
+              key={`featured-horizontal-${post.id}`}
+              className="w-[420px] shrink-0 overflow-hidden rounded-3xl border border-white/15 bg-white/5 backdrop-blur-sm"
+            >
+              <div className="relative h-[520px]">
+                <ResponsiveBlogImage src={post.image} alt={post.title} mode="cover" sizes="420px" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <p className="text-xs uppercase tracking-[0.15em] text-orange-300">{post.category}</p>
+                  <h3 className={`${displayFontClass} mt-2 text-3xl leading-tight`} data-scramble-heading={post.title}>
+                    {post.title}
+                  </h3>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="app-container mt-6">
+          <div className="h-1 w-full overflow-hidden rounded-full bg-white/20">
+            <div
+              ref={horizontalProgressRef}
+              className="h-full origin-left scale-x-0 rounded-full bg-[#FF5C00]"
+            />
+          </div>
         </div>
       </section>
 
@@ -352,27 +668,49 @@ export function BlogPageClient({
                     {visiblePosts.map((post, index) => (
                       <motion.article
                         key={post.id}
-                        initial={{ opacity: 0, y: 22 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.45, delay: index * 0.1 }}
-                        whileHover={{
-                          y: -6,
-                          boxShadow:
-                            '0 20px 40px rgba(10, 22, 40, 0.12), 0 6px 16px rgba(10, 22, 40, 0.08)',
+                        initial={
+                          prefersReducedMotion
+                            ? false
+                            : { opacity: 0, y: 80, rotateX: 15, scale: 0.95 }
+                        }
+                        whileInView={
+                          prefersReducedMotion
+                            ? undefined
+                            : { opacity: 1, y: 0, rotateX: 0, scale: 1 }
+                        }
+                        viewport={{ once: true, margin: '-60px' }}
+                        transition={{
+                          duration: 0.7,
+                          delay: index * 0.12,
+                          ease: [0.21, 1.02, 0.73, 1],
                         }}
+                        onMouseMove={handleCardMouseMove}
+                        onMouseLeave={handleCardMouseLeave}
                         className="group rounded-2xl bg-white ring-1 ring-slate-200 overflow-hidden flex flex-col"
+                        data-cursor="card"
+                        style={{
+                          transition: 'transform 0.2s ease',
+                          willChange: 'transform, opacity',
+                          transformPerspective: 1000,
+                        }}
                       >
                         <Link
                           href={`/blog/${post.slug}`}
                           className="block relative h-[220px] md:aspect-[16/9] md:h-auto"
                         >
-                          <ResponsiveBlogImage
-                            src={post.image}
-                            alt={post.title}
-                            mode="cover"
-                            sizes="(max-width: 768px) 100vw, 33vw"
-                          />
+                          <motion.div
+                            whileHover={{ scale: 1.08 }}
+                            transition={{ duration: 0.4 }}
+                            className="h-full w-full"
+                            data-card-image
+                          >
+                            <ResponsiveBlogImage
+                              src={post.image}
+                              alt={post.title}
+                              mode="cover"
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                            />
+                          </motion.div>
                         </Link>
 
                         <div className="p-5 flex flex-col gap-3 h-full">
@@ -462,7 +800,7 @@ export function BlogPageClient({
 
           <aside className="space-y-6" aria-label="Blog sidebar">
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-3">Search</h3>
+              <h3 className="font-bold text-lg mb-3" data-scramble-heading="Search">Search</h3>
               <label className="relative block">
                 <Search
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -479,7 +817,7 @@ export function BlogPageClient({
             </div>
 
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-4">Popular Posts</h3>
+              <h3 className="font-bold text-lg mb-4" data-scramble-heading="Popular Posts">Popular Posts</h3>
               <div className="space-y-4">
                 {popularPosts.map((post) => (
                   <Link
@@ -507,7 +845,7 @@ export function BlogPageClient({
             </div>
 
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-4">Categories</h3>
+              <h3 className="font-bold text-lg mb-4" data-scramble-heading="Categories">Categories</h3>
               <div className="space-y-2">
                 {CATEGORY_ITEMS.map((category) => (
                   <button
@@ -531,7 +869,7 @@ export function BlogPageClient({
             </div>
 
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-4">Tag Cloud</h3>
+              <h3 className="font-bold text-lg mb-4" data-scramble-heading="Tag Cloud">Tag Cloud</h3>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(tagCounts)
                   .sort((a, b) => b[1] - a[1])
@@ -585,6 +923,6 @@ export function BlogPageClient({
           </motion.button>
         )}
       </AnimatePresence>
-    </main>
+    </motion.main>
   );
 }

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, Menu, Search, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
 const navigation = [
@@ -31,6 +32,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     setIsOpen(false);
@@ -48,12 +50,33 @@ export function Navbar() {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <nav
+    <motion.nav
       data-app-nav
-      className="sticky top-0 z-50 border-b border-border bg-[#0F1923]/95 shadow-sm max-md:backdrop-blur-none md:backdrop-blur-sm"
+      initial={false}
+      animate={{
+        backgroundColor: isScrolled ? 'rgba(15, 25, 35, 0.75)' : 'rgba(15, 25, 35, 0.95)',
+        borderBottomColor: isScrolled ? 'rgba(229, 231, 235, 0.25)' : 'rgba(229, 231, 235, 0.08)',
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      className={`sticky top-0 z-50 border-b shadow-sm transition-all duration-300 ease-in-out ${
+        isScrolled ? 'backdrop-blur-md' : 'max-md:backdrop-blur-none md:backdrop-blur-sm'
+      }`}
     >
-      <div className="app-container flex h-14 max-h-14 min-h-14 items-center justify-between md:h-16 md:max-h-none md:min-h-0">
+      <div
+        className={`app-container flex items-center justify-between transition-all duration-300 ease-in-out ${
+          isScrolled ? 'h-12 max-h-12 min-h-12 md:h-14' : 'h-14 max-h-14 min-h-14 md:h-16'
+        }`}
+      >
         <Link
           href="/"
           className="flex min-h-11 min-w-0 shrink-0 touch-manipulation items-center gap-2 py-1"
@@ -74,6 +97,7 @@ export function Navbar() {
             <div key={item.name} className="relative group">
               <Link
                 href={item.href}
+                data-cursor="nav"
                 className="flex min-h-11 cursor-pointer touch-manipulation items-center gap-1 px-3 py-2 text-sm font-medium text-white transition-colors hover:text-amber-500 active:text-amber-400"
               >
                 {item.name}
@@ -86,6 +110,7 @@ export function Navbar() {
                     <Link
                       key={subitem.name}
                       href={subitem.href}
+                      data-cursor="nav"
                       className="block min-h-12 cursor-pointer px-4 py-3 text-sm text-foreground first:rounded-t-lg last:rounded-b-lg transition-colors hover:bg-secondary hover:text-secondary-foreground active:bg-secondary/90"
                     >
                       {subitem.name}
@@ -100,6 +125,7 @@ export function Navbar() {
         <div className="hidden items-center gap-2 lg:flex">
           <Link
             href="/blog#blog-search"
+            data-cursor="nav"
             aria-label="Search blog posts"
             className="inline-flex h-11 min-h-11 w-11 min-w-11 cursor-pointer touch-manipulation items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-amber-400 hover:text-amber-400 active:border-amber-500"
           >
@@ -201,6 +227,6 @@ export function Navbar() {
           </div>
         </>
       )}
-    </nav>
+    </motion.nav>
   );
 }

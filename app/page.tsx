@@ -211,6 +211,10 @@ export default function Home() {
 
       {/* SHOWCASE — Bento */}
       <section className="relative py-12 md:py-16 bg-[#0F1923] text-white overflow-hidden">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-30">
+          <div className="water-wave water-wave-a" />
+          <div className="water-wave water-wave-b" />
+        </div>
         <div className="app-container">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <Reveal>
@@ -417,6 +421,10 @@ export default function Home() {
 
       {/* CTA — split navy */}
       <section className="relative border-t-4 border-amber-400 bg-[#0F1923] py-16 md:py-20 text-white overflow-hidden">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 opacity-35">
+          <div className="water-wave water-wave-c" />
+          <div className="water-wave water-wave-d" />
+        </div>
         <div className="pointer-events-none absolute right-0 top-1/2 h-[420px] w-[420px] -translate-y-1/2 translate-x-1/4 rounded-full bg-amber-400 opacity-10 motion-reduce:opacity-0" />
         <div className="app-container relative z-10 grid max-w-[1200px] grid-cols-1 items-center gap-10 md:gap-12 lg:grid-cols-2">
           <Reveal>

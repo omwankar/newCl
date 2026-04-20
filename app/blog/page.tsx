@@ -2,6 +2,7 @@ import Script from 'next/script';
 import { Barlow_Condensed, DM_Sans } from 'next/font/google';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
+import { BlogFooterReveal } from '@/components/blog/BlogFooterReveal';
 import { BlogPageClient } from './blog-page-client';
 import { getBlogsNewestFirst } from '@/lib/blogs.server';
 
@@ -50,7 +51,9 @@ export default async function BlogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
-      <Footer />
+      <BlogFooterReveal>
+        <Footer />
+      </BlogFooterReveal>
     </>
   );
 }

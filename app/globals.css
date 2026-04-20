@@ -502,12 +502,117 @@
   .home-dash-anim {
     will-change: stroke-dashoffset;
   }
+
+  @keyframes blog-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .blog-marquee-inner {
+    animation: blog-marquee 20s linear infinite;
+    will-change: transform;
+  }
+
+  .blog-premium-page,
+  .blog-premium-page * {
+    cursor: none !important;
+  }
+
+  @keyframes water-shift {
+    0% {
+      transform: translateX(0) translateY(0);
+    }
+    50% {
+      transform: translateX(-40px) translateY(-6px);
+    }
+    100% {
+      transform: translateX(-80px) translateY(0);
+    }
+  }
+
+  .water-wave {
+    position: absolute;
+    left: -10%;
+    width: 120%;
+    border-radius: 9999px;
+    filter: blur(2px);
+    will-change: transform;
+    animation: water-shift 10s ease-in-out infinite;
+  }
+
+  .water-wave-a {
+    top: 6px;
+    height: 46px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.1) 55%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+
+  .water-wave-b {
+    top: 30px;
+    height: 36px;
+    opacity: 0.7;
+    animation-duration: 13s;
+    animation-direction: reverse;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(250, 193, 46, 0.32) 0%,
+      rgba(250, 193, 46, 0.08) 52%,
+      rgba(250, 193, 46, 0) 100%
+    );
+  }
+
+  .water-wave-c {
+    bottom: 14px;
+    height: 44px;
+    animation-duration: 11s;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.26) 0%,
+      rgba(255, 255, 255, 0.08) 54%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+
+  .water-wave-d {
+    bottom: -2px;
+    height: 32px;
+    opacity: 0.75;
+    animation-duration: 15s;
+    animation-direction: reverse;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(250, 193, 46, 0.24) 0%,
+      rgba(250, 193, 46, 0.06) 56%,
+      rgba(250, 193, 46, 0) 100%
+    );
+  }
+
+  @media (pointer: coarse) {
+    .blog-premium-page,
+    .blog-premium-page * {
+      cursor: auto !important;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .home-marquee-l,
-  .home-marquee-r {
+  .home-marquee-r,
+  .blog-marquee-inner {
     animation: none !important;
+  }
+
+  .water-wave {
+    animation: none !important;
+    transform: none !important;
   }
 
   .home-dash-anim {

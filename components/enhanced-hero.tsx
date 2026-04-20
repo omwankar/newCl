@@ -4,17 +4,36 @@ import { Button } from '@/components/ui/button';
 import { MapPin, ArrowDown } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export function EnhancedHero() {
+  const [isVideoReady, setIsVideoReady] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      <Image 
-        src="/hero-logistics.jpg" 
-        alt="Global logistics port" 
+      <Image
+        src="/hero-logistics.jpg"
+        alt="Global logistics port"
         fill
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          isVideoReady ? 'opacity-0' : 'opacity-100'
+        }`}
         priority
       />
+      <video
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          isVideoReady ? 'opacity-100' : 'opacity-0'
+        }`}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/hero-logistics.jpg"
+        onCanPlay={() => setIsVideoReady(true)}
+      >
+        <source src="/hero-logistics.mp4" type="video/mp4" />
+      </video>
       <div className="absolute inset-0 hero-overlay" />
 
       {/* Animated particles */}
