@@ -81,11 +81,14 @@ export default function AdminUploadPage() {
       try {
         data = JSON.parse(raw) as UploadResponse;
       } catch {
+        const isHtmlError = /<!doctype html>|<html/i.test(raw);
         data = {
           success: false,
           message:
-            raw?.trim() ||
-            `Upload failed with status ${response.status}. Please check server configuration.`,
+            isHtmlError
+              ? `Server returned an HTML error page (status ${response.status}). Check Vercel Function logs for /api/upload-blog and verify BLOB_READ_WRITE_TOKEN is set.`
+              : raw?.trim() ||
+                `Upload failed with status ${response.status}. Please check server configuration.`,
           slug: null,
         };
       }

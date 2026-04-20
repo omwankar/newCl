@@ -17,6 +17,8 @@ import { readBlogData, writeBlogDataSafely } from '@/lib/blog-storage';
 import { getAllBlogs } from '@/lib/blogs.server';
 import type { BlogPost } from '@/lib/blogs';
 
+export const runtime = 'nodejs';
+
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MAX_IMAGE_SIZE = 6 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set([
