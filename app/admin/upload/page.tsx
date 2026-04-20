@@ -7,6 +7,7 @@ type UploadResponse = {
   success: boolean;
   message: string;
   slug: string | null;
+  details?: string[];
 };
 
 const ACCEPTED_TYPES = '.md,.txt,.pdf';
@@ -75,7 +76,23 @@ export default function AdminUploadPage() {
         method: 'POST',
         body: formData,
       });
-      const data = (await response.json()) as UploadResponse;
+      const raw = await response.text();
+      let data: UploadResponse;
+      try {
+        data = JSON.parse(raw) as UploadResponse;
+      } catch {
+        data = {
+          success: false,
+          message:
+            raw?.trim() ||
+            `Upload failed with status ${response.status}. Please check server configuration.`,
+          slug: null,
+        };
+      }
+
+      if (!response.ok && !data.message) {
+        data.message = `Upload failed with status ${response.status}.`;
+      }
       setResult(data);
       if (data.success) {
         setTitle('');
@@ -85,10 +102,13 @@ export default function AdminUploadPage() {
         setFile(null);
         setPreviewText('');
       }
-    } catch {
+    } catch (error) {
       setResult({
         success: false,
-        message: 'Upload failed. Please check your connection and try again.',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Upload failed. Please check your connection and try again.',
         slug: null,
       });
     } finally {
@@ -206,6 +226,13 @@ export default function AdminUploadPage() {
             }`}
           >
             <p>{result.message}</p>
+            {!result.success && result.details?.length ? (
+              <ul className="mt-2 list-disc pl-5">
+                {result.details.map((item, idx) => (
+                  <li key={`${item}-${idx}`}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
             {result.success && result.slug && (
               <p className="mt-1">
                 View post:{' '}

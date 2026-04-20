@@ -64,6 +64,11 @@ async function saveUploadedImage(imageFile: File): Promise<string> {
     });
     return result.url;
   }
+  if (process.env.VERCEL === '1') {
+    throw new Error(
+      'Missing BLOB_READ_WRITE_TOKEN in Vercel environment. Image uploads require Vercel Blob in production.'
+    );
+  }
 
   const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
   await mkdir(uploadsDir, { recursive: true });
@@ -210,11 +215,15 @@ export async function POST(request: Request) {
 
     try {
       await writeBlogDataSafely([...uploadedBlogs, nextPost]);
-    } catch {
+    } catch (error) {
+      console.error('Blog storage write failed:', error);
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to save blog data. Please try again.',
+          message:
+            error instanceof Error
+              ? error.message
+              : 'Failed to save blog data. Please try again.',
           slug: null,
         },
         { status: 500 }
@@ -226,11 +235,15 @@ export async function POST(request: Request) {
       message: 'Blog published successfully.',
       slug: nextPost.slug,
     });
-  } catch {
+  } catch (error) {
+    console.error('Upload blog API failed:', error);
     return NextResponse.json(
       {
         success: false,
-        message: 'Unexpected error while publishing blog.',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Unexpected error while publishing blog.',
         slug: null,
       },
       { status: 500 }

@@ -12,6 +12,10 @@ function shouldUseBlobStorage() {
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 }
 
+function isVercelRuntime() {
+  return process.env.VERCEL === '1';
+}
+
 function ensureBlogDataFile() {
   const dir = path.dirname(BLOG_DATA_PATH);
   if (!fs.existsSync(dir)) {
@@ -67,6 +71,11 @@ export async function writeBlogDataSafely(blogs: BlogPost[]) {
   if (shouldUseBlobStorage()) {
     await writeToBlobStorage(blogs);
     return;
+  }
+  if (isVercelRuntime()) {
+    throw new Error(
+      'Missing BLOB_READ_WRITE_TOKEN in Vercel environment. Blog writes require Vercel Blob in production.'
+    );
   }
   ensureBlogDataFile();
   const tempPath = `${BLOG_DATA_PATH}.tmp`;
