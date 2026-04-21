@@ -517,10 +517,15 @@
     will-change: transform;
   }
 
-  .blog-premium-page,
-  .blog-premium-page * {
-    cursor: none !important;
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
 
   @keyframes water-shift {
     0% {
@@ -595,12 +600,6 @@
     );
   }
 
-  @media (pointer: coarse) {
-    .blog-premium-page,
-    .blog-premium-page * {
-      cursor: auto !important;
-    }
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

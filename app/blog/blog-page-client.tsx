@@ -1,7 +1,7 @@
 'use client';
 
-import { type MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { motion, AnimatePresence, animate, useReducedMotion } from 'framer-motion';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -18,15 +18,8 @@ import {
   Leaf,
   Globe,
 } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
-import Lenis from 'lenis';
 import type { BlogPost } from '@/lib/blogs';
 import { ResponsiveBlogImage } from '@/components/blog/ResponsiveBlogImage';
-import { CustomCursor } from '@/components/blog/CustomCursor';
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type BlogPageClientProps = {
   displayFontClass: string;
@@ -61,7 +54,6 @@ const categoryColors: Record<string, string> = {
 
 const heroTitleWords = 'Insights That Move Your Business Forward'.split(' ');
 const PAGE_SIZE = 6;
-const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&';
 
 function useCountUp(end: number, active: boolean, duration = 2000) {
   const [count, setCount] = useState(0);
@@ -92,28 +84,16 @@ export function BlogPageClient({
 }: BlogPageClientProps) {
   const prefersReducedMotion = useReducedMotion();
   const rootRef = useRef<HTMLElement>(null);
-  const horizontalSectionRef = useRef<HTMLElement>(null);
-  const horizontalTrackRef = useRef<HTMLDivElement>(null);
-  const horizontalProgressRef = useRef<HTMLDivElement>(null);
-  const [statsVisible, setStatsVisible] = useState(false);
+  const [statsVisible] = useState(true);
   const sortedPosts = useMemo(() => initialPosts, [initialPosts]);
-  const [featuredIndex, setFeaturedIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState<string>('All Posts');
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [query, setQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const [isLoading, setIsLoading] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const shipmentsCount = useCountUp(10000, statsVisible, 1800);
-  const articlesCount = useCountUp(sortedPosts.length || 500, statsVisible, 1800);
+  const articlesCount = useCountUp(sortedPosts.length, statsVisible, 1800);
   const onTimeCount = useCountUp(98, statsVisible, 1800);
-
-  useEffect(() => {
-    const timeout = window.setTimeout(() => {
-      setIsLoading(false);
-    }, 700);
-    return () => window.clearTimeout(timeout);
-  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -126,10 +106,6 @@ export function BlogPageClient({
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [activeCategory, activeTag, query]);
-
-  useEffect(() => {
-    setFeaturedIndex(0);
   }, [activeCategory, activeTag, query]);
 
   const tagCounts = useMemo(() => {
@@ -159,130 +135,6 @@ export function BlogPageClient({
     });
   }, [activeCategory, activeTag, query, sortedPosts]);
 
-  const featuredCandidates = useMemo(() => {
-    const candidates = filteredPosts.length > 0 ? filteredPosts : sortedPosts;
-    const featured = candidates.find((post) => post.featured);
-    if (!featured) return candidates;
-    return [featured, ...candidates.filter((post) => post.id !== featured.id)];
-  }, [filteredPosts, sortedPosts]);
-
-  useEffect(() => {
-    if (featuredCandidates.length <= 1) return;
-    const interval = window.setInterval(() => {
-      setFeaturedIndex((prev) => (prev + 1) % featuredCandidates.length);
-    }, 5000);
-    return () => window.clearInterval(interval);
-  }, [featuredCandidates]);
-
-  useEffect(() => {
-    if (prefersReducedMotion || typeof window === 'undefined') return;
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
-    let rafId = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const nodes = Array.from(
-      document.querySelectorAll<HTMLElement>('[data-scramble-heading]')
-    );
-    if (nodes.length === 0) return;
-    const seen = new WeakSet<HTMLElement>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const target = entry.target as HTMLElement;
-          if (seen.has(target)) continue;
-          const finalText = target.dataset.scrambleHeading ?? target.innerText;
-          seen.add(target);
-          let iteration = 0;
-          const interval = window.setInterval(() => {
-            target.innerText = finalText
-              .split('')
-              .map((letter, i) => {
-                if (letter === ' ') return ' ';
-                if (i < iteration) return finalText[i];
-                return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-              })
-              .join('');
-            if (iteration >= finalText.length) {
-              window.clearInterval(interval);
-              target.innerText = finalText;
-            }
-            iteration += 1 / 3;
-          }, 40);
-          observer.unobserve(target);
-        }
-      },
-      { threshold: 0.35 }
-    );
-    for (const node of nodes) observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const el = document.getElementById('blog-stats-strip');
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setStatsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  useGSAP(
-    () => {
-      if (
-        prefersReducedMotion ||
-        typeof window === 'undefined' ||
-        !horizontalSectionRef.current ||
-        !horizontalTrackRef.current
-      ) {
-        return;
-      }
-      const trigger = gsap.to(horizontalTrackRef.current, {
-        x: () =>
-          -(
-            horizontalTrackRef.current!.scrollWidth - window.innerWidth
-          ) + 'px',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: horizontalSectionRef.current,
-          pin: true,
-          scrub: 1,
-          end: () => '+=' + horizontalTrackRef.current!.scrollWidth,
-          onUpdate: (self) => {
-            if (!horizontalProgressRef.current) return;
-            horizontalProgressRef.current.style.transform = `scaleX(${self.progress})`;
-          },
-        },
-      });
-      return () => trigger.kill();
-    },
-    { scope: rootRef, dependencies: [prefersReducedMotion] }
-  );
-
-  const featuredPost =
-    featuredCandidates[featuredIndex % Math.max(featuredCandidates.length, 1)];
-
   const visiblePosts = filteredPosts.slice(0, visibleCount);
   const hasMorePosts = visibleCount < filteredPosts.length;
   const popularPosts = sortedPosts.slice(0, 4);
@@ -304,68 +156,27 @@ export function BlogPageClient({
     setQuery('');
   };
 
-  const handleCardMouseMove = (
-    event: MouseEvent<HTMLElement>
-  ) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left - rect.width / 2) * 0.15;
-    const y = (event.clientY - rect.top - rect.height / 2) * 0.15;
-    animate(
-      event.currentTarget,
-      { x, y },
-      { type: 'spring', stiffness: 200, damping: 20 }
-    );
-    const imageNode = event.currentTarget.querySelector<HTMLElement>('[data-card-image]');
-    if (imageNode) {
-      const pointerY = (event.clientY - rect.top) / rect.height - 0.5;
-      gsap.to(imageNode, {
-        yPercent: pointerY * -8,
-        scale: 1.1,
-        duration: 0.6,
-        ease: 'power2.out',
-      });
-    }
-  };
-
-  const handleCardMouseLeave = (event: MouseEvent<HTMLElement>) => {
-    animate(
-      event.currentTarget,
-      { x: 0, y: 0 },
-      { type: 'spring', stiffness: 200, damping: 20 }
-    );
-    const imageNode = event.currentTarget.querySelector<HTMLElement>('[data-card-image]');
-    if (imageNode) {
-      gsap.to(imageNode, {
-        yPercent: 0,
-        scale: 1,
-        duration: 0.6,
-        ease: 'power2.out',
-      });
-    }
-  };
-
   return (
     <motion.main
       ref={rootRef}
-      className={`blog-premium-page min-h-screen bg-[#F5F5F0] text-[#1A1A2E] ${bodyFontClass}`}
+      className={`blog-premium-page min-h-screen overflow-x-hidden bg-[#F5F5F0] text-[#1A1A2E] cursor-auto ${bodyFontClass}`}
       id="blog-search"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4, ease: 'easeInOut' }}
     >
-      <CustomCursor />
       <section className="bg-[#0A1628] text-white">
         <motion.div
           className="app-container relative overflow-hidden pt-14 pb-10"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
         >
           <motion.div
             aria-hidden
             className="pointer-events-none absolute right-0 top-8 text-[180px] font-bold leading-none text-white/[0.04] md:text-[260px]"
-            animate={prefersReducedMotion ? undefined : { y: [0, -20, 0] }}
+            animate={undefined}
             transition={{
               duration: 8,
               repeat: Number.POSITIVE_INFINITY,
@@ -403,16 +214,15 @@ export function BlogPageClient({
           </p>
           <h1
             className={`${displayFontClass} mt-4 text-4xl sm:text-5xl lg:text-6xl leading-[0.95] tracking-tight`}
-            data-scramble-heading="Insights That Move Your Business Forward"
           >
             {heroTitleWords.map((word, index) => (
               <span key={`${word}-${index}`} className="mr-3 inline-block overflow-hidden">
                 <motion.span
-                  initial={{ y: '110%', rotate: 3, opacity: 0 }}
+                  initial={{ y: '110%', opacity: 0 }}
                   animate={{ y: '0%', rotate: 0, opacity: 1 }}
                   transition={{
-                    duration: 0.75,
-                    delay: index * 0.08,
+                    duration: 0.45,
+                    delay: index * 0.04,
                     ease: [0.16, 1, 0.3, 1],
                   }}
                   className="inline-block"
@@ -463,7 +273,7 @@ export function BlogPageClient({
 
       <section className="sticky top-14 z-30 border-y border-slate-200 bg-[#F5F5F0]/95 max-md:backdrop-blur-none md:backdrop-blur">
         <div className="app-container py-3">
-          <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="hide-scrollbar flex gap-2 overflow-x-auto pb-1">
             {CATEGORY_ITEMS.map((category) => {
               const Icon = category.icon;
               const isActive = activeCategory === category.label;
@@ -505,64 +315,6 @@ export function BlogPageClient({
         </div>
       </section>
 
-      <section className="py-10">
-        <div className="app-container">
-          <Link
-            href={`/blog/${featuredPost.slug}`}
-            className="group block overflow-hidden rounded-3xl ring-1 ring-slate-200"
-            aria-label={`Read featured post: ${featuredPost.title}`}
-          >
-            <div className="relative h-[380px] sm:h-[480px] overflow-hidden bg-[#0A1628]">
-              <motion.div
-                className="h-full"
-                whileHover={{ scale: 1.04 }}
-                transition={{ duration: 0.5 }}
-              >
-                <ResponsiveBlogImage
-                  src={featuredPost.image}
-                  alt={featuredPost.title}
-                  priority
-                  mode="contain"
-                  sizes="100vw"
-                />
-              </motion.div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/90 via-[#0A1628]/40 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
-                <span
-                  className={`inline-flex rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
-                    categoryColors[featuredPost.category] ??
-                    'bg-orange-100 text-orange-700'
-                  }`}
-                >
-                  {featuredPost.category}
-                </span>
-                <h2
-                  className={`${displayFontClass} mt-4 text-3xl sm:text-4xl md:text-5xl text-white leading-[0.95] max-w-4xl`}
-                  data-scramble-heading={featuredPost.title}
-                >
-                  {featuredPost.title}
-                </h2>
-                <p className="mt-3 text-white/80 max-w-2xl line-clamp-2">
-                  {featuredPost.excerpt}
-                </p>
-                <div className="mt-5 flex items-center gap-3 text-sm text-white/75">
-                  <Image
-                    src={featuredPost.author.avatar}
-                    alt={featuredPost.author.name}
-                    width={36}
-                    height={36}
-                    className="rounded-full ring-2 ring-white/20"
-                  />
-                  <span>{featuredPost.author.name}</span>
-                  <span>•</span>
-                  <span>{featuredPost.date}</span>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </section>
-
       <section className="border-y border-slate-200 bg-white/50 py-3">
         <div className="app-container overflow-hidden">
           <div className="blog-marquee-inner flex min-w-max items-center gap-8 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -576,231 +328,146 @@ export function BlogPageClient({
         </div>
       </section>
 
-      <section
-        id="blog-stats-strip"
-        className="border-b border-slate-200 bg-[#0F1923] py-4 text-white"
-      >
-        <motion.div
-          className="app-container flex flex-wrap items-center gap-4 text-sm font-semibold uppercase tracking-[0.12em] md:gap-8"
-          initial={prefersReducedMotion ? false : { opacity: 0, x: -60 }}
-          whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-        >
-          <span>{shipmentsCount.toLocaleString()}+ Shipments Tracked</span>
-          <span className="text-white/40">•</span>
-          <span>{articlesCount}+ Articles</span>
-          <span className="text-white/40">•</span>
-          <span>{onTimeCount}% On-Time</span>
-        </motion.div>
-      </section>
-
-      <section ref={horizontalSectionRef} className="relative bg-[#0A1628] py-10 text-white">
-        <div className="app-container mb-6">
-          <h2
-            className={`${displayFontClass} text-3xl uppercase tracking-tight md:text-4xl`}
-            data-scramble-heading="Featured Posts"
-          >
-            Featured Posts
-          </h2>
-        </div>
-        <div ref={horizontalTrackRef} className="flex min-w-max gap-5 px-4 md:px-8">
-          {featuredCandidates.slice(0, Math.min(6, featuredCandidates.length)).map((post) => (
-            <article
-              key={`featured-horizontal-${post.id}`}
-              className="w-[420px] shrink-0 overflow-hidden rounded-3xl border border-white/15 bg-white/5 backdrop-blur-sm"
-            >
-              <div className="relative h-[520px]">
-                <ResponsiveBlogImage src={post.image} alt={post.title} mode="cover" sizes="420px" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-5">
-                  <p className="text-xs uppercase tracking-[0.15em] text-orange-300">{post.category}</p>
-                  <h3 className={`${displayFontClass} mt-2 text-3xl leading-tight`} data-scramble-heading={post.title}>
-                    {post.title}
-                  </h3>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-        <div className="app-container mt-6">
-          <div className="h-1 w-full overflow-hidden rounded-full bg-white/20">
-            <div
-              ref={horizontalProgressRef}
-              className="h-full origin-left scale-x-0 rounded-full bg-[#FF5C00]"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="pb-16">
+      <section className="py-16">
         <div className="app-container grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_330px] gap-10">
           <section aria-label="Blog posts" className="space-y-6">
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="rounded-2xl bg-white ring-1 ring-slate-200 overflow-hidden"
-                  >
-                    <div className="h-44 bg-slate-200/70 animate-pulse" />
-                    <div className="p-5 space-y-3">
-                      <div className="h-4 w-20 bg-slate-200/70 rounded animate-pulse" />
-                      <div className="h-5 w-full bg-slate-200/70 rounded animate-pulse" />
-                      <div className="h-5 w-5/6 bg-slate-200/70 rounded animate-pulse" />
-                      <div className="h-4 w-full bg-slate-200/70 rounded animate-pulse" />
-                      <div className="h-4 w-3/4 bg-slate-200/70 rounded animate-pulse" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <>
-                {visiblePosts.length === 0 ? (
-                  <div className="rounded-2xl bg-white p-10 text-center ring-1 ring-slate-200">
-                    <p className="text-lg font-semibold">No posts found</p>
-                    <p className="text-sm text-slate-500 mt-2">
-                      Try a different category, tag, or search term.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {visiblePosts.map((post, index) => (
-                      <motion.article
-                        key={post.id}
-                        initial={
-                          prefersReducedMotion
-                            ? false
-                            : { opacity: 0, y: 80, rotateX: 15, scale: 0.95 }
-                        }
-                        whileInView={
-                          prefersReducedMotion
-                            ? undefined
-                            : { opacity: 1, y: 0, rotateX: 0, scale: 1 }
-                        }
-                        viewport={{ once: true, margin: '-60px' }}
-                        transition={{
-                          duration: 0.7,
-                          delay: index * 0.12,
-                          ease: [0.21, 1.02, 0.73, 1],
-                        }}
-                        onMouseMove={handleCardMouseMove}
-                        onMouseLeave={handleCardMouseLeave}
-                        className="group rounded-2xl bg-white ring-1 ring-slate-200 overflow-hidden flex flex-col"
-                        data-cursor="card"
-                        style={{
-                          transition: 'transform 0.2s ease',
-                          willChange: 'transform, opacity',
-                          transformPerspective: 1000,
-                        }}
-                      >
+            <>
+              {visiblePosts.length === 0 ? (
+                <div className="rounded-2xl bg-white p-10 text-center ring-1 ring-slate-200">
+                  <p className="text-lg font-semibold">No posts found</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    Try a different category, tag, or search term.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {visiblePosts.map((post, index) => (
+                    <motion.article
+                      key={post.id}
+                      initial={
+                        prefersReducedMotion
+                          ? false
+                          : { opacity: 0, y: 80, rotateX: 15, scale: 0.95 }
+                      }
+                      whileInView={
+                        prefersReducedMotion
+                          ? undefined
+                          : { opacity: 1, y: 0, rotateX: 0, scale: 1 }
+                      }
+                      viewport={{ once: true, margin: '-60px' }}
+                      transition={{
+                        duration: 0.4,
+                        delay: index * 0.05,
+                        ease: [0.21, 1.02, 0.73, 1],
+                      }}
+                      className="group rounded-2xl bg-white ring-1 ring-slate-200 overflow-hidden flex flex-col"
+                      style={{
+                        transition: 'transform 0.2s ease',
+                        willChange: 'transform, opacity',
+                        transformPerspective: 1000,
+                      }}
+                    >
                         <Link
                           href={`/blog/${post.slug}`}
                           className="block relative h-[220px] md:aspect-[16/9] md:h-auto"
                         >
-                          <motion.div
-                            whileHover={{ scale: 1.08 }}
-                            transition={{ duration: 0.4 }}
-                            className="h-full w-full"
-                            data-card-image
-                          >
+                          <div className="h-full w-full">
                             <ResponsiveBlogImage
                               src={post.image}
                               alt={post.title}
                               mode="cover"
                               sizes="(max-width: 768px) 100vw, 33vw"
                             />
-                          </motion.div>
+                          </div>
                         </Link>
 
-                        <div className="p-5 flex flex-col gap-3 h-full">
-                          <span
-                            className={`inline-flex w-fit rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${
-                              categoryColors[post.category] ??
-                              'bg-orange-100 text-orange-700'
-                            }`}
-                          >
-                            {post.category}
-                          </span>
+                      <div className="p-5 flex flex-col gap-3 h-full">
+                        <span
+                          className={`inline-flex w-fit rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${
+                            categoryColors[post.category] ??
+                            'bg-orange-100 text-orange-700'
+                          }`}
+                        >
+                          {post.category}
+                        </span>
 
-                          <h3 className="text-lg font-bold leading-tight line-clamp-2">
-                            {post.title}
-                          </h3>
+                        <h3 className="text-lg font-bold leading-tight line-clamp-2">
+                          {post.title}
+                        </h3>
 
-                          <p className="text-sm text-slate-600 line-clamp-3">
-                            {post.excerpt}
-                          </p>
+                        <p className="text-sm text-slate-600 line-clamp-3">
+                          {post.excerpt}
+                        </p>
 
-                          <div className="flex items-center gap-3 mt-1">
-                            <Image
-                              src={post.author.avatar}
-                              alt={post.author.name}
-                              width={28}
-                              height={28}
-                              className="rounded-full"
-                            />
-                            <div className="text-xs text-slate-500">
-                              <p className="font-semibold text-slate-700">
-                                {post.author.name}
-                              </p>
-                              <p>
-                                {post.date} • {post.readTime}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {post.tags.slice(0, 3).map((tag) => (
-                              <button
-                                key={tag}
-                                type="button"
-                                onClick={() => setActiveTag(tag)}
-                                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
-                                  activeTag === tag
-                                    ? 'bg-[#FF5C00] text-white'
-                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                }`}
-                                aria-label={`Filter by tag ${tag}`}
-                              >
-                                {tag}
-                              </button>
-                            ))}
-                          </div>
-
-                          <div className="mt-auto pt-2">
-                            <Link
-                              href={`/blog/${post.slug}`}
-                              className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5C00]"
-                            >
-                              Read More
-                              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                            </Link>
+                        <div className="flex items-center gap-3 mt-1">
+                          <Image
+                            src={post.author.avatar}
+                            alt={post.author.name}
+                            width={28}
+                            height={28}
+                            className="rounded-full"
+                          />
+                          <div className="text-xs text-slate-500">
+                            <p className="font-semibold text-slate-700">
+                              {post.author.name}
+                            </p>
+                            <p>
+                              {post.date} • {post.readTime}
+                            </p>
                           </div>
                         </div>
-                      </motion.article>
-                    ))}
-                  </div>
-                )}
 
-                {hasMorePosts && (
-                  <div className="pt-6 text-center">
-                    <button
-                      type="button"
-                      onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
-                      className="inline-flex h-11 items-center justify-center rounded-full border border-[#0A1628] px-6 text-sm font-semibold text-[#0A1628] hover:bg-[#0A1628] hover:text-white transition-colors"
-                      aria-label="Load more posts"
-                    >
-                      Load More
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {post.tags.slice(0, 3).map((tag) => (
+                            <button
+                              key={tag}
+                              type="button"
+                              onClick={() => setActiveTag(tag)}
+                              className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
+                                activeTag === tag
+                                  ? 'bg-[#FF5C00] text-white'
+                                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                              }`}
+                              aria-label={`Filter by tag ${tag}`}
+                            >
+                              {tag}
+                            </button>
+                          ))}
+                        </div>
+
+                        <div className="mt-auto pt-2">
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5C00]"
+                          >
+                            Read More
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              )}
+
+              {hasMorePosts && (
+                <div className="pt-6 text-center">
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-[#0A1628] px-6 text-sm font-semibold text-[#0A1628] hover:bg-[#0A1628] hover:text-white transition-colors"
+                    aria-label="Load more posts"
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
+            </>
           </section>
 
           <aside className="space-y-6" aria-label="Blog sidebar">
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-3" data-scramble-heading="Search">Search</h3>
+              <h3 className="font-bold text-lg mb-3">Search</h3>
               <label className="relative block">
                 <Search
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -817,7 +484,7 @@ export function BlogPageClient({
             </div>
 
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-4" data-scramble-heading="Popular Posts">Popular Posts</h3>
+              <h3 className="font-bold text-lg mb-4">Popular Posts</h3>
               <div className="space-y-4">
                 {popularPosts.map((post) => (
                   <Link
@@ -845,7 +512,7 @@ export function BlogPageClient({
             </div>
 
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-4" data-scramble-heading="Categories">Categories</h3>
+              <h3 className="font-bold text-lg mb-4">Categories</h3>
               <div className="space-y-2">
                 {CATEGORY_ITEMS.map((category) => (
                   <button
@@ -869,7 +536,7 @@ export function BlogPageClient({
             </div>
 
             <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-4" data-scramble-heading="Tag Cloud">Tag Cloud</h3>
+              <h3 className="font-bold text-lg mb-4">Tag Cloud</h3>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(tagCounts)
                   .sort((a, b) => b[1] - a[1])

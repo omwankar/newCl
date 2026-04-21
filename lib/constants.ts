@@ -1,5 +1,8 @@
 import { Service, Office, Differentiator, ProcessStep, TimelineEvent, Industry } from './types';
 
+export const PRIMARY_CONTACT_PHONE_DISPLAY = '+44 (0) 3300946908';
+export const PRIMARY_CONTACT_PHONE_HREF = 'tel:+443300946908';
+
 export const SERVICES: Service[] = [
   {
     id: 'air-freight',
@@ -54,26 +57,31 @@ export const SERVICES: Service[] = [
 export const OFFICES: Office[] = [
   {
     id: 'uk',
-    city: 'London',
+    flag: '🇬🇧',
+    city: 'Glasgow',
     country: 'United Kingdom',
   },
   {
     id: 'saudi',
-    city: 'Riyadh',
+    flag: '🇸🇦',
+    city: 'Dammam',
     country: 'Saudi Arabia',
   },
   {
     id: 'germany',
-    city: 'Berlin',
+    flag: '🇩🇪',
+    city: 'Magdeburg',
     country: 'Germany',
   },
   {
     id: 'india',
-    city: 'Mumbai',
+    flag: '🇮🇳',
+    city: 'Kerala',
     country: 'India',
   },
   {
     id: 'dubai',
+    flag: '🇦🇪',
     city: 'Dubai',
     country: 'UAE',
   },

@@ -8,7 +8,7 @@ import {
   FaXTwitter,
   FaPinterestP,
 } from 'react-icons/fa6';
-import { OFFICES } from '@/lib/constants';
+import { OFFICES, PRIMARY_CONTACT_PHONE_DISPLAY, PRIMARY_CONTACT_PHONE_HREF } from '@/lib/constants';
 
 export function Footer() {
   return (
@@ -21,9 +21,9 @@ export function Footer() {
               <Image
                 src="/clarusto-logo-light.png"
                 alt="Clarusto Logistics"
-                width={164}
-                height={45}
-                className="h-10 w-auto"
+                width={210}
+                height={58}
+                className="h-12 w-auto max-w-[210px]"
               />
             </h3>
             <p className="text-sm opacity-90 mb-4">
@@ -123,7 +123,9 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <Phone className="w-4 h-4 mt-1 flex-shrink-0" />
-                <span>+1-800-LOGISTICS</span>
+                <a href={PRIMARY_CONTACT_PHONE_HREF} className="underline-offset-2 hover:underline">
+                  {PRIMARY_CONTACT_PHONE_DISPLAY}
+                </a>
               </li>
               <li className="flex items-start gap-2">
                 <Mail className="w-4 h-4 mt-1 flex-shrink-0" />
@@ -143,7 +145,9 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-sm">
             {OFFICES.map((office) => (
               <div key={office.id}>
-                <h5 className="font-semibold text-amber-500 mb-1">{office.city}</h5>
+                <h5 className="font-semibold text-amber-500 mb-1">
+                  {office.flag ? `${office.flag} ` : ''}{office.city}
+                </h5>
                 <p className="opacity-90">{office.country}</p>
               </div>
             ))}

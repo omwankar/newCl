@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { OrganizationJsonLd } from '@/components/organization-json-ld'
+import { FloatingCallButton } from '@/components/floating-call-button'
 import { SEO } from '@/lib/seo'
 import './globals.css'
 
@@ -63,6 +64,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-background text-foreground min-h-[100dvh] overflow-x-clip text-base leading-relaxed md:leading-normal" suppressHydrationWarning>
         <OrganizationJsonLd />
         {children}
+        <FloatingCallButton />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

@@ -85,9 +85,9 @@ export function Navbar() {
           <Image
             src="/clarusto-logo-light.png"
             alt="Clarusto Logistics"
-            width={164}
-            height={45}
-            className="h-8 w-auto max-w-[min(164px,45vw)] md:h-9"
+            width={220}
+            height={60}
+            className="h-10 w-auto max-w-[min(220px,58vw)] md:h-11"
             priority
           />
         </Link>

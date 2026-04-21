@@ -7,7 +7,7 @@ export function AboutSection() {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="about" className="py-24 bg-muted/50" ref={ref}>
+    <section id="about" className="py-24 bg-background" ref={ref}>
       <div className="app-container">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className={`relative ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>

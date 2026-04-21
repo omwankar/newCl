@@ -3,7 +3,9 @@ import { Footer } from '@/components/footer';
 import { HeroSection } from '@/components/hero-section';
 import { ContactForm } from '@/components/contact-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Mail, Clock } from 'lucide-react';
+import { PRIMARY_CONTACT_PHONE_DISPLAY, PRIMARY_CONTACT_PHONE_HREF } from '@/lib/constants';
+import { OfficeLocationsSection } from '@/components/office-locations-section';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -11,43 +13,58 @@ export default function ContactPage() {
   const offices = [
     {
       id: 1,
+      flag: '🇬🇧',
       city: 'United Kingdom',
       country: 'Glasgow',
       address: 'Suite 1/4, Park Lane House, 47 Broad Street, Glasgow, G40 2QW',
-      phone: '+44 (0) 3300946908',
+      phone: PRIMARY_CONTACT_PHONE_DISPLAY,
       email: 'info@clarustologistics.com',
+      lat: 55.8609,
+      lng: -4.2514,
     },
     {
       id: 2,
+      flag: '🇸🇦',
       city: 'Saudi Arabia (Headquarters)',
       country: 'Dammam',
       address: 'Alshifa office #02, Building 8179, Dammam, Saudi Arabia',
       phone: '',
       email: 'info@clarustologistics.com',
+      lat: 26.4207,
+      lng: 50.0888,
     },
     {
       id: 3,
+      flag: '🇩🇪',
       city: 'Germany',
       country: 'Magdeburg',
       address: 'Clarusto GHmP, Regus - Hasselbachplatz Breiter Weg 232A, Magdeburg, 39104',
       phone: '',
       email: '',
+      lat: 52.1205,
+      lng: 11.6276,
     },
     {
       id: 4,
+      flag: '🇮🇳',
       city: 'India',
       country: 'Kerala',
       address: 'MMC/644E5, 1st Floor, Imperial Plaza, Velloorkunnam, Muvattupuzha, Kerala 686673',
       phone: '',
       email: '',
+      lat: 9.9834,
+      lng: 76.5786,
     },
     {
       id: 5,
+      flag: '🇦🇪',
       city: 'Dubai',
       country: 'U.A.E',
       address: 'Clarusto Logistics, P.O BOX 232939, Dubai, U.A.E',
       phone: '',
       email: '',
+      lat: 25.2048,
+      lng: 55.2708,
     },
   ];
 
@@ -95,10 +112,10 @@ export default function ContactPage() {
                     <div>
                       <p className="font-semibold text-foreground">Phone</p>
                       <a
-                        href="tel:+443300946908"
+                        href={PRIMARY_CONTACT_PHONE_HREF}
                         className="text-muted-foreground text-sm underline-offset-2 hover:underline"
                       >
-                        +44 (0) 3300946908
+                        {PRIMARY_CONTACT_PHONE_DISPLAY}
                       </a>
                     </div>
                   </div>
@@ -152,41 +169,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {offices.map((office) => (
-              <Card key={office.id} className="bg-white ring-1 ring-border hover:ring-accent/40 hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
-                    <div>
-                      <CardTitle className="text-xl">{office.city}</CardTitle>
-                      <p className="text-sm text-muted-foreground mt-1">{office.country}</p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {office.address && (
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Address</p>
-                      <p className="text-sm text-muted-foreground">{office.address}</p>
-                    </div>
-                  )}
-                  {office.phone && (
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Phone</p>
-                      <p className="text-sm text-muted-foreground">{office.phone}</p>
-                    </div>
-                  )}
-                  {office.email && (
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Email</p>
-                      <p className="text-sm text-muted-foreground">{office.email}</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <OfficeLocationsSection offices={offices} />
         </div>
       </section>
 

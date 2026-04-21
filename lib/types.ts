@@ -8,6 +8,7 @@ export interface Service {
 
 export interface Office {
   id: string;
+  flag?: string;
   city: string;
   country: string;
   address?: string;
