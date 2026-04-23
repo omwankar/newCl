@@ -535,40 +535,7 @@ export function BlogPageClient({
               </div>
             </div>
 
-            <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-              <h3 className="font-bold text-lg mb-4">Tag Cloud</h3>
-              <div className="flex flex-wrap gap-2">
-                {Object.entries(tagCounts)
-                  .sort((a, b) => b[1] - a[1])
-                  .map(([tag, count]) => {
-                    const weightSize =
-                      count >= 4
-                        ? 'text-base'
-                        : count >= 3
-                        ? 'text-sm'
-                        : 'text-xs';
-                    return (
-                      <button
-                        key={tag}
-                        type="button"
-                        onClick={() =>
-                          setActiveTag((previous) =>
-                            previous === tag ? null : tag
-                          )
-                        }
-                        className={`rounded-full px-3 py-1.5 font-semibold transition-colors ${weightSize} ${
-                          activeTag === tag
-                            ? 'bg-[#FF5C00] text-white'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                        }`}
-                        aria-label={`Filter posts by tag ${tag}`}
-                      >
-                        {tag}
-                      </button>
-                    );
-                  })}
-              </div>
-            </div>
+       
 
           </aside>
         </div>

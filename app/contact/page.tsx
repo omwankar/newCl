@@ -19,6 +19,9 @@ export default function ContactPage() {
       address: 'Suite 1/4, Park Lane House, 47 Broad Street, Glasgow, G40 2QW',
       phone: PRIMARY_CONTACT_PHONE_DISPLAY,
       email: 'info@clarustologistics.com',
+      hours: '24/7 Support',
+      established: '2018',
+      teamSize: 25,
       lat: 55.8609,
       lng: -4.2514,
     },
@@ -30,6 +33,9 @@ export default function ContactPage() {
       address: 'Alshifa office #02, Building 8179, Dammam, Saudi Arabia',
       phone: '',
       email: 'info@clarustologistics.com',
+      hours: 'Sun–Thu · 9:00–18:00',
+      established: '1992',
+      teamSize: 80,
       lat: 26.4207,
       lng: 50.0888,
     },
@@ -41,6 +47,7 @@ export default function ContactPage() {
       address: 'Clarusto GHmP, Regus - Hasselbachplatz Breiter Weg 232A, Magdeburg, 39104',
       phone: '',
       email: '',
+      hours: 'Mon–Fri · 9:00–17:00',
       lat: 52.1205,
       lng: 11.6276,
     },
@@ -52,6 +59,7 @@ export default function ContactPage() {
       address: 'MMC/644E5, 1st Floor, Imperial Plaza, Velloorkunnam, Muvattupuzha, Kerala 686673',
       phone: '',
       email: '',
+      hours: 'Mon–Sat · 9:30–18:30',
       lat: 9.9834,
       lng: 76.5786,
     },
@@ -63,6 +71,7 @@ export default function ContactPage() {
       address: 'Clarusto Logistics, P.O BOX 232939, Dubai, U.A.E',
       phone: '',
       email: '',
+      hours: 'Sun–Thu · 9:00–18:00',
       lat: 25.2048,
       lng: 55.2708,
     },
@@ -165,7 +174,7 @@ export default function ContactPage() {
               Global Offices
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Office network and contact details based on Clarusto&apos;s latest company profile.
+              Select any office below to explore location, contact details, and live directions.
             </p>
           </div>
 

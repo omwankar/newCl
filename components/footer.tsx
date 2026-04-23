@@ -139,20 +139,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Global Offices */}
-        <div className="border-t border-primary-foreground border-opacity-20 pt-8 mb-8">
-          <h4 className="font-semibold mb-6">Global Offices</h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-sm">
-            {OFFICES.map((office) => (
-              <div key={office.id}>
-                <h5 className="font-semibold text-amber-500 mb-1">
-                  {office.flag ? `${office.flag} ` : ''}{office.city}
-                </h5>
-                <p className="opacity-90">{office.country}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+   
 
         {/* Copyright */}
         <div className="border-t border-primary-foreground border-opacity-20 pt-8 text-center text-sm opacity-75">

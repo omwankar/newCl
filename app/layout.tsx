@@ -1,13 +1,23 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Poppins, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { OrganizationJsonLd } from '@/components/organization-json-ld'
 import { FloatingCallButton } from '@/components/floating-call-button'
 import { SEO } from '@/lib/seo'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"], display: 'swap' });
-const _geistMono = Geist_Mono({ subsets: ["latin"], display: 'swap' });
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-brand',
+  display: 'swap',
+});
+
+const _geistMono = Geist_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono-ui',
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -60,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth overflow-x-clip" suppressHydrationWarning>
+    <html lang="en" className={`scroll-smooth overflow-x-clip ${poppins.variable} ${_geistMono.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased bg-background text-foreground min-h-[100dvh] overflow-x-clip text-base leading-relaxed md:leading-normal" suppressHydrationWarning>
         <OrganizationJsonLd />
         {children}

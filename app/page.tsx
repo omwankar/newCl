@@ -97,7 +97,7 @@ const GlobalStyles = () => (
       padding: 4px 10px;
     }
 
-    .hp-partners { background: var(--ink); padding: 5.5rem 0; overflow: hidden; border-top: 1px solid var(--rule); }
+    .hp-partners { background: var(--ink-2); padding: 5.5rem 0; overflow: hidden; border-top: 1px solid var(--rule); }
     .hp-partners-inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
     .hp-partners-header { text-align: center; margin-bottom: 3.5rem; }
     .hp-partners-title { font-size: clamp(36px, 5vw, 64px); }
@@ -111,8 +111,8 @@ const GlobalStyles = () => (
       z-index: 2;
       pointer-events: none;
     }
-    .hp-partner-row::before { left: 0; background: linear-gradient(to right, var(--ink), transparent); }
-    .hp-partner-row::after { right: 0; background: linear-gradient(to left, var(--ink), transparent); }
+    .hp-partner-row::before { left: 0; background: linear-gradient(to right, var(--ink-2), transparent); }
+    .hp-partner-row::after { right: 0; background: linear-gradient(to left, var(--ink-2), transparent); }
     .hp-partner-card {
       width: 160px;
       height: 80px;
@@ -120,12 +120,13 @@ const GlobalStyles = () => (
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--ink-2);
-      border: 1px solid var(--wire);
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(245, 184, 0, 0.35);
       padding: 0 1rem;
       transition: border-color 0.3s, background 0.3s;
     }
-    .hp-partner-card:hover { border-color: var(--gold-wire); background: var(--ink-3); }
+    .hp-partner-card:hover { border-color: var(--gold); background: #ffffff; }
+    .hp-partner-card img { filter: none; opacity: 1; mix-blend-mode: normal; }
     @keyframes hp-marquee-l { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     @keyframes hp-marquee-r { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
     .hp-marquee-l { animation: hp-marquee-l 45s linear infinite; }
@@ -495,19 +496,19 @@ export default function Home() {
 
   const partners = [
     { name: 'Saudi Aramco', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Saudi_Aramco_logo.svg/500px-Saudi_Aramco_logo.svg.png' },
-    { name: 'Samsung', logo: 'https://www.dafont.com/forum/attach/orig/2/1/218859.jpg' },
+    { name: 'Samsung', logo: 'https://www.dafont.com/forum/attach/orig/2/1/218859.jpg', scale: 1.15 },
     { name: 'ISCO (A Siemens Company)', logo: 'https://yjrconstrade.com/img/client2/21.jpg' },
-    { name: 'GWC', logo: 'https://www.gwclogistics.com/wp-content/uploads/2023/12/Newlogo.svg' },
+    { name: 'GWC', logo: 'https://www.gwclogistics.com/wp-content/uploads/2023/12/Newlogo.svg', scale: 1.2 },
     { name: 'SABIC', logo: 'https://www.sabic.com/en/Images/SABIC-LOGO_tcm1010-14323.svg' },
     { name: 'Al Khodari (AK)', logo: 'https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-original-577x577/s3/022025/al_abdulkarim.jpg?xH0DS85LZL.kKI.odp3Os1V0z1dC8Q9g&itok=EPEHN-rS' },
-    { name: 'Nas Air', logo: 'https://d2pi0n2fm836iz.cloudfront.net/484917/050420231358506453ba1a47511.png' },
+    { name: 'Nas Air', logo: 'https://d2pi0n2fm836iz.cloudfront.net/484917/050420231358506453ba1a47511.png', scale: 1.15 },
     { name: 'Petro RABIGH', logo: 'https://plantsolutionscoltd.com/assets/img/brand/3.jpg' },
-    { name: 'Panalpina', logo: 'https://logodix.com/logo/1331186.jpg' },
-    { name: 'Centrepoint', logo: 'https://lmg.a.bigcontent.io/v1/static/website_images_logos_centrepoint_ae_en_logo-centrepoint?fmt=auto' },
-    { name: 'GAC', logo: 'https://images.crunchbase.com/image/upload/c_pad,h_160,w_160,f_auto,b_white,q_auto:eco,dpr_2/v1505901601/gspwefyprvlrrnwk1rnz.png' },
+    { name: 'Panalpina', logo: 'https://logodix.com/logo/1331186.jpg', scale: 1.2 },
+    { name: 'Centrepoint', logo: 'https://lmg.a.bigcontent.io/v1/static/website_images_logos_centrepoint_ae_en_logo-centrepoint?fmt=auto', scale: 1.15 },
+    { name: 'GAC', logo: 'https://images.crunchbase.com/image/upload/c_pad,h_160,w_160,f_auto,b_white,q_auto:eco,dpr_2/v1505901601/gspwefyprvlrrnwk1rnz.png', scale: 1.3 },
     { name: 'MMG', logo: 'https://madhyamamonline.com/h-upload/2025/03/25/2540199-6d8ca5b3-17ac-4045-b917-dbff87cb0e2f.webp' },
-    { name: 'Schlumberger', logo: 'https://alchetron.com/cdn/schlumberger-deb57bbc-35fc-4ea3-839f-d98d9483a37-resize-750.gif' },
-    { name: 'ABB', logo: 'https://images.crunchbase.com/image/upload/c_pad,h_160,w_160,f_auto,b_white,q_auto:eco,dpr_2/f1wabimeqycjodyovdt6' },
+    { name: 'Schlumberger', logo: 'https://alchetron.com/cdn/schlumberger-deb57bbc-35fc-4ea3-839f-d98d9483a37-resize-750.gif', scale: 1.2 },
+    { name: 'ABB', logo: 'https://images.crunchbase.com/image/upload/c_pad,h_160,w_160,f_auto,b_white,q_auto:eco,dpr_2/f1wabimeqycjodyovdt6', scale: 1.3 },
     { name: "Ma'aden", logo: 'https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/072024/maaden.jpg?EbMm2gvNQB6Ub6S7INhZ1TTNWR5WFAPH&itok=yZWsuAyF' },
   ];
 
@@ -521,9 +522,9 @@ export default function Home() {
   ];
 
   const showcase = [
-    { src: 'https://images.pexels.com/photos/6169668/pexels-photo-6169668.jpeg', label: 'Air Freight' },
-    { src: 'https://images.pexels.com/photos/4481327/pexels-photo-4481327.jpeg', label: 'Warehousing' },
-    { src: 'https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg', label: 'Last Mile' },
+    { src: '/landing/air-freight.png', label: 'Air Freight' },
+    { src: '/landing/sea-freight.png', label: 'Sea Freight' },
+    { src: '/landing/land-transport.png', label: 'Land Transport' },
   ];
 
   const trustCards = [
@@ -590,7 +591,7 @@ export default function Home() {
             <div className="hp-partner-track hp-marquee-l">
               {marqueeRow.map((p, i) => (
                 <div key={`${p.name}-a-${i}`} className="hp-partner-card">
-                  <div style={{ position: 'relative', width: 100, height: 36 }}>
+                  <div style={{ position: 'relative', width: 112, height: 40, transform: `scale(${p.scale ?? 1})` }}>
                     <Image src={p.logo} alt={p.name} fill style={{ objectFit: 'contain' }} sizes="100px" loading="lazy" />
                   </div>
                 </div>
@@ -601,7 +602,7 @@ export default function Home() {
             <div className="hp-partner-track hp-marquee-r">
               {marqueeRowB.map((p, i) => (
                 <div key={`${p.name}-b-${i}`} className="hp-partner-card">
-                  <div style={{ position: 'relative', width: 100, height: 36 }}>
+                  <div style={{ position: 'relative', width: 112, height: 40, transform: `scale(${p.scale ?? 1})` }}>
                     <Image src={p.logo} alt={p.name} fill style={{ objectFit: 'contain' }} sizes="100px" loading="lazy" />
                   </div>
                 </div>
@@ -685,6 +686,16 @@ export default function Home() {
 
       <section className="hp-cta">
         <div className="hp-cta-inner">
+          <div style={{ position: 'absolute', inset: 0, opacity: 0.14, pointerEvents: 'none' }}>
+            <Image
+              src="/landing/supply-chain-network.png"
+              alt="Supply chain network"
+              fill
+              sizes="100vw"
+              style={{ objectFit: 'cover' }}
+              loading="lazy"
+            />
+          </div>
           <Reveal>
             <div className="hp-kicker" style={{ color: 'rgba(8,11,16,0.5)' }}>
               Next Step
@@ -733,9 +744,9 @@ export default function Home() {
               className="hp-reveal hp-trust-mosaic"
             >
               {[
-                { src: 'https://images.pexels.com/photos/6169056/pexels-photo-6169056.jpeg', alt: 'Logistics planning team' },
-                { src: 'https://images.pexels.com/photos/4483609/pexels-photo-4483609.jpeg', alt: 'Warehouse operations' },
-                { src: 'https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg', alt: 'Transport truck' },
+                { src: '/landing/customs-clearance.png', alt: 'Customs clearance operations' },
+                { src: '/landing/warehousing-distribution.png', alt: 'Warehouse distribution operations' },
+                { src: '/landing/supply-chain-analytics.png', alt: 'Supply chain analytics operations' },
               ].map((img) => (
                 <div key={img.src} className="hp-mosaic-item">
                   <Image src={img.src} alt={img.alt} fill sizes="(max-width: 1024px) 100vw, 25vw" loading="lazy" />

@@ -35,6 +35,48 @@ export const SERVICES: Service[] = [
     icon: 'Network',
   },
   {
+    id: 'freight-forwarding',
+    name: 'Freight Forwarding',
+    description: 'Coordinated multimodal freight movement',
+    icon: 'Route',
+  },
+  {
+    id: 'transportation-management',
+    name: 'Transportation Management',
+    description: 'Planning and execution across transport lanes',
+    icon: 'Map',
+  },
+  {
+    id: 'last-mile-delivery',
+    name: 'Last Mile Delivery',
+    description: 'Reliable doorstep and final-leg distribution',
+    icon: 'Bike',
+  },
+  {
+    id: 'ecommerce-logistics',
+    name: 'E-Commerce Logistics',
+    description: 'Integrated fulfillment for online sellers',
+    icon: 'ShoppingCart',
+  },
+  {
+    id: 'reverse-logistics',
+    name: 'Reverse Logistics',
+    description: 'Returns, recovery, and refurbishment operations',
+    icon: 'RotateCcw',
+  },
+  {
+    id: 'heavy-goods-handling',
+    name: 'Heavy Goods Handling',
+    description: 'Safe movement of oversized industrial cargo',
+    icon: 'Container',
+  },
+  {
+    id: 'customs-brokerage',
+    name: 'Customs Brokerage',
+    description: 'Trade compliance and duty management expertise',
+    icon: 'FileSearch',
+  },
+  {
     id: 'customs-clearance',
     name: 'Customs Clearance',
     description: 'Expert customs brokerage services',

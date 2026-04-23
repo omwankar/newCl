@@ -8,6 +8,11 @@ import {
   FileBadge,
   Thermometer,
   ScrollText,
+  Route,
+  Box,
+  RotateCcw,
+  Container,
+  ClipboardCheck,
 } from 'lucide-react';
 
 export const SERVICE_DETAIL_SLUGS = [
@@ -15,8 +20,15 @@ export const SERVICE_DETAIL_SLUGS = [
   'sea-freight',
   'land-transport',
   'warehousing',
+  'freight-forwarding',
+  'transportation-management',
   'supply-chain',
+  'last-mile-delivery',
+  'ecommerce-logistics',
+  'reverse-logistics',
+  'heavy-goods-handling',
   'customs-clearance',
+  'customs-brokerage',
 ] as const;
 
 export type ServiceDetailSlug = (typeof SERVICE_DETAIL_SLUGS)[number];
@@ -44,8 +56,7 @@ export const SERVICE_DETAIL_PAGES: Record<ServiceDetailSlug, ServiceDetailPage> 
     slug: 'air-freight',
     title: 'Air Freight',
     subheading: 'Speed Without Compromise',
-    heroImage:
-      'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80',
+    heroImage: '/landing/air-freight.png',
     metaDescription:
       'Clarusto air freight: global airline partnerships, temperature-sensitive handling, and dedicated freight managers.',
     paragraphs: [
@@ -75,8 +86,7 @@ export const SERVICE_DETAIL_PAGES: Record<ServiceDetailSlug, ServiceDetailPage> 
     slug: 'sea-freight',
     title: 'Sea Freight',
     subheading: 'Bulk Cargo, Global Reach',
-    heroImage:
-      'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1600&q=80',
+    heroImage: '/landing/sea-freight.png',
     metaDescription:
       'FCL and LCL sea freight across major lanes with Maersk, MSC, CMA CGM partners and full visibility.',
     paragraphs: [
@@ -106,8 +116,7 @@ export const SERVICE_DETAIL_PAGES: Record<ServiceDetailSlug, ServiceDetailPage> 
     slug: 'land-transport',
     title: 'Land Transport',
     subheading: 'Last-Mile to Long-Haul',
-    heroImage:
-      'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1600&q=80',
+    heroImage: '/landing/land-transport.png',
     metaDescription:
       'FTL and LTL land transport with GPS fleet monitoring, hazmat certification, and refrigerated options.',
     paragraphs: [
@@ -137,8 +146,7 @@ export const SERVICE_DETAIL_PAGES: Record<ServiceDetailSlug, ServiceDetailPage> 
     slug: 'warehousing',
     title: 'Warehousing & Distribution',
     subheading: 'Your Inventory, Always in Control',
-    heroImage:
-      'https://images.unsplash.com/photo-1553413077-190dd305871c?w=1600&q=80',
+    heroImage: '/landing/warehousing-distribution.png',
     metaDescription:
       'WMS-enabled warehousing near ports and hubs, pick & pack, kitting, and e-commerce fulfillment integrations.',
     paragraphs: [
@@ -164,12 +172,71 @@ export const SERVICE_DETAIL_PAGES: Record<ServiceDetailSlug, ServiceDetailPage> 
     ],
     accentStripe: 'amber',
   },
+  'freight-forwarding': {
+    slug: 'freight-forwarding',
+    title: 'Freight Forwarding',
+    subheading: 'Global Coordination, One Expert Partner',
+    heroImage: '/landing/sea-freight.png',
+    metaDescription:
+      'Comprehensive freight forwarding with booking, consolidation, customs planning, and end-to-end shipment orchestration.',
+    paragraphs: [
+      'Our freight forwarding team manages every moving part of international cargo so your operations stay focused on core business. We coordinate carriers, negotiate rates, prepare shipment plans, and align schedules across origins, hubs, and final destinations. By consolidating shipments and selecting optimal transit lanes, we improve reliability while controlling costs. You receive one accountable logistics partner instead of fragmented communication with multiple vendors and agents.',
+      'From pre-shipment planning to final proof of delivery, we handle documentation, compliance checks, and milestone tracking with precision. Our specialists proactively manage exceptions like rollover, congestion, and weather-related disruption through contingency routing and carrier alternatives. With transparent reporting, clear transit timelines, and dedicated account support, your teams gain predictable execution for both recurring lanes and time-sensitive spot movements across regional and global trade corridors.',
+    ],
+    whyChoose: [
+      {
+        title: 'Single point control',
+        body: 'One coordination desk handles carrier booking, handoffs, milestones, and escalation.',
+        Icon: ClipboardCheck,
+      },
+      {
+        title: 'Carrier optimization',
+        body: 'Route and mode decisions are tuned for service level, budget, and seasonality.',
+        Icon: GitBranch,
+      },
+      {
+        title: 'Exception response',
+        body: 'Rapid mitigation plans reduce downstream disruption when transport conditions change.',
+        Icon: Route,
+      },
+    ],
+    accentStripe: 'gold',
+  },
+  'transportation-management': {
+    slug: 'transportation-management',
+    title: 'Transportation Management',
+    subheading: 'Planned Movements, Measurable Performance',
+    heroImage: '/landing/land-transport.png',
+    metaDescription:
+      'Transportation management for planning, tendering, dispatch, tracking, and continuous logistics performance improvement.',
+    paragraphs: [
+      'Our transportation management service centralizes planning, execution, and performance monitoring across your outbound and inbound logistics network. We design lane strategies, assign carrier mixes, and build dispatch schedules that match service commitments and inventory priorities. Through continuous load optimization and route balancing, we reduce empty miles, avoid unnecessary expedite costs, and maintain dependable transit performance during peak periods and changing market demand.',
+      'Clients benefit from structured SOPs, KPI dashboards, and regular operational reviews focused on on-time delivery, freight spend, and claim reduction. We integrate shipment data across air, ocean, and road movements to provide a unified view of transport performance. With proactive tender management, automated milestone communication, and rapid issue escalation, your team gains stronger control, cleaner reporting, and consistent service quality across all shipping programs.',
+    ],
+    whyChoose: [
+      {
+        title: 'Network planning',
+        body: 'Lane design and scheduling models improve speed, utilization, and service consistency.',
+        Icon: Route,
+      },
+      {
+        title: 'KPI visibility',
+        body: 'Unified dashboards track cost, SLA adherence, dwell time, and exception trends.',
+        Icon: GitBranch,
+      },
+      {
+        title: 'Execution discipline',
+        body: 'Standardized dispatch and escalation workflows keep shipments on plan.',
+        Icon: ClipboardCheck,
+      },
+    ],
+    accentStripe: 'ember',
+  },
   'supply-chain': {
     slug: 'supply-chain',
     title: 'Supply Chain Management',
     subheading: 'End-to-End Visibility',
-    heroImage:
-      'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1600&q=80',
+    heroImage: '/landing/supply-chain-network.png',
     metaDescription:
       'Design resilient supply chains with multimodal strategies, ERP-integrated dashboards, and risk mitigation.',
     paragraphs: [
@@ -195,12 +262,131 @@ export const SERVICE_DETAIL_PAGES: Record<ServiceDetailSlug, ServiceDetailPage> 
     ],
     accentStripe: 'gold',
   },
+  'last-mile-delivery': {
+    slug: 'last-mile-delivery',
+    title: 'Last Mile Delivery',
+    subheading: 'Reliable Final Delivery Experience',
+    heroImage: '/landing/land-transport.png',
+    metaDescription:
+      'Last mile delivery with optimized routing, proof-of-delivery workflows, and customer-first execution.',
+    paragraphs: [
+      'Our last mile delivery solutions are built for accuracy, speed, and customer satisfaction at the most visible stage of fulfillment. We optimize local routes, dispatch windows, and delivery density to reduce delays while preserving service quality. Real-time driver tracking and dynamic re-sequencing support predictable outcomes even in high-traffic urban zones. Whether B2C parcels or B2B replenishment drops, we keep final delivery dependable and well-coordinated.',
+      'We support scheduled, same-day, and next-day delivery models with clear proof-of-delivery capture and exception handling. Customers receive timely status notifications, while your operations team gets actionable visibility into attempt rates, failed deliveries, and turnaround performance. With trained delivery partners, defined SLA controls, and scalable city-level capacity, we help your brand maintain trust where it matters most, at the final customer handoff.',
+    ],
+    whyChoose: [
+      {
+        title: 'Route optimization',
+        body: 'Dynamic sequencing improves stop efficiency and helps meet narrow delivery windows.',
+        Icon: Route,
+      },
+      {
+        title: 'Customer visibility',
+        body: 'Live status updates and proof-of-delivery records reduce support inquiries.',
+        Icon: ClipboardCheck,
+      },
+      {
+        title: 'Scalable capacity',
+        body: 'Flexible fleet models absorb seasonal peaks without service degradation.',
+        Icon: Truck,
+      },
+    ],
+    accentStripe: 'amber',
+  },
+  'ecommerce-logistics': {
+    slug: 'ecommerce-logistics',
+    title: 'E-Commerce Logistics',
+    subheading: 'Fulfillment Built for Growth',
+    heroImage: '/landing/warehousing-distribution.png',
+    metaDescription:
+      'Integrated e-commerce logistics covering inbound, storage, fulfillment, returns, and delivery visibility.',
+    paragraphs: [
+      'Our e-commerce logistics model connects inbound receiving, inventory control, order fulfillment, and outbound distribution into one streamlined workflow. We synchronize with marketplace and storefront platforms to process orders quickly and accurately, while maintaining stock visibility across SKUs and locations. Smart picking methods, packaging standards, and carrier allocation rules help improve order cycle times and reduce fulfillment errors during promotional spikes and seasonal demand swings.',
+      'Beyond day-to-day execution, we provide performance intelligence that supports profitable scaling. You get insight into pick accuracy, dispatch cutoffs, shipping cost per order, and return patterns by channel. Our teams continuously refine slotting, packaging, and service-level logic to improve customer delivery experience without inflating logistics spend. From emerging brands to high-volume sellers, we build resilient operations that support sustained online growth.',
+    ],
+    whyChoose: [
+      {
+        title: 'Platform integration',
+        body: 'Connected order flows across marketplaces and storefront channels reduce manual effort.',
+        Icon: GitBranch,
+      },
+      {
+        title: 'Fulfillment precision',
+        body: 'Pick-pack standards and QC checkpoints improve accuracy at scale.',
+        Icon: Box,
+      },
+      {
+        title: 'Growth analytics',
+        body: 'Actionable metrics guide cost control and service-level improvements.',
+        Icon: ClipboardCheck,
+      },
+    ],
+    accentStripe: 'gold',
+  },
+  'reverse-logistics': {
+    slug: 'reverse-logistics',
+    title: 'Reverse Logistics',
+    subheading: 'Returns Managed With Control',
+    heroImage: '/landing/supply-chain-analytics.png',
+    metaDescription:
+      'Reverse logistics programs for returns, inspection, refurbishment, and compliant disposal workflows.',
+    paragraphs: [
+      'Our reverse logistics services turn returns and recovery operations into a structured, cost-controlled process. We manage collection, return authorization alignment, inbound screening, and disposition routing based on product condition and business rules. By standardizing intake and inspection workflows, we shorten cycle times and improve recovery outcomes. This helps brands protect customer experience while minimizing write-offs, warehouse congestion, and avoidable handling costs.',
+      'We support restock, repair, refurbishment, resale, and compliant disposal paths with complete audit trails and status visibility. Every return is tracked through checkpoints so finance, operations, and customer teams work from consistent information. Our reporting highlights root causes behind return volume and quality issues, enabling corrective action upstream. With scalable reverse logistics infrastructure, your business can maintain service quality while controlling the operational complexity of returns.',
+    ],
+    whyChoose: [
+      {
+        title: 'Structured returns flow',
+        body: 'Defined intake and disposition logic improves speed and consistency.',
+        Icon: RotateCcw,
+      },
+      {
+        title: 'Recovery focused',
+        body: 'Restock and refurbishment pathways maximize value recovery from returned inventory.',
+        Icon: Box,
+      },
+      {
+        title: 'Audit readiness',
+        body: 'Checkpoint history and documentation support claims, compliance, and reconciliation.',
+        Icon: ScrollText,
+      },
+    ],
+    accentStripe: 'ember',
+  },
+  'heavy-goods-handling': {
+    slug: 'heavy-goods-handling',
+    title: 'Heavy Goods Handling',
+    subheading: 'Specialized Capacity for Oversized Cargo',
+    heroImage: '/landing/sea-freight.png',
+    metaDescription:
+      'Specialized heavy goods handling for oversized, project, and industrial cargo with safety-first execution.',
+    paragraphs: [
+      'Our heavy goods handling team specializes in oversized, high-weight, and project-critical cargo requiring engineered movement plans. We assess load dimensions, center of gravity, lift requirements, and route constraints before execution begins. From factory extraction to final placement, we coordinate cranes, trailers, escorts, and permits with strict safety controls. This approach minimizes risk and keeps complex industrial movements on schedule and fully documented.',
+      'We handle machinery, transformers, steel structures, and other non-standard loads across domestic and cross-border corridors. Every project includes method statements, risk assessments, and contingency planning for site or transit constraints. Our crews follow certified lifting and securing procedures, while dedicated coordinators maintain progress visibility for stakeholders. With proven expertise in challenging cargo profiles, we deliver confidence for operations where failure is not an option.',
+    ],
+    whyChoose: [
+      {
+        title: 'Engineered execution',
+        body: 'Lift planning and route surveys are designed around load physics and safety.',
+        Icon: Container,
+      },
+      {
+        title: 'Permit coordination',
+        body: 'Regulatory approvals and escort planning are handled end-to-end.',
+        Icon: FileBadge,
+      },
+      {
+        title: 'Project visibility',
+        body: 'Milestone communication keeps site, transport, and leadership teams aligned.',
+        Icon: ClipboardCheck,
+      },
+    ],
+    accentStripe: 'gold',
+  },
   'customs-clearance': {
     slug: 'customs-clearance',
     title: 'Customs Clearance',
     subheading: 'Smooth Borders, Every Time',
-    heroImage:
-      'https://images.unsplash.com/photo-1515630278258-407f994a2bc9?w=1600&q=80',
+    heroImage: '/landing/customs-clearance.png',
     metaDescription:
       'Licensed brokerage across 80+ countries: HS classification, documentation, and authority liaison for rapid release.',
     paragraphs: [
@@ -225,6 +411,36 @@ export const SERVICE_DETAIL_PAGES: Record<ServiceDetailSlug, ServiceDetailPage> 
       },
     ],
     accentStripe: 'ember',
+  },
+  'customs-brokerage': {
+    slug: 'customs-brokerage',
+    title: 'Customs Brokerage',
+    subheading: 'Trade Compliance Without Friction',
+    heroImage: '/landing/customs-clearance.png',
+    metaDescription:
+      'Customs brokerage services for classification, duty optimization, filing accuracy, and faster cargo release.',
+    paragraphs: [
+      'Our customs brokerage service helps importers and exporters navigate evolving trade regulations with confidence and speed. We manage tariff classification, valuation checks, and declaration filing to ensure submissions are accurate the first time. By combining regulatory expertise with process discipline, we reduce clearance delays, avoid penalty exposure, and improve release predictability across major ports and airports serving your primary trade lanes.',
+      'Each shipment is supported by documentation specialists who validate commercial records, certificates, and permit requirements before filing. We also advise on duty optimization opportunities, preferential trade agreements, and compliance controls that stand up to audit scrutiny. With responsive communication, transparent status tracking, and escalation support when issues arise, your teams gain smoother cross-border execution and stronger governance over customs outcomes.',
+    ],
+    whyChoose: [
+      {
+        title: 'Filing accuracy',
+        body: 'Pre-check workflows improve declaration quality and reduce rework.',
+        Icon: ScrollText,
+      },
+      {
+        title: 'Duty optimization',
+        body: 'Classification strategy and trade program guidance protect landed cost.',
+        Icon: GitBranch,
+      },
+      {
+        title: 'Rapid escalation',
+        body: 'Specialists coordinate directly with authorities to resolve holds quickly.',
+        Icon: FileBadge,
+      },
+    ],
+    accentStripe: 'amber',
   },
 };
 

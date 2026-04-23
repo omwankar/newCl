@@ -8,8 +8,15 @@ const SERVICE_DETAIL_HREF: Partial<Record<string, string>> = {
   'sea-freight': '/services/sea-freight',
   'land-transport': '/services/land-transport',
   warehousing: '/services/warehousing',
+  'freight-forwarding': '/services/freight-forwarding',
+  'transportation-management': '/services/transportation-management',
   'supply-chain': '/services/supply-chain',
+  'last-mile-delivery': '/services/last-mile-delivery',
+  'ecommerce-logistics': '/services/ecommerce-logistics',
+  'reverse-logistics': '/services/reverse-logistics',
+  'heavy-goods-handling': '/services/heavy-goods-handling',
   'customs-clearance': '/services/customs-clearance',
+  'customs-brokerage': '/services/customs-brokerage',
 };
 
 interface ServicesGridProps {

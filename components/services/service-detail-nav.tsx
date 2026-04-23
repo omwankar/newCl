@@ -10,9 +10,15 @@ const NAV_LINKS = [
   { href: '/services/air-freight', label: 'Air Freight' },
   { href: '/services/sea-freight', label: 'Sea Freight' },
   { href: '/services/land-transport', label: 'Land Transport' },
-  { href: '/services/warehousing', label: 'Warehousing' },
-  { href: '/services/supply-chain', label: 'Supply Chain' },
-  { href: '/services/customs-clearance', label: 'Customs' },
+  { href: '/services/warehousing', label: 'Warehousing & Distribution' },
+  { href: '/services/freight-forwarding', label: 'Freight Forwarding' },
+  { href: '/services/transportation-management', label: 'Transportation Management' },
+  { href: '/services/supply-chain', label: 'Supply Chain Management' },
+  { href: '/services/last-mile-delivery', label: 'Last Mile Delivery' },
+  { href: '/services/ecommerce-logistics', label: 'E-Commerce Logistics' },
+  { href: '/services/reverse-logistics', label: 'Reverse Logistics' },
+  { href: '/services/heavy-goods-handling', label: 'Heavy Goods Handling' },
+  { href: '/services/customs-brokerage', label: 'Customs Brokerage' },
   { href: '/services', label: 'All Services' },
 ] as const;
 

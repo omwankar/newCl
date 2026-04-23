@@ -50,25 +50,41 @@ export default function AboutPage() {
       {/* Mission & Vision */}
       <section className="py-16 md:py-24 bg-[#F8F6F1]">
         <div className="app-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <Reveal className="bg-white rounded-2xl p-8 border-t-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-lg bg-amber-400 flex items-center justify-center text-[#0F1923] font-bold text-lg">M</div>
-                <h3 className="text-2xl font-bold text-[#0F1923]">Our Mission</h3>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Reveal className="group relative overflow-hidden rounded-2xl border border-amber-200/80 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-[0_16px_35px_rgba(245,158,11,0.12)] md:p-8">
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-amber-400" />
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-400 text-lg font-semibold text-[#0F1923] transition-transform duration-300 group-hover:scale-110">M</div>
+                  <h3 className="text-2xl font-semibold text-[#0F1923]">Our Mission</h3>
+                </div>
+                <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-medium tracking-wide text-amber-700 transition-all duration-300 group-hover:border-amber-300 group-hover:bg-amber-100">
+                  OPERATIONS
+                </span>
               </div>
-              <p className="text-gray-600 text-base leading-loose">
-                {MISSION}
-              </p>
+              <p className="text-[15px] leading-7 text-gray-600">{MISSION}</p>
+              <div className="mt-5 grid grid-cols-2 gap-2 text-xs text-gray-500">
+                <div className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">Reliable workflows</div>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">Safe cargo handling</div>
+              </div>
             </Reveal>
 
-            <Reveal className="bg-[#0F1923] rounded-2xl p-8 border-t-4 border-amber-400 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-lg bg-amber-400 flex items-center justify-center text-[#0F1923] font-bold text-lg">V</div>
-                <h3 className="text-2xl font-bold text-white">Our Vision</h3>
+            <Reveal className="group relative overflow-hidden rounded-2xl border border-[#24344A] bg-[#0F1923] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-amber-300/60 hover:shadow-[0_16px_35px_rgba(15,25,35,0.55)] md:p-8">
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-amber-400" />
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-400 text-lg font-semibold text-[#0F1923] transition-transform duration-300 group-hover:scale-110">V</div>
+                  <h3 className="text-2xl font-semibold text-white">Our Vision</h3>
+                </div>
+                <span className="rounded-full border border-amber-300/35 bg-amber-400/10 px-3 py-1 text-[11px] font-medium tracking-wide text-amber-300 transition-all duration-300 group-hover:border-amber-300/60 group-hover:bg-amber-400/20">
+                  FUTURE
+                </span>
               </div>
-              <p className="text-white/80 text-base leading-loose">
-                {VISION}
-              </p>
+              <p className="text-[15px] leading-7 text-white/80">{VISION}</p>
+              <div className="mt-5 grid grid-cols-2 gap-2 text-xs text-white/65">
+                <div className="rounded-lg border border-white/15 bg-white/5 px-3 py-2">Global expansion</div>
+                <div className="rounded-lg border border-white/15 bg-white/5 px-3 py-2">Digital innovation</div>
+              </div>
             </Reveal>
           </div>
         </div>

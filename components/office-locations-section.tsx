@@ -1,8 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MapPin } from 'lucide-react';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  ExternalLink,
+  Minus,
+  Plus,
+} from 'lucide-react';
 
 type OfficeLocation = {
   id: number;
@@ -12,104 +19,153 @@ type OfficeLocation = {
   address?: string;
   phone?: string;
   email?: string;
+  hours?: string;
+  established?: string;
+  teamSize?: number;
   lat: number;
   lng: number;
 };
 
-export function OfficeLocationsSection({ offices }: { offices: OfficeLocation[] }) {
-  const [selectedOffice, setSelectedOffice] = useState<OfficeLocation>(offices[0]);
-  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const officeQueryRaw = [
-    selectedOffice.address,
-    selectedOffice.city,
-    selectedOffice.country,
-  ]
-    .filter(Boolean)
-    .join(', ');
-  const officeQuery = encodeURIComponent(officeQueryRaw);
+export function OfficeLocationsSection({
+  offices,
+}: {
+  offices: OfficeLocation[];
+}) {
+  const [selected, setSelected] = useState<OfficeLocation>(offices[0]);
+  const [openId, setOpenId] = useState<number>(offices[0]?.id ?? 0);
 
-  // Use full office address so Google places a marker on the most exact resolvable location.
+  const officeQuery = encodeURIComponent(
+    [selected.address, selected.city, selected.country]
+      .filter(Boolean)
+      .join(', ')
+  );
+
   const mapSrc = `https://maps.google.com/maps?q=${officeQuery}&z=15&output=embed`;
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {offices.map((office) => {
-          const isSelected = selectedOffice.id === office.id;
-          return (
-            <Card
-              key={office.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => setSelectedOffice(office)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  setSelectedOffice(office);
-                }
-              }}
-              className={`cursor-pointer bg-white ring-1 transition-all hover:shadow-lg ${
-                isSelected ? 'ring-amber-400 shadow-md' : 'ring-border hover:ring-accent/40'
-              }`}
-            >
-              <CardHeader>
-                <div className="flex items-start gap-3">
-                  <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-amber-500" />
-                  <div>
-                    <CardTitle className="text-xl">
-                      {office.flag ? `${office.flag} ` : ''}
-                      {office.city}
-                    </CardTitle>
-                    <p className="mt-1 text-sm text-muted-foreground">{office.country}</p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {office.address && (
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Address</p>
-                    <p className="text-sm text-muted-foreground">{office.address}</p>
-                  </div>
-                )}
-                {office.phone && (
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Phone</p>
-                    <p className="text-sm text-muted-foreground">{office.phone}</p>
-                  </div>
-                )}
-                {office.email && (
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Email</p>
-                    <p className="text-sm text-muted-foreground">{office.email}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          );
-        })}
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+      {/* MAP */}
+      <div className="absolute inset-0">
+        <iframe
+          key={selected.id}
+          title={`Map for ${selected.city}`}
+          src={mapSrc}
+          width="100%"
+          height="620"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="block h-[620px] w-full border-none"
+        />
+        <div className="pointer-events-none absolute inset-0" />
       </div>
 
-      <div className="space-y-3">
-        <div className="rounded-xl border bg-white p-4 shadow-sm">
-          <p className="text-sm font-semibold text-foreground">
-            Showing map for: {selectedOffice.city}, {selectedOffice.country}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {googleMapsApiKey
-              ? 'Using compatible embed mode for reliable rendering with demo/restricted keys.'
-              : 'Using no-key embed mode. Add a full Google Maps key with billing to use advanced Maps APIs.'}
-          </p>
-        </div>
-        <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
-          <iframe
-            title={`Map location for ${selectedOffice.city}`}
-            src={mapSrc}
-            width="100%"
-            height="520"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="block"
-          />
+      {/* PANEL */}
+      <div className="pointer-events-none relative z-10 flex min-h-[620px] items-stretch">
+        <div className="pointer-events-auto m-4 w-full max-w-[360px] rounded-2xl bg-[#a37742]/95 p-3 text-white shadow-lg backdrop-blur md:m-6">
+          {offices.map((office) => {
+            const isOpen = openId === office.id;
+
+            return (
+              <div
+                key={office.id}
+                className={`rounded-xl transition-colors ${
+                  isOpen ? 'bg-white/10' : 'hover:bg-white/5'
+                }`}
+              >
+                {/* HEADER */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelected(office);
+                    setOpenId((prev) =>
+                      prev === office.id ? 0 : office.id
+                    );
+                  }}
+                  className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left"
+                  aria-expanded={isOpen}
+                >
+                  <span className="text-base font-semibold">
+                    {office.city} Office
+                  </span>
+
+                  {/* ICON ANIMATION */}
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 transition-transform duration-300">
+                    {isOpen ? (
+                      <Minus className="h-4 w-4 rotate-180 transition-transform duration-300" />
+                    ) : (
+                      <Plus className="h-4 w-4 transition-transform duration-300" />
+                    )}
+                  </span>
+                </button>
+
+                {/* SMOOTH CONTENT */}
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen
+                      ? 'grid-rows-[1fr] opacity-100 mt-1'
+                      : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-4 pb-4 text-[13px] leading-relaxed text-white/90">
+                      {office.address && (
+                        <p className="text-white/85">
+                          {office.address}
+                        </p>
+                      )}
+
+                      <div className="mt-3 grid gap-2">
+                        {office.hours && (
+                          <div className="flex items-start gap-2">
+                            <Clock className="mt-0.5 h-4 w-4 text-white/80" />
+                            <span>{office.hours}</span>
+                          </div>
+                        )}
+
+                        {office.phone && (
+                          <a
+                            href={`tel:${office.phone}`}
+                            className="flex items-start gap-2 text-white/95 underline-offset-2 hover:underline"
+                          >
+                            <Phone className="mt-0.5 h-4 w-4 text-white/80" />
+                            <span>{office.phone}</span>
+                          </a>
+                        )}
+
+                        {office.email && (
+                          <a
+                            href={`mailto:${office.email}`}
+                            className="flex items-start gap-2 text-white/95 underline-offset-2 hover:underline"
+                          >
+                            <Mail className="mt-0.5 h-4 w-4 text-white/80" />
+                            <span>{office.email}</span>
+                          </a>
+                        )}
+                      </div>
+
+                      <a
+                        href={`https://maps.google.com/?q=${encodeURIComponent(
+                          [
+                            office.address,
+                            office.city,
+                            office.country,
+                          ]
+                            .filter(Boolean)
+                            .join(', ')
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/15 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/20"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Get directions
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

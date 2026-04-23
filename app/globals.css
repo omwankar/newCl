@@ -85,8 +85,8 @@
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: var(--font-brand), 'Segoe UI', Arial, sans-serif;
+  --font-mono: var(--font-mono-ui), 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -128,6 +128,10 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+
+  :where(body, body *) {
+    font-family: var(--font-sans), Arial, sans-serif !important;
   }
 
   html {
@@ -664,9 +668,10 @@
 }
 
 .sd-root {
-  font-family: var(--font-service-body), ui-sans-serif, system-ui, sans-serif;
+  font-family: inherit;
 }
 
 .sd-heading {
-  font-family: var(--font-service-heading), Impact, sans-serif;
+  font-family: inherit;
+  font-weight: 700;
 }

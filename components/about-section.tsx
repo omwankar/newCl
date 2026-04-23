@@ -12,15 +12,15 @@ export function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className={`relative ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
             <Image 
-              src="/warehouse.jpg" 
+              src="/landing/warehousing-distribution.png" 
               alt="Warehouse" 
               width={1280} 
               height={720} 
               className="rounded-2xl shadow-2xl w-full"
             />
             <Image 
-              src="/cargo-ship.jpg" 
-              alt="Cargo ship" 
+              src="/landing/sea-freight.png" 
+              alt="Sea freight vessel" 
               width={1280} 
               height={720} 
               className="absolute -bottom-8 -right-8 w-2/3 rounded-2xl shadow-2xl border-4 border-background hidden lg:block"
