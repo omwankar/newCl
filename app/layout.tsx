@@ -1,5 +1,12 @@
 import type { Metadata, Viewport } from 'next'
-import { Poppins, Geist_Mono } from 'next/font/google'
+import {
+  Poppins,
+  Geist_Mono,
+  Bebas_Neue,
+  DM_Sans,
+  DM_Mono,
+  Playfair_Display,
+} from 'next/font/google'
 import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import { OrganizationJsonLd } from '@/components/organization-json-ld'
@@ -17,6 +24,35 @@ const poppins = Poppins({
 const _geistMono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-mono-ui',
+  display: 'swap',
+});
+
+const bebasNeue = Bebas_Neue({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-bebas',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700'],
+  variable: '--font-dm-sans',
+  display: 'swap',
+});
+
+const dmMono = DM_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-dm-mono',
+  display: 'swap',
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['700', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
   display: 'swap',
 });
 
@@ -71,11 +107,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`scroll-smooth overflow-x-clip ${poppins.variable} ${_geistMono.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`scroll-smooth overflow-x-clip ${poppins.variable} ${_geistMono.variable} ${bebasNeue.variable} ${dmSans.variable} ${dmMono.variable} ${playfairDisplay.variable}`}
+      suppressHydrationWarning
+    >
       <body className="font-sans antialiased bg-background text-foreground min-h-[100dvh] overflow-x-clip text-base leading-relaxed md:leading-normal" suppressHydrationWarning>
         <Script
           id="plausible-analytics"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           data-domain="clarustologistics.com"
           src="https://plausible.io/js/script.js"
         />

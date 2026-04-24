@@ -93,8 +93,6 @@ export default function ProjectsPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
-
         :root {
           --ink: #0A0D12;
           --ink-2: #111620;
@@ -109,7 +107,7 @@ export default function ProjectsPage() {
         .projects-root {
           background: var(--ink);
           color: #E8ECF4;
-          font-family: 'DM Sans', sans-serif;
+          font-family: var(--font-dm-sans), sans-serif;
         }
 
         /* ── HERO ── */
@@ -149,7 +147,7 @@ export default function ProjectsPage() {
           max-width: 900px;
         }
         .hero-eyebrow {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 11px;
           letter-spacing: 0.25em;
           color: var(--gold);
@@ -169,7 +167,7 @@ export default function ProjectsPage() {
           opacity: 0.5;
         }
         .hero-title {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(72px, 12vw, 140px);
           line-height: 0.9;
           letter-spacing: 0.02em;
@@ -196,7 +194,7 @@ export default function ProjectsPage() {
           flex-direction: column;
           align-items: center;
           gap: 8px;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 10px;
           letter-spacing: 0.15em;
           color: var(--silver);
@@ -216,7 +214,7 @@ export default function ProjectsPage() {
 
         /* ── SECTION LABEL ── */
         .section-label {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 11px;
           letter-spacing: 0.2em;
           color: var(--gold);
@@ -255,7 +253,7 @@ export default function ProjectsPage() {
           flex-wrap: wrap;
         }
         .case-heading {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(48px, 7vw, 80px);
           line-height: 1;
           color: #fff;
@@ -312,7 +310,7 @@ export default function ProjectsPage() {
           align-items: center;
           justify-content: center;
           padding: 2rem 0;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: 28px;
           color: rgba(255,255,255,0.12);
           border-right: 1px solid var(--wire);
@@ -345,7 +343,7 @@ export default function ProjectsPage() {
           border-left: 1px solid var(--wire);
         }
         .case-cat {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 10px;
           letter-spacing: 0.2em;
           color: var(--gold);
@@ -376,7 +374,7 @@ export default function ProjectsPage() {
           gap: 0.5rem;
         }
         .result-label {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 10px;
           letter-spacing: 0.15em;
           color: var(--silver);
@@ -418,7 +416,7 @@ export default function ProjectsPage() {
         .stats-section::before {
           content: 'PROVEN';
           position: absolute;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(120px, 20vw, 240px);
           letter-spacing: 0.1em;
           color: rgba(0,0,0,0.06);
@@ -448,7 +446,7 @@ export default function ProjectsPage() {
           border-right: none;
         }
         .stat-value {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(56px, 7vw, 84px);
           line-height: 1;
           color: var(--ink);
@@ -476,7 +474,7 @@ export default function ProjectsPage() {
           margin-bottom: 4rem;
         }
         .gallery-heading {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(42px, 6vw, 72px);
           color: #fff;
           line-height: 1;
@@ -534,7 +532,7 @@ export default function ProjectsPage() {
           align-items: center;
         }
         .industries-left .heading {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(48px, 6vw, 76px);
           color: #fff;
           line-height: 1;
@@ -573,7 +571,7 @@ export default function ProjectsPage() {
           border-bottom-color: var(--wire-gold);
         }
         .industry-tag {
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
           font-size: 10px;
           letter-spacing: 0.12em;
           color: var(--gold);
@@ -608,7 +606,7 @@ export default function ProjectsPage() {
         }
         .cta-bg-text {
           position: absolute;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(80px, 16vw, 220px);
           letter-spacing: 0.08em;
           color: rgba(255,255,255,0.02);
@@ -626,7 +624,7 @@ export default function ProjectsPage() {
           margin: 0 auto;
         }
         .cta-heading {
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-bebas), sans-serif;
           font-size: clamp(52px, 8vw, 96px);
           line-height: 0.95;
           color: #fff;
@@ -656,7 +654,7 @@ export default function ProjectsPage() {
           text-transform: uppercase;
           text-decoration: none;
           transition: background 0.2s, transform 0.2s;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-dm-mono), monospace;
         }
         .cta-btn:hover {
           background: #FFD040;
@@ -901,3 +899,4 @@ export default function ProjectsPage() {
     </>
   );
 }
+

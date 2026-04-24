@@ -29,8 +29,6 @@ const ServicePartners = dynamic(() =>
 
 const GlobalStyles = () => (
   <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
-
     :root {
       --ink:       #080B10;
       --ink-2:     #0E1420;
@@ -46,11 +44,11 @@ const GlobalStyles = () => (
       --rule:      rgba(240,235,225,0.1);
     }
 
-    .hp-root { background: var(--ink); color: var(--cream); font-family: 'DM Sans', sans-serif; }
+    .hp-root { background: var(--ink); color: var(--cream); font-family: var(--font-dm-sans), sans-serif; }
     .hp-reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
     .hp-reveal[data-visible="true"] { opacity: 1; transform: none; }
     .hp-kicker {
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 10px;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -61,7 +59,7 @@ const GlobalStyles = () => (
       margin-bottom: 1.25rem;
     }
     .hp-kicker::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
-    .hp-display { font-family: 'Bebas Neue', sans-serif; line-height: 0.95; letter-spacing: 0.02em; color: var(--cream); }
+    .hp-display { font-family: var(--font-bebas), sans-serif; line-height: 0.95; letter-spacing: 0.02em; color: var(--cream); }
     .hp-display em { font-style: normal; color: var(--gold); }
     .hp-body { font-size: 15px; color: var(--cream-dim); line-height: 1.75; font-weight: 300; }
     .hp-section-rule {
@@ -77,7 +75,7 @@ const GlobalStyles = () => (
     .hp-showcase::before {
       content: 'CAPABILITIES';
       position: absolute;
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-bebas), sans-serif;
       font-size: clamp(80px, 14vw, 180px);
       letter-spacing: 0.08em;
       color: rgba(245,184,0,0.04);
@@ -99,7 +97,7 @@ const GlobalStyles = () => (
     .hp-bento-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,11,16,0.8) 0%, transparent 60%); }
     .hp-bento-label {
       position: absolute; bottom: 1.25rem; left: 1.25rem; z-index: 2;
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 10px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -169,7 +167,7 @@ const GlobalStyles = () => (
     }
     .hp-exp-block:hover::before { transform: scaleY(1); }
     .hp-exp-number {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-bebas), sans-serif;
       font-size: clamp(56px, 7vw, 84px);
       line-height: 1;
       color: var(--gold);
@@ -178,7 +176,7 @@ const GlobalStyles = () => (
     .hp-exp-bar-wrap { margin: 1rem 0 1.5rem; height: 2px; background: var(--rule); width: 160px; }
     .hp-exp-bar { height: 100%; background: var(--gold); transform-origin: left; transition: transform 0.8s cubic-bezier(0.22,1,0.36,1); }
     .hp-exp-label {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-playfair), serif;
       font-size: 20px;
       font-weight: 700;
       color: var(--cream);
@@ -234,7 +232,7 @@ const GlobalStyles = () => (
     .hp-blog-card:hover .hp-blog-img img { transform: scale(1.06); }
     .hp-blog-body { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; gap: 0.75rem; }
     .hp-blog-cat {
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 10px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -245,7 +243,7 @@ const GlobalStyles = () => (
       padding: 3px 8px;
     }
     .hp-blog-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-playfair), serif;
       font-size: 18px;
       font-weight: 700;
       color: var(--cream);
@@ -264,7 +262,7 @@ const GlobalStyles = () => (
       margin-top: auto;
       padding-top: 1rem;
       border-top: 1px solid var(--rule);
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 10px;
       color: var(--cream-dim);
       letter-spacing: 0.06em;
@@ -275,7 +273,7 @@ const GlobalStyles = () => (
       align-items: center;
       gap: 6px;
       color: var(--gold);
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 10px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -288,7 +286,7 @@ const GlobalStyles = () => (
       align-items: center;
       gap: 10px;
       margin-top: 2.5rem;
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -304,7 +302,7 @@ const GlobalStyles = () => (
     .hp-cta::before {
       content: 'START NOW';
       position: absolute;
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-bebas), sans-serif;
       font-size: clamp(100px, 18vw, 240px);
       letter-spacing: 0.08em;
       color: rgba(0,0,0,0.06);
@@ -323,7 +321,7 @@ const GlobalStyles = () => (
       padding: 1.1rem 2.5rem;
       background: var(--ink);
       color: var(--gold);
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 12px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -373,7 +371,7 @@ const GlobalStyles = () => (
     .hp-trust-card:hover { background: var(--ink-3); }
     .hp-trust-card:hover::before { transform: scaleX(1); }
     .hp-trust-badge {
-      font-family: 'DM Mono', monospace;
+      font-family: var(--font-dm-mono), monospace;
       font-size: 9px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -382,7 +380,7 @@ const GlobalStyles = () => (
       display: block;
     }
     .hp-trust-icon { color: var(--gold); margin-bottom: 1rem; }
-    .hp-trust-card-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--cream); margin-bottom: 0.5rem; }
+    .hp-trust-card-title { font-family: var(--font-playfair), serif; font-size: 18px; font-weight: 700; color: var(--cream); margin-bottom: 0.5rem; }
     .hp-trust-card-body { font-size: 13px; color: var(--cream-dim); line-height: 1.65; font-weight: 300; }
 
     @media (max-width: 1024px) {
@@ -672,7 +670,7 @@ export default function Home() {
                   LATEST ARTICLES<br /><em>FROM OUR COMPANY</em>
                 </h2>
               </div>
-              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: '0.15em', color: 'var(--cream-dim)', textTransform: 'uppercase' }}>
+              <span style={{ fontFamily: "var(--font-dm-mono), monospace", fontSize: 10, letterSpacing: '0.15em', color: 'var(--cream-dim)', textTransform: 'uppercase' }}>
                 {featuredArticles.length} Articles
               </span>
             </div>
@@ -765,7 +763,7 @@ export default function Home() {
               <p className="hp-body">
                 We&apos;re not just moving products; we&apos;re fulfilling promises, connecting lives, and making moments happen.
               </p>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: 'var(--cream)', marginTop: '2rem', lineHeight: 1.4 }}>
+              <p style={{ fontFamily: "var(--font-playfair), serif", fontSize: 18, fontWeight: 700, color: 'var(--cream)', marginTop: '2rem', lineHeight: 1.4 }}>
                 Your Trusted Logistics Partner -<br />Delivering Reliability Every Mile
               </p>
             </Reveal>
@@ -805,3 +803,4 @@ export default function Home() {
     </main>
   );
 }
+
