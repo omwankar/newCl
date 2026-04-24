@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 
 export const siteConfig = {
   name: 'Clarusto Logistics',
-  domain: 'https://www.clarustologistics.com',
-  defaultTitle: 'Clarusto Logistics | Global Shipping & Transportation Solutions',
+  domain: 'https://clarustologistics.com',
+  defaultTitle: 'Clarusto Logistics | Global Freight & Supply Chain Services',
   description:
-    'Clarusto Logistics provides global freight forwarding, transportation, warehousing, and end-to-end supply chain management services.',
+    'Clarusto Logistics provides global freight forwarding, transportation services, customs support, and end-to-end supply chain management.',
   ogImage: '/clarusto-logo-dark.png',
   phone: '+44-3300946908',
   email: 'info@clarustologistics.com',

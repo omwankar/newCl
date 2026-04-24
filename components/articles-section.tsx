@@ -2,6 +2,7 @@
 
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from './ui/button';
 
 interface Article {
@@ -71,10 +72,13 @@ export function ArticlesSection() {
               </p>
 
               <div className="relative overflow-hidden rounded-lg bg-muted aspect-video mb-6">
-                <img
+                <Image
                   src={article.image}
                   alt={article.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
 

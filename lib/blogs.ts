@@ -852,7 +852,7 @@ In the 2026 landscape, manual entry is a massive risk. Forwarders who are not ST
     date: 'Apr 17, 2026',
     readTime: '7 min read',
     category: 'Supply Chain & Logistics Insights',
-    image: '/Screenshot 2026-04-17 072554.png',
+    image: '/blog-logistics-disruption-2026.webp',
     author: {
       name: 'Editorial Desk',
       avatar: 'https://i.pravatar.cc/120?img=60',

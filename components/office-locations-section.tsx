@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import {
-  MapPin,
   Phone,
   Mail,
   Clock,
@@ -13,15 +13,12 @@ import {
 
 type OfficeLocation = {
   id: number;
-  flag?: string;
   city: string;
   country: string;
   address?: string;
   phone?: string;
   email?: string;
   hours?: string;
-  established?: string;
-  teamSize?: number;
   lat: number;
   lng: number;
 };
@@ -44,24 +41,41 @@ export function OfficeLocationsSection({
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+
       {/* MAP */}
       <div className="absolute inset-0">
         <iframe
           key={selected.id}
           title={`Map for ${selected.city}`}
           src={mapSrc}
-          width="100%"
-          height="620"
           loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="block h-[620px] w-full border-none"
+          className="block h-[300px] md:h-[620px] w-full border-none"
         />
         <div className="pointer-events-none absolute inset-0" />
       </div>
 
-      {/* PANEL */}
-      <div className="pointer-events-none relative z-10 flex min-h-[620px] items-stretch">
-        <div className="pointer-events-auto m-4 w-full max-w-[360px] rounded-2xl bg-[#a37742]/95 p-3 text-white shadow-lg backdrop-blur md:m-6">
+      {/* LAYOUT */}
+      <div className="pointer-events-none relative z-10 flex flex-col md:flex-row min-h-[300px] md:min-h-[620px]">
+
+        {/* PANEL */}
+        <div
+          className="
+            pointer-events-auto
+            w-full
+            md:max-w-[360px]
+            md:m-6
+            mt-[260px] md:mt-0
+            mx-2 md:mx-0
+            rounded-2xl
+            bg-[#a37742]/95
+            p-3
+            text-white
+            shadow-lg
+            backdrop-blur
+            max-h-[70vh]
+            overflow-y-auto
+          "
+        >
           {offices.map((office) => {
             const isOpen = openId === office.id;
 
@@ -81,19 +95,18 @@ export function OfficeLocationsSection({
                       prev === office.id ? 0 : office.id
                     );
                   }}
-                  className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left"
-                  aria-expanded={isOpen}
+                  className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left text-sm md:text-base"
                 >
-                  <span className="text-base font-semibold">
+                  <span className="font-semibold">
                     {office.city} Office
                   </span>
 
-                  {/* ICON ANIMATION */}
+                  {/* ICON */}
                   <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 transition-transform duration-300">
                     {isOpen ? (
-                      <Minus className="h-4 w-4 rotate-180 transition-transform duration-300" />
+                      <Minus className="h-4 w-4 rotate-180" />
                     ) : (
-                      <Plus className="h-4 w-4 transition-transform duration-300" />
+                      <Plus className="h-4 w-4" />
                     )}
                   </span>
                 </button>
@@ -107,7 +120,8 @@ export function OfficeLocationsSection({
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-4 pb-4 text-[13px] leading-relaxed text-white/90">
+                    <div className="px-4 pb-4 text-[14px] md:text-[13px] leading-relaxed text-white/90">
+
                       {office.address && (
                         <p className="text-white/85">
                           {office.address}
@@ -125,7 +139,7 @@ export function OfficeLocationsSection({
                         {office.phone && (
                           <a
                             href={`tel:${office.phone}`}
-                            className="flex items-start gap-2 text-white/95 underline-offset-2 hover:underline"
+                            className="flex items-start gap-2 underline-offset-2 hover:underline"
                           >
                             <Phone className="mt-0.5 h-4 w-4 text-white/80" />
                             <span>{office.phone}</span>
@@ -133,13 +147,13 @@ export function OfficeLocationsSection({
                         )}
 
                         {office.email && (
-                          <a
-                            href={`mailto:${office.email}`}
-                            className="flex items-start gap-2 text-white/95 underline-offset-2 hover:underline"
+                          <Link
+                            href="/contact"
+                            className="flex items-start gap-2 underline-offset-2 hover:underline"
                           >
                             <Mail className="mt-0.5 h-4 w-4 text-white/80" />
-                            <span>{office.email}</span>
-                          </a>
+                            <span>Contact via form</span>
+                          </Link>
                         )}
                       </div>
 
@@ -155,7 +169,7 @@ export function OfficeLocationsSection({
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/15 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/20"
+                        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white/15 px-4 py-2.5 text-sm font-semibold hover:bg-white/20"
                       >
                         <ExternalLink className="h-4 w-4" />
                         Get directions

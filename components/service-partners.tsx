@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 export function ServicePartners() {
   const servicePartners = [
     {
@@ -42,12 +44,17 @@ export function ServicePartners() {
               className="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 flex items-center justify-center min-h-[100px] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fadeInUp cursor-pointer group"
               style={{ animationDelay: `${idx * 0.05}s` }}
             >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="max-h-16 max-w-[80%] object-contain grayscale-20 group-hover:grayscale-0 transition-all duration-300"
-                title={partner.name}
-              />
+              <div className="relative h-16 w-[80%]">
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  fill
+                  sizes="(max-width: 1024px) 80vw, 260px"
+                  className="object-contain grayscale-20 transition-all duration-300 group-hover:grayscale-0"
+                  title={partner.name}
+                  loading="lazy"
+                />
+              </div>
             </div>
           ))}
         </div>

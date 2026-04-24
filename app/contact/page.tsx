@@ -132,12 +132,9 @@ export default function ContactPage() {
                     <Mail className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
                     <div>
                       <p className="font-semibold text-foreground">Email</p>
-                      <a
-                        href="mailto:info@clarustologistics.com"
-                        className="text-muted-foreground text-sm underline-offset-2 hover:underline"
-                      >
-                        info@clarustologistics.com
-                      </a>
+                      <Link href="/contact" className="text-muted-foreground text-sm underline-offset-2 hover:underline">
+                        Use Contact Form
+                      </Link>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

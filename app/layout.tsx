@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Poppins, Geist_Mono } from 'next/font/google'
+import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import { OrganizationJsonLd } from '@/components/organization-json-ld'
 import { FloatingCallButton } from '@/components/floating-call-button'
@@ -33,9 +34,9 @@ export const viewport: Viewport = {
 // Example homepage usage of reusable SEO function.
 export const metadata: Metadata = {
   ...SEO({
-    title: 'Home',
+    title: 'Global Freight & Supply Chain Services',
     description:
-      'Clarusto Logistics delivers reliable global transportation, freight forwarding, and integrated supply chain services.',
+      'Clarusto Logistics delivers reliable global transportation, freight forwarding, customs brokerage, and integrated supply chain services tailored for every shipment.',
     url: '/',
     image: '/clarusto-logo-dark.png',
   }),
@@ -72,6 +73,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth overflow-x-clip ${poppins.variable} ${_geistMono.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased bg-background text-foreground min-h-[100dvh] overflow-x-clip text-base leading-relaxed md:leading-normal" suppressHydrationWarning>
+        <Script
+          id="plausible-analytics"
+          strategy="afterInteractive"
+          data-domain="clarustologistics.com"
+          src="https://plausible.io/js/script.js"
+        />
         <OrganizationJsonLd />
         {children}
         <FloatingCallButton />

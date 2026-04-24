@@ -3,17 +3,29 @@
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { EnhancedHero } from '@/components/enhanced-hero';
-import { EnhancedServices } from '@/components/enhanced-services';
-import { AboutSection } from '@/components/about-section';
-import { PromiseSection } from '@/components/promise-section';
-import { StatsSection } from '@/components/stats-section';
-import { ServicePartners } from '@/components/service-partners';
+import dynamic from 'next/dynamic';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { BLOG_POSTS, type BlogPost } from '@/lib/blogs';
 import Link from 'next/link';
 import Image from 'next/image';
 import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Truck, Globe, Shield, Package, Clock, BadgeCheck, ArrowRight } from 'lucide-react';
+
+const EnhancedServices = dynamic(() =>
+  import('@/components/enhanced-services').then((m) => m.EnhancedServices)
+);
+const AboutSection = dynamic(() =>
+  import('@/components/about-section').then((m) => m.AboutSection)
+);
+const PromiseSection = dynamic(() =>
+  import('@/components/promise-section').then((m) => m.PromiseSection)
+);
+const StatsSection = dynamic(() =>
+  import('@/components/stats-section').then((m) => m.StatsSection)
+);
+const ServicePartners = dynamic(() =>
+  import('@/components/service-partners').then((m) => m.ServicePartners)
+);
 
 const GlobalStyles = () => (
   <style>{`
@@ -545,7 +557,7 @@ export default function Home() {
             <Reveal>
               <div className="hp-kicker">Capabilities</div>
               <h2 className="hp-display hp-showcase-title">
-                THE MOST<br />IMPORTANT THINGS<br /><em>WE CAN SHOW YOU</em>
+                FREIGHT FORWARDING<br />AND LOGISTICS<br /><em>CAPABILITIES WE DELIVER</em>
               </h2>
             </Reveal>
             <Reveal>
@@ -575,12 +587,31 @@ export default function Home() {
       <StatsSection />
       <ServicePartners />
 
+      <section className="border-t border-[rgba(240,235,225,0.12)] bg-[#0b1320] py-16 md:py-24">
+        <div className="app-container max-w-5xl">
+          <h2 className="hp-display text-[clamp(34px,4.8vw,58px)]">
+            WHY CLARUSTO<br /><em>FREIGHT LOGISTICS SOLUTIONS WORK</em>
+          </h2>
+          <div className="mt-8 space-y-5 text-[15px] leading-8 text-[rgba(240,235,225,0.78)]">
+            <p>
+              Clarusto Logistics is built for businesses that need consistent freight forwarding, predictable transportation services, and resilient supply chain execution across volatile markets. Our teams combine route intelligence, customs expertise, and carrier relationships to keep freight moving when conditions change. We coordinate air, ocean, and road logistics through one integrated operating model, reducing handoff delays and improving delivery confidence across every trade lane.
+            </p>
+            <p>
+              We support manufacturers, distributors, retailers, and project cargo operators with practical service design from origin planning to final-mile delivery. Instead of offering isolated shipping transactions, we build end-to-end logistics programs with clear service-level targets, live milestone visibility, and exception-response playbooks. This allows operations teams to forecast better, control landed cost, and protect customer commitments during peak demand cycles and cross-border disruptions.
+            </p>
+            <p>
+              Our freight and supply chain specialists focus on measurable outcomes: stronger on-time performance, lower avoidable dwell, cleaner compliance documentation, and faster customer communication. With Clarusto, organizations gain both execution capacity and strategic guidance, from customs brokerage workflows to multimodal transport planning. The result is a logistics partner that supports growth, improves operational stability, and creates long-term competitive advantage in global commerce.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="hp-partners">
         <div className="hp-partners-inner">
           <Reveal className="hp-partners-header">
             <div className="hp-kicker" style={{ justifyContent: 'center', marginBottom: '1rem' }}>Partners</div>
             <h2 className="hp-display hp-partners-title" data-scramble-heading="Trusted by Industry Leaders">
-              TRUSTED BY<br /><em>INDUSTRY LEADERS</em>
+              TRUSTED FREIGHT AND<br /><em>LOGISTICS PARTNERS</em>
             </h2>
             <p className="hp-body" style={{ marginTop: '1rem', maxWidth: 500, margin: '1rem auto 0' }}>
               Proud to work with industry leaders and innovative companies across various sectors.
@@ -617,7 +648,7 @@ export default function Home() {
           <Reveal className="hp-expertise-header">
             <div className="hp-kicker">Expertise</div>
             <h2 className="hp-display hp-expertise-title">
-              EXPERTISE IN OUR<br /><em>TRANSPORTATION SERVICES</em>
+              EXPERTISE IN GLOBAL<br /><em>TRANSPORTATION SERVICES</em>
             </h2>
             <p className="hp-body" style={{ marginTop: '1rem', maxWidth: 520 }}>
               Measurable outcomes across network, delivery performance, and compliance-led execution.

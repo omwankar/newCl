@@ -1,0 +1,17 @@
+# Clarusto Logistics
+
+> Clarusto Logistics is a global freight forwarding and supply chain company offering air freight, customs brokerage, customs clearance, and ecommerce logistics.
+
+## Services
+- Air Freight: International air cargo solutions for time-sensitive shipments
+- Customs Brokerage: End-to-end customs documentation and compliance
+- Customs Clearance: Fast and accurate clearance at major ports and airports
+- Ecommerce Logistics: Fulfillment and last-mile delivery for online retailers
+- Transportation Services: Multimodal road, sea, and air logistics support
+
+## Contact
+- Phone: +44 3300946908
+- Website: https://clarustologistics.com
+
+## About
+Based in the UK and serving global clients across major trade lanes.

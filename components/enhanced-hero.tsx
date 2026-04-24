@@ -56,10 +56,10 @@ export function EnhancedHero() {
       <div className="app-container relative z-10 max-w-[1200px] pt-20 md:pt-24">
         <div className="max-w-3xl">
           <span className="inline-block px-4 py-1.5 rounded-full bg-amber-400/20 text-amber-500 text-sm font-medium mb-6 animate-slide-up backdrop-blur-sm border border-amber-400/30">
-            Global Logistics Solutions
+            Global Logistics, Freight Forwarding & Supply Chain
           </span>
           <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 animate-slide-up delay-100 text-white">
-            Transportation{' '}
+            Global Freight Logistics{' '}
             <span className="text-gradient">Around the World</span>
           </h1>
           <p className="text-lg md:text-xl mb-8 animate-slide-up delay-200 max-w-xl text-white/80">
