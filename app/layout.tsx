@@ -11,7 +11,7 @@ import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import { OrganizationJsonLd } from '@/components/organization-json-ld'
 import { FloatingCallButton } from '@/components/floating-call-button'
-import { SEO } from '@/lib/seo'
+import { SEO, absoluteUrl } from '@/lib/seo'
 import './globals.css'
 
 const poppins = Poppins({
@@ -75,6 +75,10 @@ export const metadata: Metadata = {
       'Clarusto Logistics delivers reliable global transportation, freight forwarding, customs brokerage, and integrated supply chain services tailored for every shipment.',
     url: '/',
     image: '/clarusto-logo-dark.png',
+    locale: 'en-GB',
+    alternateLanguages: {
+      'en-GB': absoluteUrl('/'),
+    },
   }),
   icons: {
     icon: [

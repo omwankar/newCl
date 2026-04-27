@@ -1,9 +1,10 @@
+import Script from 'next/script';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { getAllBlogs, getBlogBySlug } from '@/lib/blogs.server';
-import { absoluteUrl } from '@/lib/seo';
+import { absoluteUrl, siteConfig, SEO } from '@/lib/seo';
 import { BlogHero } from '@/components/blog/BlogHero';
 import { BlogSidebar } from '@/components/blog/BlogSidebar';
 import {
@@ -52,27 +53,18 @@ export async function generateMetadata({
       .find(Boolean)
       ?.slice(0, 180) ?? post.excerpt;
 
-  return {
+  return SEO({
     title: post.metaTitle ?? `${post.title} | Clarusto Logistics`,
     description: post.metaDescription ?? parsedDescription,
-    alternates: {
-      canonical: absoluteUrl(`/blog/${post.slug}`),
-    },
-    openGraph: {
-      title: post.metaTitle ?? `${post.title} | Clarusto Logistics`,
-      description: post.metaDescription ?? parsedDescription,
-      url: absoluteUrl(`/blog/${post.slug}`),
-      type: 'article',
-      images: [
-        {
-          url: absoluteUrl(post.image),
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-  };
+    url: `/blog/${post.slug}`,
+    image: post.image,
+    keywords: [
+      post.category,
+      ...post.tags.map((tag) => tag.replace(/^#/, '')),
+    ],
+    openGraphType: 'article',
+    locale: 'en-GB',
+  });
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -88,6 +80,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const rawInput = post.rawText ?? `${post.title}\n\n${post.content.join('\n\n')}`;
   const parsed = parseRawBlogText(rawInput);
+  const parsedDescription =
+    parsed.sections
+      .flatMap((section) => section.content ?? [])
+      .find(Boolean)
+      ?.slice(0, 180) ?? post.excerpt;
 
   const relatedPosts = blogs.filter((item) => item.slug !== post.slug)
     .sort((a, b) => {
@@ -97,9 +94,41 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     })
     .slice(0, 4);
 
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': absoluteUrl(`/blog/${post.slug}`),
+    },
+    headline: post.title,
+    image: [post.image],
+    author: {
+      '@type': 'Person',
+      name: post.author.name,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: absoluteUrl('/clarusto-logo-dark.png'),
+      },
+    },
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.date).toISOString(),
+    description: post.metaDescription ?? parsedDescription,
+    keywords: post.tags.map((tag) => tag.replace(/^#/, '')).join(', '),
+  };
+
   return (
     <>
       <Navbar />
+      <Script
+        id="article-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <article className="bg-[#F5F5F0]">
         <BlogHero post={{ ...post, title: parsed.title, excerpt: post.excerpt }} />
         <section className="pt-28 pb-12 md:pb-16">

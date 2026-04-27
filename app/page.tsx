@@ -1,5 +1,15 @@
 'use client';
 
+import { useMemo } from 'react';
+
+const generateBoxShadows = (n: number) => {
+  let value = `${Math.floor(Math.random() * 2000)}px ${Math.floor(Math.random() * 2000)}px #FFF`;
+  for (let i = 2; i <= n; i++) {
+    value += `, ${Math.floor(Math.random() * 2000)}px ${Math.floor(Math.random() * 2000)}px #FFF`;
+  }
+  return value;
+};
+
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { EnhancedHero } from '@/components/enhanced-hero';
@@ -10,6 +20,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Truck, Globe, Shield, Package, Clock, BadgeCheck, ArrowRight } from 'lucide-react';
+import { LightRays } from '@/components/light-rays';
 
 const EnhancedServices = dynamic(() =>
   import('@/components/enhanced-services').then((m) => m.EnhancedServices)
@@ -468,6 +479,70 @@ function ExpertiseStatBlock({ stat, index, active }: { stat: { number: string; l
   );
 }
 
+function StarsBackground({ speed = 0.3 }: { speed?: number }) {
+  const [isClient, setIsClient] = useState(false);
+  const shadowsSmall  = useMemo(() => isClient ? generateBoxShadows(700) : '', [isClient]);
+  const shadowsMedium = useMemo(() => isClient ? generateBoxShadows(200) : '', [isClient]);
+  const shadowsBig    = useMemo(() => isClient ? generateBoxShadows(100) : '', [isClient]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+
+  return (
+    <>
+      <style>{`
+        @keyframes animStarClarusto {
+          from { transform: translateY(0px); }
+          to   { transform: translateY(-2000px); }
+        }
+      `}</style>
+
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Small stars */}
+        <div
+          className="absolute left-0 top-0 w-[1px] h-[1px] bg-transparent opacity-40"
+          style={{
+            boxShadow: shadowsSmall,
+            animation: `animStarClarusto ${50 / speed}s linear infinite` 
+          }}
+        >
+          <div className="absolute top-[2000px] w-[1px] h-[1px] bg-transparent"
+            style={{ boxShadow: shadowsSmall }} />
+        </div>
+
+        {/* Medium stars */}
+        <div
+          className="absolute left-0 top-0 w-[2px] h-[2px] bg-transparent opacity-30"
+          style={{
+            boxShadow: shadowsMedium,
+            animation: `animStarClarusto ${100 / speed}s linear infinite` 
+          }}
+        >
+          <div className="absolute top-[2000px] w-[2px] h-[2px] bg-transparent"
+            style={{ boxShadow: shadowsMedium }} />
+        </div>
+
+        {/* Big stars */}
+        <div
+          className="absolute left-0 top-0 w-[3px] h-[3px] bg-transparent opacity-20"
+          style={{
+            boxShadow: shadowsBig,
+            animation: `animStarClarusto ${150 / speed}s linear infinite` 
+          }}
+        >
+          <div className="absolute top-[2000px] w-[3px] h-[3px] bg-transparent"
+            style={{ boxShadow: shadowsBig }} />
+        </div>
+      </div>
+    </>
+  );
+}
+
 export default function Home() {
   const { ref: trustSectionRef, isVisible: isTrustSectionVisible } = useScrollAnimation(0.1);
   const expertiseRef = useRef<HTMLElement>(null);
@@ -585,24 +660,30 @@ export default function Home() {
       <StatsSection />
       <ServicePartners />
 
-      <section className="border-t border-[rgba(240,235,225,0.12)] bg-[#0b1320] py-16 md:py-24">
-        <div className="app-container max-w-5xl">
-          <h2 className="hp-display text-[clamp(34px,4.8vw,58px)]">
-            WHY CLARUSTO<br /><em>FREIGHT LOGISTICS SOLUTIONS WORK</em>
-          </h2>
-          <div className="mt-8 space-y-5 text-[15px] leading-8 text-[rgba(240,235,225,0.78)]">
-            <p>
-              Clarusto Logistics is built for businesses that need consistent freight forwarding, predictable transportation services, and resilient supply chain execution across volatile markets. Our teams combine route intelligence, customs expertise, and carrier relationships to keep freight moving when conditions change. We coordinate air, ocean, and road logistics through one integrated operating model, reducing handoff delays and improving delivery confidence across every trade lane.
-            </p>
-            <p>
-              We support manufacturers, distributors, retailers, and project cargo operators with practical service design from origin planning to final-mile delivery. Instead of offering isolated shipping transactions, we build end-to-end logistics programs with clear service-level targets, live milestone visibility, and exception-response playbooks. This allows operations teams to forecast better, control landed cost, and protect customer commitments during peak demand cycles and cross-border disruptions.
-            </p>
-            <p>
-              Our freight and supply chain specialists focus on measurable outcomes: stronger on-time performance, lower avoidable dwell, cleaner compliance documentation, and faster customer communication. With Clarusto, organizations gain both execution capacity and strategic guidance, from customs brokerage workflows to multimodal transport planning. The result is a logistics partner that supports growth, improves operational stability, and creates long-term competitive advantage in global commerce.
-            </p>
-          </div>
+      <section className="relative border-t border-[rgba(240,235,225,0.12)] bg-[#0b1320] py-16 md:py-24 overflow-hidden">
+      
+      {/* Stars layer — behind everything */}
+      <StarsBackground speed={0.3} />
+
+      {/* Content — must be z-10 or above so it renders over stars */}
+      <div className="app-container max-w-5xl relative z-10">
+        <h2 className="hp-display text-[clamp(34px,4.8vw,58px)]">
+          WHY CLARUSTO<br /><em>FREIGHT LOGISTICS SOLUTIONS WORK</em>
+        </h2>
+        <div className="mt-8 space-y-5 text-[15px] leading-8 text-[rgba(240,235,225,0.78)]">
+          <p>
+            Clarusto Logistics is built for businesses that need consistent freight forwarding, predictable transportation services, and resilient supply chain execution across volatile markets. Our teams combine route intelligence, customs expertise, and carrier relationships to keep freight moving when conditions change. We coordinate air, ocean, and road logistics through one integrated operating model, reducing handoff delays and improving delivery confidence across every trade lane.
+          </p>
+          <p>
+            We support manufacturers, distributors, retailers, and project cargo operators with practical service design from origin planning to final-mile delivery. Instead of offering isolated shipping transactions, we build end-to-end logistics programs with clear service-level targets, live milestone visibility, and exception-response playbooks. This allows operations teams to forecast better, control landed cost, and protect customer commitments during peak demand cycles and cross-border disruptions.
+          </p>
+          <p>
+            Our freight and supply chain specialists focus on measurable outcomes: stronger on-time performance, lower avoidable dwell, cleaner compliance documentation, and faster customer communication. With Clarusto, organizations gain both execution capacity and strategic guidance, from customs brokerage workflows to multimodal transport planning. The result is a logistics partner that supports growth, improves operational stability, and creates long-term competitive advantage in global commerce.
+          </p>
         </div>
-      </section>
+      </div>
+
+    </section>
 
       <section className="hp-partners">
         <div className="hp-partners-inner">
@@ -641,8 +722,22 @@ export default function Home() {
         </div>
       </section>
 
-      <section ref={expertiseRef} className="hp-expertise">
-        <div className="hp-expertise-inner">
+      <section ref={expertiseRef} className="hp-expertise relative overflow-hidden">
+          
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#F5B800"
+            raysSpeed={0.6}
+            lightSpread={1.4}
+            rayLength={1.6}
+            followMouse={true}
+            mouseInfluence={0.06}
+            noiseAmount={0.02}
+            distortion={0.03}
+            pulsating={true}
+          />
+
+          <div className="hp-expertise-inner relative z-10">
           <Reveal className="hp-expertise-header">
             <div className="hp-kicker">Expertise</div>
             <h2 className="hp-display hp-expertise-title">

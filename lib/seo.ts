@@ -7,6 +7,7 @@ export const siteConfig = {
   description:
     'Clarusto Logistics provides global freight forwarding, transportation services, customs support, and end-to-end supply chain management.',
   ogImage: '/clarusto-logo-dark.png',
+  defaultLocale: 'en-GB',
   phone: '+44-3300946908',
   email: 'info@clarustologistics.com',
   address: {
@@ -30,6 +31,11 @@ type SeoInput = {
   image?: string;
   url?: string;
   noIndex?: boolean;
+  keywords?: string[];
+  openGraphType?: string;
+  twitterCard?: string;
+  locale?: string;
+  alternateLanguages?: Record<string, string>;
 };
 
 export function absoluteUrl(path = '/') {
@@ -44,24 +50,37 @@ export function SEO({
   image = siteConfig.ogImage,
   url = '/',
   noIndex = false,
+  keywords,
+  openGraphType = 'website',
+  twitterCard = 'summary_large_image',
+  locale = siteConfig.defaultLocale,
+  alternateLanguages,
 }: SeoInput): Metadata {
   const seoTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.defaultTitle;
   const seoDescription = description ?? siteConfig.description;
   const canonicalUrl = absoluteUrl(url);
   const imageUrl = image.startsWith('http') ? image : absoluteUrl(image);
+  const alternates: Metadata['alternates'] = {
+    canonical: canonicalUrl,
+  };
+
+  if (alternateLanguages) {
+    alternates.languages = alternateLanguages;
+  }
 
   return {
+    metadataBase: new URL(siteConfig.domain),
     title: seoTitle,
     description: seoDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    keywords,
+    alternates,
     openGraph: {
       title: seoTitle,
       description: seoDescription,
       url: canonicalUrl,
       siteName: siteConfig.name,
-      type: 'website',
+      type: openGraphType,
+      locale,
       images: [
         {
           url: imageUrl,
@@ -72,7 +91,7 @@ export function SEO({
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: twitterCard,
       title: seoTitle,
       description: seoDescription,
       images: [imageUrl],
